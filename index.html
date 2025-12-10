@@ -318,12 +318,19 @@
   </div>
 
   <!-- WhatsApp OTP -->
-  <div class="card" style="margin-bottom:1rem;">
-    <h3 style="color:#fff;">WhatsApp OTP Checker</h3>
-    <input id="waNumber" class="text-input" placeholder="Masukkan nomor (62xxxx)" />
-    <button class="btn" onclick="runWaOtp()">Check OTP</button>
-    <pre id="waResult" style="background:#111;color:#0f0;padding:1rem;border-radius:.5rem;overflow:auto;margin-top:1rem;"></pre>
+ <div class="card" style="margin-bottom:1rem;">
+  <h3 style="color:#98ff98;margin-bottom:.5rem;">WhatsApp OTP Checker</h3>
+
+  <div class="input-row" style="margin-top:.5rem;">
+    <input id="waNumber" class="text-input" placeholder="Contoh: 6281234567890" />
+    <button class="btn" onclick="runWaOtp()">
+      <i class="bi bi-shield-lock"></i> Cek OTP
+    </button>
   </div>
+
+  <pre id="waResult" style="background:#111;color:#7CFF7C;padding:1rem; border-radius:.5rem; margin-top:1rem; white-space:pre-wrap;"></pre>
+</div>
+
 
   <!-- TempMail -->
   <div class="card" style="margin-bottom:1rem;">
@@ -361,13 +368,74 @@ async function runPinterestSearch() {
 }
 
 async function runWaOtp(){
-  const num = document.getElementById('waNumber').value.trim();
-  if(!num) return alert('Masukkan nomor.');
+  const num = document.getElementById("waNumber").value.trim();
+  const out = document.getElementById("waResult");
+  out.textContent = "";
 
-  const url = 'https://host.optikl.ink/whatsapp/otp?number=' + encodeURIComponent(num);
-  const res = await fetch(url);
-  const data = await res.json();
-  document.getElementById('waResult').textContent = JSON.stringify(data,null,2);
+  if(!num){
+    Swal.fire({
+      title:"Nomor belum diisi",
+      text:"Masukkan nomor WhatsApp (format 62xxxx).",
+      icon:"warning",
+      toast:true,
+      position:"top",
+      showConfirmButton:false,
+      timer:2200
+    });
+    return;
+  }
+
+  Swal.fire({
+    title:"Memproses...",
+    text:"Mengirim permintaan OTP...",
+    icon:"info",
+    toast:true,
+    position:"top",
+    showConfirmButton:false,
+    timer:1500
+  });
+
+  try{
+    const url =
+      "https://host.optikl.ink/whatsapp/otp?number=" + encodeURIComponent(num);
+
+    const res = await fetch(url);
+
+    // Antisipasi API diem / tidak balas JSON
+    const txt = await res.text();
+    let data;
+
+    try{
+      data = JSON.parse(txt); // normal JSON
+    }catch{
+      data = { raw_response: txt }; // bukan JSON → tetap ditampilkan
+    }
+
+    out.textContent = JSON.stringify(data, null, 2);
+
+    Swal.fire({
+      title:"Selesai",
+      text:"Permintaan OTP selesai diproses.",
+      icon:"success",
+      toast:true,
+      position:"top",
+      showConfirmButton:false,
+      timer:1800
+    });
+
+  }catch(e){
+    out.textContent = "Error: " + e.message;
+
+    Swal.fire({
+      title:"Gagal",
+      text:"Tidak bisa terhubung ke API.",
+      icon:"error",
+      toast:true,
+      position:"top",
+      showConfirmButton:false,
+      timer:3000
+    });
+  }
 }
 
 async function runTempMail(){
