@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Web Tools - BotzApi</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --green: #86efac;
@@ -26,67 +27,22 @@
       color: #e5e7eb;
       min-height: 100vh;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Navbar ===== */
+    /* ===== NAVBAR ===== */
     .navbar {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 16px;
+      padding: 16px 20px;
       background: rgba(0,0,0,0.85);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
 
-    .mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 9999;
-  padding: 20px;
-  display: none;
-}
-
-.mobile-menu.active {
-  display: block;
-}
-
-.mobile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 32px;
-}
-
-.close {
-  font-size: 2rem;
-  color: #86efac;
-  cursor: pointer;
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.menu-grid h4 {
-  margin-bottom: 14px;
-}
-
-.menu-grid a {
-  display: block;
-  color: #aaa;
-  margin-bottom: 10px;
-  text-decoration: none;
-}
     .brand {
       display: flex;
       align-items: center;
@@ -100,10 +56,10 @@
       height: 36px;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--green-dark), var(--green));
-      color: #052e16;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #052e16;
       font-weight: 800;
     }
 
@@ -113,6 +69,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      cursor: pointer;
     }
 
     .menu span {
@@ -122,19 +79,65 @@
       border-radius: 4px;
     }
 
-    /* ===== Header ===== */
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 2000;
+      padding: 20px;
+      display: none;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .close {
+      font-size: 2rem;
+      color: var(--green);
+      cursor: pointer;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .menu-grid h4 {
+      margin-bottom: 14px;
+    }
+
+    .menu-grid a {
+      display: block;
+      color: #aaa;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    /* ===== HEADER ===== */
     .header {
       text-align: center;
-      padding: 44px 16px 22px;
-      max-width: 520px;
+      padding: 56px 16px 24px;
+      max-width: 720px;
       margin: 0 auto;
     }
 
     .header h1 {
-      font-size: 2.1rem;
+      font-size: 2.4rem;
       font-weight: 700;
       color: var(--green);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .header p {
@@ -143,11 +146,11 @@
       color: var(--text-muted);
     }
 
-    /* ===== Search ===== */
+    /* ===== SEARCH ===== */
     .search-wrapper {
-      margin: 22px auto 12px;
+      margin: 28px auto 12px;
       padding: 0 16px;
-      max-width: 520px;
+      max-width: 720px;
     }
 
     .search {
@@ -166,31 +169,30 @@
       border: none;
       outline: none;
       color: #fff;
-      font-size: 0.95rem;
     }
 
     .count {
       text-align: center;
       font-size: 0.75rem;
       color: var(--text-muted);
-      margin-bottom: 18px;
+      margin: 18px 0 26px;
     }
 
-    /* ===== Tools ===== */
+    /* ===== TOOLS ===== */
     .tools {
-      padding: 0 16px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-width: 520px;
+      padding: 0 16px 60px;
+      max-width: 1100px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
     }
 
     .tool-card {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px;
+      padding: 18px;
       background: var(--bg-card);
       border-radius: 18px;
       border: 1px solid var(--border);
@@ -199,7 +201,7 @@
     }
 
     .tool-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       background: rgba(255,255,255,0.08);
     }
 
@@ -218,7 +220,6 @@
 
     .tool-info h3 {
       font-size: 1rem;
-      font-weight: 600;
       color: var(--green);
       margin-bottom: 6px;
     }
@@ -236,15 +237,17 @@
       color: #6b7280;
     }
 
-    /* ===== Footer ===== */
+    /* ===== FOOTER ===== */
     footer {
-      padding: 48px 16px 30px;
       border-top: 1px solid var(--border);
-      text-align: center;
+      padding: 60px 16px 32px;
     }
 
-    footer h3 {
-      margin-bottom: 14px;
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 40px;
     }
 
     .social {
@@ -264,152 +267,103 @@
       font-size: 0.85rem;
       margin-top: 10px;
     }
+
+    /* ===== DESKTOP ===== */
+    @media (min-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 1.4fr 1fr 1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <!-- NAVBAR + MOBILE MENU -->
-<div class="navbar">
-  <div class="brand">
-    <div class="brand-logo">BA</div>
-    BotzApi
-  </div>
-
-  <div class="menu" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</div>
-
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-header">
+  <!-- NAVBAR -->
+  <div class="navbar">
     <div class="brand">
       <div class="brand-logo">BA</div>
       BotzApi
     </div>
-    <div class="close" onclick="toggleMenu()">✕</div>
-  </div>
-
-  <div class="menu-grid">
-    <div>
-      <h4>Resources</h4>
-      <a href="#">Docs</a>
-      <a href="#">Uploader</a>
-      <a href="#">Other</a>
-    </div>
-
-    <div>
-      <h4>Legal</h4>
-      <a href="#">Terms</a>
-      <a href="#">Privacy</a>
+    <div class="menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
     </div>
   </div>
-</div>
-  
-  <!-- Header -->
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-header">
+      <div class="brand">
+        <div class="brand-logo">BA</div>
+        BotzApi
+      </div>
+      <div class="close" onclick="toggleMenu()">✕</div>
+    </div>
+
+    <div class="menu-grid">
+      <div>
+        <h4>Resources</h4>
+        <a href="#">Docs</a>
+        <a href="#">Uploader</a>
+        <a href="#">Other</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
   <div class="header">
     <h1>Web Tools</h1>
     <p>Discover our collection of powerful web-based tools and utilities designed to enhance your productivity and creativity.</p>
   </div>
 
-  <!-- Search -->
+  <!-- SEARCH -->
   <div class="search-wrapper">
-    <div class="search">
-      🔍
-      <input type="text" placeholder="Search tools..." />
-    </div>
+    <div class="search">🔍 <input type="text" placeholder="Search tools..."></div>
   </div>
 
-  <!-- Count -->
   <div class="count">3 tools available</div>
 
-  <!-- Tools -->
+  <!-- TOOLS -->
   <div class="tools">
+    <a href="#" class="tool-card"><div class="tool-icon">BA</div><div class="tool-info"><h3>Image Upscaling - BotzApi</h3><p>Access the Image Upscaling - BotzApi tool to enhance your workflow.</p><span>Modified: Dec 7, 2025</span></div></a>
+    <a href="#" class="tool-card"><div class="tool-icon">BA</div><div class="tool-info"><h3>SoundCloud Downloader</h3><p>Download SoundCloud tracks easily with high quality output.</p><span>Modified: Dec 5, 2025</span></div></a>
+    <a href="#" class="tool-card"><div class="tool-icon">BA</div><div class="tool-info"><h3>YouTube MP3 Converter</h3><p>Convert YouTube videos to MP3 quickly and easily.</p><span>Modified: Dec 2, 2025</span></div></a>
+  </div>
 
-    <a href="#" class="tool-card">
-      <div class="tool-icon">BA</div>
-      <div class="tool-info">
-        <h3>Image Upscaling - BotzApi</h3>
-        <p>Access the Image Upscaling - BotzApi tool to enhance your workflow.</p>
-        <span>Modified: Dec 7, 2025</span>
-      </div>
-    </a>
-
-    <a href="#" class="tool-card">
-      <div class="tool-icon">BA</div>
-      <div class="tool-info">
-        <h3>SoundCloud Downloader</h3>
-        <p>Download SoundCloud tracks easily with high quality output.</p>
-        <span>Modified: Dec 5, 2025</span>
-      </div>
-    </a>
-
-    <a href="#" class="tool-card">
-      <div class="tool-icon">BA</div>
-      <div class="tool-info">
-        <h3>YouTube MP3 Converter</h3>
-        <p>Convert YouTube videos to MP3 quickly and easily.</p>
-        <span>Modified: Dec 2, 2025</span>
-      </div>
-    </a>
-
-    
-  <!-- Footer -->
-  <!-- Footer -->
-  <footer style="padding:50px 16px 30px;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
-    <div style="max-width:520px;margin:0 auto;">
-      <div style="color:#86efac;font-weight:600;font-size:1.15rem;margin-bottom:10px;">BotzApi</div>
-      <p style="color:#9ca3af;font-size:0.85rem;line-height:1.6;margin-bottom:26px;">
-        Empowering developers with reliable and powerful API solutions for modern applications.
-      </p>
-
-      <h3 style="margin-bottom:14px;">Connect With Us</h3>
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:36px;">
-        <div class="social">📸</div>
-        <div class="social">🎵</div>
-        <div class="social">🐦</div>
-        <div class="social">✈️</div>
-        <div class="social">💬</div>
-        <div class="social">🎮</div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div style="color:#86efac;font-weight:600;font-size:1.15rem;margin-bottom:10px;">BotzApi</div>
+        <p style="color:#9ca3af;font-size:0.85rem;line-height:1.6;">Empowering developers with reliable and powerful API solutions for modern applications.</p>
       </div>
 
-      <h3>Resources</h3>
-      <p class="footer-link">API Documentation</p>
-      <p class="footer-link">Uploader Service</p>
-      <p class="footer-link">Other</p>
+      <div>
+        <h3>Resources</h3>
+        <p class="footer-link">API Documentation</p>
+        <p class="footer-link">Uploader Service</p>
+        <p class="footer-link">Other</p>
+      </div>
 
-      <h3 style="margin-top:26px;">Legal</h3>
-      <p class="footer-link">Terms of Service</p>
-      <p class="footer-link">Privacy Policy</p>
-
-      <p style="margin-top:36px;font-size:0.7rem;color:#6b7280;">© 2025 BotzAku. All rights reserved.</p>
+      <div>
+        <h3>Legal</h3>
+        <p class="footer-link">Terms of Service</p>
+        <p class="footer-link">Privacy Policy</p>
+      </div>
     </div>
+
+    <p style="margin-top:36px;text-align:center;font-size:0.7rem;color:#6b7280;">© 2025 BotzAku. All rights reserved.</p>
   </footer>
 
-  <style>
-    .social {
-      width:52px;
-      height:52px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:1.2rem;
-      border:1px solid rgba(255,255,255,0.08);
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
     }
-    .footer-link {
-      color:#9ca3af;
-      font-size:0.9rem;
-      margin-top:10px;
-    }
-  </style>
-
-    <script>
-function toggleMenu() {
-  document.getElementById("mobileMenu").classList.toggle("active");
-}
-    </script>
+  </script>
 
 </body>
 </html>
