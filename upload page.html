@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+    body{background:#0b0b0f;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center}
+    .container{width:100%;max-width:560px;padding:24px}
+    .card{background:#12121a;border-radius:14px;padding:28px;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+    .title{font-size:22px;font-weight:600;margin-bottom:6px}
+    .subtitle{font-size:14px;color:#a1a1aa;margin-bottom:22px}
+    .dropzone{border:2px dashed #2f2f46;border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:.2s}
+    .dropzone:hover{border-color:#6366f1;background:rgba(99,102,241,.05)}
+    .dropzone svg{width:42px;height:42px;margin-bottom:12px;color:#6366f1}
+    .dropzone p{font-size:14px;color:#d4d4d8}
+    .file-list{margin-top:14px;font-size:13px;color:#d4d4d8}
+    .file-item{margin-bottom:6px}
+    .progress{margin-top:14px;height:8px;background:#1f1f2e;border-radius:999px;overflow:hidden;display:none}
+    .progress-bar{height:100%;width:0%;background:#6366f1;transition:.2s}
+    .preview{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px}
+    .preview img,.preview video{width:100%;border-radius:8px}
+    .result{margin-top:16px;font-size:13px;word-break:break-all}
+    .btn{margin-top:22px;width:100%;padding:14px;border:none;border-radius:10px;background:#6366f1;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .error{color:#f87171;margin-top:12px;font-size:13px}
+    .footer{margin-top:18px;text-align:center;font-size:12px;color:#71717a}
+    input[type=file]{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="title">Upload your files</div>
+      <div class="subtitle">Drag & drop or click to upload</div>
+
+      <label class="dropzone" id="dropzone">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-8m0 0l-3 3m3-3l3 3M20 16.5a4.5 4.5 0 00-1.5-8.742A6 6 0 104.5 16.5"/></svg>
+        <p>Click to upload or drag files here</p>
+        <input type="file" id="fileInput" multiple />
+      </label>
+
+      <div class="file-list" id="fileList"></div>
+
+      <div class="progress" id="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="preview" id="preview"></div>
+
+      <button class="btn" id="uploadBtn" disabled>Upload</button>
+
+      <div class="result" id="result"></div>
+      <div class="error" id="error"></div>
+
+      <div class="footer">Max file size 100MB</div>
+    </div>
+  </div>
+
+<script>
+const fileInput=document.getElementById('fileInput');
+const dropzone=document.getElementById('dropzone');
+const uploadBtn=document.getElementById('uploadBtn');
+const fileList=document.getElementById('fileList');
+const preview=document.getElementById('preview');
+const result=document.getElementById('result');
+const errorBox=document.getElementById('error');
+const progress=document.getElementById('progress');
+const progressBar=document.getElementById('progressBar');
+
+function renderFiles(files){
+  fileList.innerHTML='';
+  preview.innerHTML='';
+  [...files].forEach(f=>{
+    fileList.innerHTML+=`<div class="file-item">${f.name} (${(f.size/1024/1024).toFixed(2)} MB)</div>`;
+    if(f.type.startsWith('image/')){
+      const img=document.createElement('img');
+      img.src=URL.createObjectURL(f);
+      preview.appendChild(img);
+    }
+    if(f.type.startsWith('video/')){
+      const vid=document.createElement('video');
+      vid.src=URL.createObjectURL(f);
+      vid.controls=true;
+      preview.appendChild(vid);
+    }
+  });
+}
+
+fileInput.addEventListener('change',()=>{
+  if(fileInput.files.length){
+    renderFiles(fileInput.files);
+    uploadBtn.disabled=false;
+  }
+});
+
+;['dragenter','dragover'].forEach(e=>dropzone.addEventListener(e,ev=>{ev.preventDefault();dropzone.style.borderColor='#6366f1'}));
+;['dragleave','drop'].forEach(e=>dropzone.addEventListener(e,ev=>{ev.preventDefault();dropzone.style.borderColor='#2f2f46'}));
+
+dropzone.addEventListener('drop',e=>{
+  const files=e.dataTransfer.files;
+  if(files.length){
+    fileInput.files=files;
+    renderFiles(files);
+    uploadBtn.disabled=false;
+  }
+});
+
+uploadBtn.addEventListener('click',()=>{
+  errorBox.textContent='';
+  result.textContent='';
+  progress.style.display='block';
+  progressBar.style.width='0%';
+
+  const xhr=new XMLHttpRequest();
+  const formData=new FormData();
+
+  [...fileInput.files].forEach(f=>formData.append('file',f));
+
+  xhr.upload.onprogress=e=>{
+    if(e.lengthComputable){
+      const percent=(e.loaded/e.total)*100;
+      progressBar.style.width=percent+'%';
+    }
+  };
+
+  xhr.onload=()=>{
+    uploadBtn.disabled=false;
+    try{
+      const data=JSON.parse(xhr.responseText);
+      if(data.url || data.urls){
+        const links=data.urls||[data.url];
+        result.innerHTML=links.map(l=>`<div><a href="${l}" target="_blank" style="color:#6366f1">${l}</a></div>`).join('');
+        navigator.clipboard.writeText(links.join('\n'));
+      }else{
+        errorBox.textContent=data.message||'Upload failed';
+      }
+    }catch{
+      errorBox.textContent='Invalid server response';
+    }
+  };
+
+  xhr.onerror=()=>{
+    errorBox.textContent='Network error';
+  };
+
+  uploadBtn.disabled=true;
+  uploadBtn.textContent='Uploading...';
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+  xhr.send(formData);
+});
+</script>
+</body>
+</html>
