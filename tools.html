@@ -43,6 +43,50 @@
       border-bottom: 1px solid var(--border);
     }
 
+    .mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  padding: 20px;
+  display: none;
+}
+
+.mobile-menu.active {
+  display: block;
+}
+
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 32px;
+}
+
+.close {
+  font-size: 2rem;
+  color: #86efac;
+  cursor: pointer;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.menu-grid h4 {
+  margin-bottom: 14px;
+}
+
+.menu-grid a {
+  display: block;
+  color: #aaa;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
     .brand {
       display: flex;
       align-items: center;
@@ -225,16 +269,43 @@
 <body>
 
   <!-- Navbar -->
-  <div class="navbar">
+  <!-- NAVBAR + MOBILE MENU -->
+<div class="navbar">
+  <div class="brand">
+    <div class="brand-logo">BA</div>
+    BotzApi
+  </div>
+
+  <div class="menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-header">
     <div class="brand">
       <div class="brand-logo">BA</div>
       BotzApi
     </div>
-    <div class="menu">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="close" onclick="toggleMenu()">✕</div>
   </div>
 
+  <div class="menu-grid">
+    <div>
+      <h4>Resources</h4>
+      <a href="#">Docs</a>
+      <a href="#">Uploader</a>
+      <a href="#">Other</a>
+    </div>
+
+    <div>
+      <h4>Legal</h4>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</div>
+  
   <!-- Header -->
   <div class="header">
     <h1>Web Tools</h1>
@@ -333,6 +404,12 @@
       margin-top:10px;
     }
   </style>
+
+    <script>
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("active");
+}
+    </script>
 
 </body>
 </html>
