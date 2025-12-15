@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BotzApi Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+body{
+  margin:0;
+  background:#000;
+  color:#eaeaea;
+}
+
+/* ===== HEADER / FOOTER ===== */
+header,footer{
+  padding:16px;
+  border-bottom:1px solid #1a1a1a;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+footer{
+  border-top:1px solid #1a1a1a;
+  justify-content:center;
+  color:#777;
+}
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:#7CFF7C;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+  padding:20px;
+  max-width:720px;
+  margin:auto;
+}
+
+/* ===== DROP ZONE ===== */
+.drop-zone{
+  border:2px dashed #2a2a2a;
+  border-radius:18px;
+  padding:42px 20px;
+  text-align:center;
+  transition:.3s;
+}
+.drop-zone.active{
+  border-color:#7CFF7C;
+}
+.drop-zone h2{
+  margin:12px 0 4px;
+}
+.drop-zone p{
+  color:#aaa;
+  margin-bottom:14px;
+}
+.drop-zone button{
+  padding:10px 18px;
+  border:none;
+  background:#1e1e1e;
+  color:#fff;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* ===== PROGRESS ===== */
+.progress{
+  margin-top:14px;
+  height:10px;
+  background:#1e1e1e;
+  border-radius:10px;
+  overflow:hidden;
+  display:none;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:#7CFF7C;
+  transition:.2s;
+}
+
+/* ===== RESULT CARD ===== */
+.result-card{
+  background:#0f0f0f;
+  margin-top:22px;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+}
+.result-card h3{
+  margin:0 0 8px;
+  color:#7CFF7C;
+}
+.result-card img,
+.result-card video{
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#000;
+  margin-top:12px;
+}
+.result-card audio{
+  width:100%;
+  margin-top:12px;
+}
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:16px;
+}
+.actions button{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#1e1e1e;
+  color:#fff;
+}
+.actions .danger{
+  background:#6b1111;
+}
+
+/* ===== HISTORY ===== */
+.history{
+  margin-top:28px;
+  background:#0f0f0f;
+  border-radius:18px;
+  padding:16px;
+}
+.history h3{
+  margin:0 0 12px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #1e1e1e;
+  text-align:left;
+  font-size:14px;
+}
+th{
+  color:#aaa;
+}
+td button{
+  background:#1e1e1e;
+  border:none;
+  color:#fff;
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+}
+td .del{
+  background:#6b1111;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:600px){
+  .container{padding:16px 14px}
+  .drop-zone{padding:36px 16px}
+  th,td{font-size:13px;padding:8px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">BotzApi</div>
+  <div>☰</div>
+</header>
+
+<div class="container">
+
+  <!-- UPLOAD AREA -->
+  <div class="drop-zone" id="dropZone">
+    <div style="font-size:28px">⬆</div>
+    <h2>Drag & Drop or Click to Upload</h2>
+    <p>Max 100MB</p>
+    <button id="selectBtn">Select File</button>
+    <input type="file" id="fileInput" hidden>
+  </div>
+
+  <div class="progress" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="uploadResult"></div>
+
+  <!-- HISTORY -->
+  <div class="history">
+    <h3>Upload History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>BotzApi</footer>
+
+<script>
+/* ===== ELEMENT ===== */
+const fileInput = document.getElementById('fileInput');
+const selectBtn = document.getElementById('selectBtn');
+const dropZone = document.getElementById('dropZone');
+const progressWrap = document.getElementById('progressWrap');
+const progressBar = document.getElementById('progressBar');
+const uploadResult = document.getElementById('uploadResult');
+const historyTable = document.getElementById('historyTable');
+
+/* ===== STORAGE ===== */
+const STORAGE_KEY = 'botzapi_upload_history';
+let history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+/* ===== UTIL ===== */
+const formatSize = b => (b/1024/1024).toFixed(2)+' MB';
+const saveHistory = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+/* ===== SELECT ===== */
+selectBtn.onclick = () => fileInput.click();
+fileInput.onchange = () => uploadFile(fileInput.files[0]);
+
+/* ===== DRAG DROP ===== */
+['dragover','dragenter'].forEach(e=>{
+  dropZone.addEventListener(e,ev=>{
+    ev.preventDefault();
+    dropZone.classList.add('active');
+  });
+});
+['dragleave','drop'].forEach(e=>{
+  dropZone.addEventListener(e,()=>dropZone.classList.remove('active'));
+});
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();
+  if(e.dataTransfer.files.length){
+    uploadFile(e.dataTransfer.files[0]);
+  }
+});
+
+/* ===== UPLOAD ===== */
+function uploadFile(file){
+  if(!file) return;
+
+  const formData = new FormData();
+  formData.append('file',file);
+
+  progressWrap.style.display='block';
+  progressBar.style.width='0%';
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+
+  xhr.upload.onprogress = e=>{
+    progressBar.style.width = (e.loaded/e.total)*100+'%';
+  };
+
+  xhr.onload = ()=>{
+    progressWrap.style.display='none';
+    const res = JSON.parse(xhr.responseText);
+    if(!res.success){
+      Swal.fire('Error',res.message,'error');
+      return;
+    }
+
+    const f = {
+      ...res.file,
+      sizeFormatted: formatSize(res.file.size)
+    };
+
+    history.unshift(f);
+    saveHistory();
+    showResult(f);
+    renderHistory();
+  };
+
+  xhr.onerror = ()=>{
+    progressWrap.style.display='none';
+    Swal.fire('Error','Network error','error');
+  };
+
+  xhr.send(formData);
+}
+
+/* ===== RESULT PREVIEW ===== */
+function showResult(f){
+  let preview='';
+  if(f.mimeType.startsWith('image')) preview=`<img src="${f.url}">`;
+  else if(f.mimeType.startsWith('video')) preview=`<video controls src="${f.url}"></video>`;
+  else if(f.mimeType.startsWith('audio')) preview=`<audio controls src="${f.url}"></audio>`;
+
+  uploadResult.innerHTML=`
+    <div class="result-card">
+      <h3>Upload Successful</h3>
+      <strong>${f.name}</strong>
+      <div>${f.sizeFormatted}</div>
+      <div>${new Date(f.createdTime).toLocaleString()}</div>
+      ${preview}
+      <div class="actions">
+        <button onclick="copyLink('${f.url}')">Copy</button>
+        <button class="danger" onclick="deleteFile('${f.deleteUrl}')">Delete</button>
+      </div>
+    </div>
+  `;
+}
+
+/* ===== HISTORY ===== */
+function renderHistory(){
+  historyTable.innerHTML='';
+  history.forEach((f,i)=>{
+    historyTable.innerHTML+=`
+      <tr>
+        <td>${f.name}</td>
+        <td>${f.sizeFormatted}</td>
+        <td>${new Date(f.createdTime).toLocaleString()}</td>
+        <td>
+          <button onclick="copyLink('${f.url}')">📋</button>
+          <button class="del" onclick="deleteFile('${f.deleteUrl}',${i})">🗑</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* ===== COPY ===== */
+function copyLink(url){
+  navigator.clipboard.writeText(url);
+  Swal.fire({toast:true,icon:'success',title:'Copied',position:'top',timer:1500,showConfirmButton:false});
+}
+
+/* ===== DELETE ===== */
+function deleteFile(url,index){
+  Swal.fire({
+    title:'Are you sure?',
+    text:'This file will be deleted',
+    icon:'warning',
+    showCancelButton:true,
+    confirmButtonText:'Yes, delete'
+  }).then(async r=>{
+    if(!r.isConfirmed) return;
+    await fetch(url);
+    history.splice(index,1);
+    saveHistory();
+    renderHistory();
+    uploadResult.innerHTML='';
+    Swal.fire({toast:true,icon:'success',title:'Deleted',position:'top',timer:1500,showConfirmButton:false});
+  });
+}
+
+/* INIT */
+renderHistory();
+</script>
+
+</body>
+</html>
