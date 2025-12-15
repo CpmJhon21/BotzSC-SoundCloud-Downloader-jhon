@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BotzApi Upload</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+body{background:#050505;color:#fff;min-height:100vh}
+
+/* ===== HEADER ===== */
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #111}
+.logo{color:#7CFF7A;font-weight:600;font-size:20px}
+.menu{width:26px;height:18px;display:flex;flex-direction:column;justify-content:space-between}
+.menu span{height:3px;background:#7CFF7A;border-radius:2px}
+
+/* ===== MAIN ===== */
+.main{padding:26px 18px}
+
+.upload-wrapper{border:2px dashed #2a2a2a;border-radius:18px;background:#0b0b0b;padding:40px 20px;text-align:center}
+.upload-wrapper:hover{border-color:#7CFF7A}
+.upload-icon{font-size:34px;margin-bottom:12px}
+.upload-title{font-size:22px;font-weight:600;margin-bottom:6px}
+.upload-sub{font-size:14px;color:#aaa;margin-bottom:18px}
+.select-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:#141414;border:1px solid #2a2a2a;color:#fff;cursor:pointer}
+
+/* ===== PROGRESS ===== */
+.progress{height:6px;background:#1a1a1a;border-radius:99px;overflow:hidden;margin-top:18px;display:none}
+.bar{height:100%;width:0;background:#7CFF7A}
+
+/* ===== RESULT ===== */
+.result{margin-top:14px;font-size:14px}
+.result a{color:#7CFF7A;word-break:break-all}
+.error{margin-top:10px;font-size:13px;color:#f87171}
+
+/* ===== HISTORY ===== */
+.history{margin-top:28px;background:#0b0b0b;border-radius:18px;padding:20px}
+.history h3{font-size:20px;margin-bottom:14px}
+.table{width:100%;border-collapse:collapse;font-size:14px;color:#bbb}
+.table th{padding:10px 6px;text-align:left;border-bottom:1px solid #222}
+
+/* ===== FOOTER ===== */
+.footer{margin-top:60px;padding:30px 18px;text-align:center;color:#777;font-size:14px}
+.footer h4{font-size:18px;color:#fff;margin:18px 0 10px}
+.footer a{display:block;color:#999;margin:6px 0;text-decoration:none}
+.socials{display:flex;justify-content:center;gap:16px;margin:18px 0}
+.socials span{width:36px;height:36px;background:#111;border-radius:10px}
+
+input[type=file]{display:none}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">BotzApi</div>
+  <div class="menu"><span></span><span></span><span></span></div>
+</header>
+
+<main class="main">
+
+  <label class="upload-wrapper" id="dropzone">
+    <div class="upload-icon">⬆</div>
+    <div class="upload-title">Drag & Drop or Click to Upload</div>
+    <div class="upload-sub">Max 100MB</div>
+    <div class="select-btn">⬆ Select File</div>
+    <input type="file" id="fileInput">
+  </label>
+
+  <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
+  <div class="result" id="result"></div>
+  <div class="error" id="error"></div>
+
+  <section class="history">
+    <h3>Upload History</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Name</th><th>Size</th><th>Date</th><th>Actions</th></tr>
+      </thead>
+    </table>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <h4>Resources</h4>
+  <a>API Documentation</a>
+  <a>Web Tools</a>
+  <a>Other</a>
+
+  <h4>Legal</h4>
+  <a>Terms of Service</a>
+  <a>Privacy Policy</a>
+
+  <div class="socials">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div>© 2025 BotzAku. All rights reserved.</div>
+</footer>
+
+<script>
+const input=document.getElementById('fileInput');
+const dropzone=document.getElementById('dropzone');
+const progress=document.getElementById('progress');
+const bar=document.getElementById('bar');
+const result=document.getElementById('result');
+const error=document.getElementById('error');
+
+// Drag & drop
+['dragenter','dragover'].forEach(e=>dropzone.addEventListener(e,ev=>{ev.preventDefault();dropzone.style.borderColor='#7CFF7A'}));
+['dragleave','drop'].forEach(e=>dropzone.addEventListener(e,ev=>{ev.preventDefault();dropzone.style.borderColor='#2a2a2a'}));
+
+dropzone.addEventListener('drop',e=>{
+  const files=e.dataTransfer.files;
+  if(files.length) upload(files[0]);
+});
+
+input.addEventListener('change',()=>{
+  if(input.files.length) upload(input.files[0]);
+});
+
+function upload(file){
+  error.textContent='';
+  result.textContent='';
+  progress.style.display='block';
+  bar.style.width='0%';
+
+  const xhr=new XMLHttpRequest();
+  const fd=new FormData();
+  fd.append('file',file);
+
+  xhr.upload.onprogress=e=>{
+    if(e.lengthComputable){
+      bar.style.width=(e.loaded/e.total*100)+'%';
+    }
+  };
+
+  xhr.onload=()=>{
+    try{
+      const data=JSON.parse(xhr.responseText);
+      if(data.url){
+        result.innerHTML=`<a href="${data.url}" target="_blank">${data.url}</a>`;
+        navigator.clipboard.writeText(data.url);
+      }else error.textContent=data.message||'Upload failed';
+    }catch{error.textContent='Invalid response';}
+  };
+
+  xhr.onerror=()=>error.textContent='Network error';
+
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+  xhr.send(fd);
+}
+</script>
+
+</body>
+</html>
