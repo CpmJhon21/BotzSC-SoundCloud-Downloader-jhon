@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BotzApi Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{
+  margin:0;
+  background:#000;
+  color:#eaeaea;
+}
+header,footer{
+  padding:16px;
+  border-bottom:1px solid #1a1a1a;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-size:22px;
+  font-weight:bold;
+  color:#7CFF7C;
+}
+.container{
+  padding:20px;
+}
+.drop-zone{
+  border:2px dashed #333;
+  border-radius:16px;
+  padding:40px 20px;
+  text-align:center;
+  transition:.3s;
+}
+.drop-zone.active{border-color:#7CFF7C}
+.drop-zone h2{margin:10px 0}
+.drop-zone button{
+  padding:10px 16px;
+  border:none;
+  background:#222;
+  color:#fff;
+  border-radius:10px;
+  cursor:pointer;
+}
+.progress{
+  margin-top:15px;
+  height:10px;
+  background:#222;
+  border-radius:10px;
+  overflow:hidden;
+  display:none;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:#7CFF7C;
+}
+.result-card{
+  background:#111;
+  margin-top:20px;
+  border-radius:16px;
+  padding:15px;
+  text-align:center;
+}
+.result-card img{
+  max-width:100%;
+  border-radius:12px;
+  margin-top:10px;
+}
+.actions{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+.actions button{
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+.actions .danger{background:#6b1111;color:#fff}
+.actions button:not(.danger){background:#222;color:#fff}
+.history{
+  margin-top:30px;
+  background:#111;
+  border-radius:16px;
+  padding:15px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #222;
+  text-align:left;
+}
+th{color:#aaa}
+td button{
+  background:#222;
+  border:none;
+  color:#fff;
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+}
+td .del{background:#6b1111}
+footer{
+  border-top:1px solid #1a1a1a;
+  justify-content:center;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">BotzApi</div>
+  <div>☰</div>
+</header>
+
+<div class="container">
+
+  <!-- UPLOADER -->
+  <div class="drop-zone" id="dropZone">
+    <div>⬆</div>
+    <h2>Drag & Drop or Click to Upload</h2>
+    <p>Max 100MB</p>
+    <button id="selectBtn">Select File</button>
+    <input type="file" id="fileInput" hidden>
+  </div>
+
+  <div class="progress" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="uploadResult"></div>
+
+  <!-- HISTORY -->
+  <div class="history">
+    <h3>Upload History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  BotzApi
+</footer>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const selectBtn = document.getElementById('selectBtn');
+const dropZone = document.getElementById('dropZone');
+const progressWrap = document.getElementById('progressWrap');
+const progressBar = document.getElementById('progressBar');
+const uploadResult = document.getElementById('uploadResult');
+const historyTable = document.getElementById('historyTable');
+
+let history = [];
+
+/* SELECT */
+selectBtn.onclick = () => fileInput.click();
+fileInput.onchange = () => uploadFile(fileInput.files[0]);
+
+/* DRAG DROP */
+['dragover','dragenter'].forEach(e=>{
+  dropZone.addEventListener(e,ev=>{
+    ev.preventDefault();
+    dropZone.classList.add('active');
+  });
+});
+['dragleave','drop'].forEach(e=>{
+  dropZone.addEventListener(e,()=>dropZone.classList.remove('active'));
+});
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();
+  if(e.dataTransfer.files.length){
+    uploadFile(e.dataTransfer.files[0]);
+  }
+});
+
+/* UPLOAD */
+function uploadFile(file){
+  if(!file) return;
+
+  const formData = new FormData();
+  formData.append('file',file);
+
+  progressWrap.style.display='block';
+  progressBar.style.width='0%';
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+
+  xhr.upload.onprogress = e=>{
+    const percent = (e.loaded/e.total)*100;
+    progressBar.style.width = percent+'%';
+  };
+
+  xhr.onload = ()=>{
+    progressWrap.style.display='none';
+    const res = JSON.parse(xhr.responseText);
+    if(!res.success){
+      Swal.fire('Error',res.message,'error');
+      return;
+    }
+    showResult(res.file);
+    addHistory(res.file);
+  };
+
+  xhr.onerror = ()=>{
+    progressWrap.style.display='none';
+    Swal.fire('Error','Network error','error');
+  };
+
+  xhr.send(formData);
+}
+
+/* RESULT */
+function showResult(f){
+  uploadResult.innerHTML = `
+    <div class="result-card">
+      <h3 style="color:#7CFF7C">Upload Successful</h3>
+      <strong>${f.name}</strong>
+      <div>${f.size}</div>
+      <div>${new Date(f.createdTime).toLocaleString()}</div>
+      <img src="${f.url}">
+      <div class="actions">
+        <button onclick="copyLink('${f.url}')">Copy</button>
+        <button class="danger" onclick="deleteFile('${f.deleteUrl}')">Delete</button>
+      </div>
+    </div>
+  `;
+}
+
+/* HISTORY */
+function addHistory(f){
+  history.unshift(f);
+  renderHistory();
+}
+function renderHistory(){
+  historyTable.innerHTML='';
+  history.forEach(f=>{
+    historyTable.innerHTML+=`
+      <tr>
+        <td>${f.name}</td>
+        <td>${f.size}</td>
+        <td>${new Date(f.createdTime).toLocaleString()}</td>
+        <td>
+          <button onclick="copyLink('${f.url}')">📋</button>
+          <button class="del" onclick="deleteFile('${f.deleteUrl}',this)">🗑</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* COPY */
+function copyLink(url){
+  navigator.clipboard.writeText(url);
+  Swal.fire({toast:true,icon:'success',title:'Copied',position:'top',timer:1500,showConfirmButton:false});
+}
+
+/* DELETE */
+function deleteFile(url,btn){
+  Swal.fire({
+    title:'Are you sure?',
+    text:'This file will be deleted',
+    icon:'warning',
+    showCancelButton:true,
+    confirmButtonText:'Yes, delete'
+  }).then(async r=>{
+    if(!r.isConfirmed) return;
+    await fetch(url);
+    Swal.fire({toast:true,icon:'success',title:'Deleted',position:'top',timer:1500,showConfirmButton:false});
+    if(btn) btn.closest('tr').remove();
+    uploadResult.innerHTML='';
+  });
+}
+</script>
+
+</body>
+</html>
