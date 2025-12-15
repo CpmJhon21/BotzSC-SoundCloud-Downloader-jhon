@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BotzApi Upload</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #0e0e0e;
+      --border: #1f1f1f;
+      --text: #eaeaea;
+      --muted: #9a9a9a;
+      --green: #6aff7a;
+      --green-soft: rgba(106,255,122,.15);
+    }
+
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #0b0b0b, #000);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--green);
+    }
+
+    .menu-btn { width:34px;height:24px;display:flex;flex-direction:column;justify-content:space-between; }
+    .menu-btn span { height:3px;background:var(--green);border-radius:3px; }
+
+    .container { max-width:820px;margin:40px auto 80px;padding:0 16px; }
+
+    .upload-box {
+      border:2px dashed #2a2a2a;
+      border-radius:20px;
+      padding:40px 20px;
+      text-align:center;
+      background:linear-gradient(180deg,#0c0c0c,#050505);
+      box-shadow:0 20px 60px rgba(0,0,0,.7);
+    }
+
+    .upload-box.drag { border-color:var(--green);background:var(--green-soft); }
+
+    .upload-title { font-size:22px;font-weight:600; }
+    .upload-sub { margin-top:6px;color:var(--muted);font-size:14px; }
+
+    .btn {
+      margin-top:18px;padding:12px 22px;border-radius:12px;
+      background:#1a1a1a;border:1px solid #2b2b2b;color:var(--text);
+    }
+
+    .progress-wrap { margin-top:20px;display:none; }
+    .progress {
+      height:10px;border-radius:10px;background:#1a1a1a;overflow:hidden;
+    }
+    .progress-bar {
+      height:100%;width:0%;background:linear-gradient(90deg,#4dff88,#6aff7a);
+      transition:width .2s;
+    }
+
+    input[type=file]{display:none}
+
+    .history { margin-top:40px;background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--border); }
+
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px 8px;border-bottom:1px solid #1f1f1f;text-align:left}
+    th{color:var(--muted)}
+
+    footer{margin-top:80px;padding:60px 20px 30px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">BotzApi</div>
+    <div class="menu-btn">
+      <span></span><span></span><span></span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="upload-box" id="dropArea">
+      <div class="upload-icon">⬆️</div>
+      <div class="upload-title">Drag & Drop or Click to Upload</div>
+      <div class="upload-sub">Max 100MB</div>
+      <button class="btn" onclick="fileInput.click()">Select File</button>
+      <input type="file" id="fileInput" />
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+    </div>
+      <div class="upload-title">Drag & Drop or Click to Upload</div>
+      <div class="upload-sub">Max 100MB</div>
+      <button class="btn" onclick="fileInput.click()">Select File</button>
+      <input type="file" id="fileInput" />
+    </div>
+
+    <div class="history">
+      <h3>Upload History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>Empowering developers with reliable and powerful API solutions for modern applications.</p>
+
+    <div class="socials">
+      <a href="#">📸</a>
+      <a href="#">🎵</a>
+      <a href="#">🐦</a>
+      <a href="#">✈️</a>
+      <a href="#">💬</a>
+      <a href="#">🎮</a>
+    </div>
+
+    <div class="footer-cols">
+      <div>
+        <h4>Resources</h4>
+        <p>API Documentation</p>
+        <p>Web Tools</p>
+        <p>Other</p>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <p>Terms of Service</p>
+        <p>Privacy Policy</p>
+      </div>
+    </div>
+
+    <p>© 2025 BotzAku. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.from('.upload-box',{opacity:0,y:40,duration:1,ease:'power3.out'})
+
+  const dropArea = document.getElementById('dropArea');
+  const fileInput = document.getElementById('fileInput');
+  const historyEl = document.getElementById('history');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  function uploadFile(file){
+    progressWrap.style.display='block';
+    progressBar.style.width='0%';
+
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('file',file);
+
+    xhr.upload.onprogress = e=>{
+      if(e.lengthComputable){
+        const percent = (e.loaded/e.total)*100;
+        progressBar.style.width = percent+'%';
+      }
+    }
+
+    xhr.onload = ()=>{
+      const data = JSON.parse(xhr.responseText||'{}');
+      progressBar.style.width='100%';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${file.name}</td>
+        <td>${(file.size/1024/1024).toFixed(2)} MB</td>
+        <td>${new Date().toLocaleString()}</td>
+        <td>
+          <button onclick="navigator.clipboard.writeText('${data.url||''}')">Copy Link</button>
+        </td>`;
+      historyEl.prepend(tr);
+
+      gsap.from(tr,{opacity:0,y:20,duration:.6});
+    }
+
+    xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+    xhr.send(formData);
+  }
+
+  dropArea.ondrop = e=>{e.preventDefault();uploadFile(e.dataTransfer.files[0])}
+  dropArea.ondragover = e=>e.preventDefault();
+  fileInput.onchange = ()=>uploadFile(fileInput.files[0]);
+</script>
+</body>
+</html>
