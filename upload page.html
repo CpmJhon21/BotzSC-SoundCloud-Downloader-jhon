@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BotzApi Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --card:#121212;
+      --border:#2a2a2a;
+      --green:#66ff99;
+      --green-dark:#2ecc71;
+      --text:#eaeaea;
+      --muted:#9a9a9a;
+      --danger:#8b1d1d;
+    }
+    *{box-sizing:border-box;font-family:Inter,system-ui}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .logo{color:var(--green);font-weight:700;font-size:20px}
+    .menu{font-size:26px;color:var(--green)}
+    main{padding:20px;max-width:520px;margin:auto}
+    .drop{
+      border:2px dashed var(--border);
+      border-radius:16px;
+      padding:40px 20px;
+      text-align:center;
+      background:linear-gradient(180deg,#121212,#0e0e0e);
+    }
+    .drop h2{margin:12px 0;font-size:22px}
+    .drop p{color:var(--muted);margin-bottom:16px}
+    input[type=file]{display:none}
+    .btn{padding:12px 18px;border-radius:10px;border:none;background:#1f1f1f;color:#fff;font-weight:600}
+    .progress{height:8px;border-radius:8px;background:#1f1f1f;margin-top:16px;overflow:hidden;display:none}
+    .progress div{height:100%;width:0;background:var(--green)}
+    .card{background:var(--card);border-radius:16px;padding:16px;margin-top:24px}
+    .card h3{margin:0 0 12px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:8px 4px;border-bottom:1px solid var(--border)}
+    th{text-align:left;color:var(--muted);font-weight:600}
+    .actions button{border:none;border-radius:8px;padding:8px;margin-right:6px}
+    .copy{background:#1f1f1f;color:#fff}
+    .delete{background:var(--danger);color:#fff}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
+    .modal-box{background:#121212;padding:24px;border-radius:16px;width:90%;max-width:320px;text-align:center}
+    .modal-box h2{margin-top:0;color:var(--green)}
+    footer{margin-top:60px;padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">BotzApi</div>
+    <div class="menu">☰</div>
+  </header>
+
+  <main>
+    <div class="drop" id="drop">
+      <div style="font-size:40px">⬆</div>
+      <h2>Drag & Drop or Click to Upload</h2>
+      <p>Max 100MB</p>
+      <label class="btn">
+        Select File
+        <input type="file" id="fileInput" />
+      </label>
+      <div class="progress" id="progress"><div></div></div>
+    </div>
+
+    <div class="card">
+      <h3>Upload History</h3>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Size</th><th>Date</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h2>Are you sure?</h2>
+      <p>This file will be deleted</p>
+      <button class="btn delete" id="confirmDelete">Yes, delete</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 BotzAku. All rights reserved.
+  </footer>
+
+<script>
+let deleteTarget=null;
+const fileInput=document.getElementById('fileInput');
+const history=document.getElementById('history');
+const progress=document.getElementById('progress');
+const progressBar=progress.firstElementChild;
+
+fileInput.addEventListener('change',()=>{
+  const file=fileInput.files[0];
+  if(!file)return;
+  progress.style.display='block';
+  progressBar.style.width='30%';
+
+  const formData=new FormData();
+  formData.append('file',file);
+
+  fetch('https://api.botzaku.eu.org/api/upload',{
+    method:'POST',
+    body:formData
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    progressBar.style.width='100%';
+    setTimeout(()=>progress.style.display='none',500);
+    if(data.success){
+      addHistory(data.file);
+    }else{
+      alert(data.message||'Upload failed');
+    }
+  })
+  .catch(()=>alert('Upload error'));
+});
+
+function addHistory(file){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td>${file.name}</td>
+    <td>${file.size}</td>
+    <td>${new Date(file.createdTime).toLocaleString()}</td>
+    <td class="actions">
+      <button class="copy" onclick="navigator.clipboard.writeText('${file.url}')">📋</button>
+      <button class="delete" onclick="openModal('${file.deleteUrl}',this)">🗑</button>
+    </td>`;
+  history.prepend(tr);
+}
+
+function openModal(url,btn){deleteTarget={url,btn};document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none';deleteTarget=null}
+
+document.getElementById('confirmDelete').onclick=()=>{
+  fetch(deleteTarget.url).then(()=>{
+    deleteTarget.btn.closest('tr').remove();
+    closeModal();
+  });
+};
+</script>
+</body>
+</html>
