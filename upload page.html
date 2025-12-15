@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optikl-style Upload</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;--card:#0c0c0c;--border:#262626;--text:#e5e7eb;
+  --muted:#9ca3af;--green:#4ade80;--red:#ef4444;
+}
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+body{margin:0;background:radial-gradient(circle at top,#0b0b0b,#000);color:var(--text)}
+header{padding:16px 20px;border-bottom:1px solid var(--border);font-weight:700;color:var(--green)}
+.container{max-width:420px;margin:28px auto;padding:0 16px}
+.dropzone{border:2px dashed var(--border);border-radius:18px;padding:34px 20px;text-align:center;background:linear-gradient(180deg,#0f0f0f,#070707)}
+.dropzone h2{margin:10px 0 4px;font-size:20px}
+.dropzone p{margin:0;color:var(--muted)}
+.btn{margin-top:16px;background:#1f2937;border:none;color:#fff;padding:10px 18px;border-radius:10px}
+.result{margin-top:22px;background:var(--card);border-radius:18px;padding:18px;text-align:center}
+.result h3{color:var(--green);margin:0 0 6px}
+.preview img{max-width:100%;border-radius:14px;margin-top:12px}
+.url-box{margin-top:12px;background:#020202;border:1px solid var(--border);padding:8px;border-radius:10px;word-break:break-all;font-size:13px}
+.actions{margin-top:12px;display:flex;gap:8px;justify-content:center}
+.actions button{border:none;border-radius:10px;padding:8px 12px}
+.copy{background:#1f2937;color:#fff}
+.info{background:#065f46;color:#fff}
+.delete{background:#7f1d1d;color:#fff}
+.history{margin-top:24px;background:var(--card);border-radius:16px;padding:16px}
+.item{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+footer{margin:50px 0 20px;text-align:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>Optikl Upload</header>
+<div class="container">
+  <div class="dropzone" id="dropzone">
+    ⬆️
+    <h2>Drag & Drop or Click</h2>
+    <p>Max 100MB</p>
+    <button class="btn" onclick="fileInput.click()">Select File</button>
+    <input type="file" id="fileInput" hidden>
+  </div>
+
+  <div id="result"></div>
+
+  <div class="history"><b>Upload History</b><div id="historyList"></div></div>
+</div>
+<footer>© 2025 Optikl-style uploader</footer>
+
+<script>
+const fileInput=document.getElementById('fileInput');
+const dropzone=document.getElementById('dropzone');
+const result=document.getElementById('result');
+const historyList=document.getElementById('historyList');
+
+fileInput.onchange=()=>upload(fileInput.files[0]);
+dropzone.ondragover=e=>e.preventDefault();
+dropzone.ondrop=e=>{e.preventDefault();upload(e.dataTransfer.files[0])};
+
+function upload(file){
+  if(!file) return;
+  const formData=new FormData();
+  formData.append('file',file);
+
+  fetch('https://api.botzaku.eu.org/api/upload',{method:'POST',body:formData})
+  .then(r=>r.json())
+  .then(data=>{
+    console.log(data);
+    if(!data.success) return alert(data.message||'Upload gagal');
+
+    const f=data.file; // RESPONSE ASLI
+    showResult(f);
+    addHistory(f);
+  })
+  .catch(()=>alert('Upload error'));
+}
+
+function showResult(f){
+  result.innerHTML=`
+  <div class="result">
+    <h3>Upload Successful</h3>
+    <div>${f.name} • ${f.size}</div>
+    <div class="preview"><img src="${f.url}"></div>
+    <div class="url-box">${f.url}</div>
+    <div class="actions">
+      <button class="copy" onclick="copy('${f.url}')">Copy</button>
+      <button class="info" onclick="window.open('${f.infoUrl}')">Info</button>
+      <button class="delete" onclick="window.open('${f.deleteUrl}')">Delete</button>
+    </div>
+  </div>`;
+}
+
+function addHistory(f){
+  const d=document.createElement('div');
+  d.className='item';
+  d.innerHTML=`<span>${f.name}</span><button class="copy" onclick="copy('${f.url}')">Copy</button>`;
+  historyList.prepend(d);
+}
+
+function copy(t){navigator.clipboard.writeText(t).then(()=>alert('Link copied'))}
+</script>
+</body>
+</html>
