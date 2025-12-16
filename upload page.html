@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BotzApi Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+body{margin:0;background:#000;color:#eaeaea}
+
+/* ===== NAV ===== */
+nav{background:#000;border-bottom:1px solid rgba(255,255,255,.1)}
+.nav-container{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+.logo{display:flex;align-items:center;gap:.6rem;cursor:pointer}
+.logo img{width:32px;height:32px;border-radius:8px}
+.logo span{font-weight:700;font-size:1.25rem;color:#98ff98}
+.nav-links{display:flex;gap:1.25rem}
+.nav-links a{color:#ddd;text-decoration:none;font-size:.95rem;transition:.3s}
+.nav-links a:hover{color:#98ff98}
+
+.hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}
+.hamburger span{height:3px;width:25px;background:#98ff98;transition:.3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+.mobile-menu{display:none;background:#000;padding:1.5rem;border-top:1px solid rgba(255,255,255,.08)}
+.mobile-menu.active{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.mobile-menu h3{color:#fff;margin-bottom:.5rem}
+.mobile-menu a{color:#ccc;text-decoration:none;display:block;margin:.25rem 0}
+.mobile-menu a:hover{color:#98ff98}
+
+/* ===== CONTAINER ===== */
+.container{padding:20px;max-width:720px;margin:0 auto}
+
+/* ===== DROP ZONE ===== */
+.drop-zone{border:2px dashed #2a2a2a;border-radius:18px;padding:48px 20px;text-align:center;cursor:pointer}
+.drop-zone.active{border-color:#7CFF7C;background:#0b140b}
+.drop-zone button{margin-top:10px;padding:10px 16px;border-radius:10px;border:none;background:#1e1e1e;color:#fff;cursor:pointer}
+
+/* ===== PROGRESS ===== */
+.progress{margin-top:14px;height:10px;background:#1e1e1e;border-radius:10px;overflow:hidden;display:none}
+.progress-bar{height:100%;width:0%;background:#7CFF7C}
+
+/* ===== RESULT ===== */
+.result-card{background:#0f0f0f;margin-top:22px;border-radius:18px;padding:18px;text-align:center}
+.result-card img,.result-card video{width:100%;max-height:420px;object-fit:contain;border-radius:12px;background:#000;margin-top:12px}
+.result-card audio{width:100%;margin-top:12px}
+.actions{display:flex;gap:12px;margin-top:16px}
+.actions button{flex:1;padding:12px;border:none;border-radius:12px;background:#1e1e1e;color:#fff;cursor:pointer}
+.actions .danger{background:#6b1111}
+
+/* ===== HISTORY ===== */
+.history{margin-top:28px;background:#0f0f0f;border-radius:18px;padding:16px}
+.history table{width:100%;border-collapse:collapse;table-layout:fixed}
+.history th,.history td{padding:10px;border-bottom:1px solid #1e1e1e;font-size:14px;word-break:break-word}
+.history-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.history-actions button{width:32px;height:32px;border-radius:8px;border:none;background:#1e1e1e;color:#fff;cursor:pointer}
+.history-actions .del{background:#6b1111}
+
+/* ===== INFO MODAL ===== */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;font-size:14px}
+.info-item{background:#0f0f0f;border:1px solid #1e1e1e;border-radius:12px;padding:12px}
+.info-item.full{grid-column:1/-1}
+.info-label{font-size:12px;color:#888;margin-bottom:4px}
+.info-value{word-break:break-all}
+.info-value a{color:#7CFF7C;text-decoration:none}
+.info-copy{margin-top:6px;font-size:12px;color:#7CFF7C;cursor:pointer}
+
+/* ===== FOOTER ===== */
+footer{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:3rem 1rem 1.5rem;margin-top:3rem}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center}
+.footer-info{text-align:center}
+.footer-info p{margin-top:1rem;color:#aaa}
+.footer-links h3{color:#fff;margin-bottom:1rem}
+.footer-links a{display:block;color:#aaa;margin-bottom:.5rem;text-decoration:none}
+.footer-links a:hover{color:#98ff98}
+.social-icons{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.social-link{color:#aaa;padding:.5rem;border-radius:.5rem;background:rgba(255,255,255,.1);font-size:1.5rem}
+.social-link:hover{color:#fff;background:rgba(152,255,152,.2)}
+.footer-bottom{text-align:center;color:#777;font-size:.875rem;margin-top:2rem}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .info-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='https://host.optikl.ink'">
+      <img src="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G"><span>BotzYT</span>
+    </div>
+    <div class="nav-links">
+      <a href="https://host.optikl.ink/docs">Docs</a>
+      <a href="/web">Tools</a>
+      <a href="https://host.optikl.ink/upload">Uploader</a>
+      <a href="https://riskynd.eu.org/website">Other</a>
+      <a href="https://host.optikl.ink/terms">Terms</a>
+      <a href="https://host.optikl.ink/privacy">Privacy</a>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div>
+      <h3>Resources</h3>
+      <a href="https://host.optikl.ink/docs">Docs</a>
+      <a href="/web">Tools</a>
+      <a href="https://host.optikl.ink/upload">Uploader</a>
+    </div>
+    <div>
+      <h3>Legal</h3>
+      <a href="https://host.optikl.ink/terms">Terms</a>
+      <a href="https://host.optikl.ink/privacy">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <div class="drop-zone" id="dropZone">
+    <div style="font-size:28px">⬆</div>
+    <h2>Drag & Drop or Click to Upload</h2>
+    <p>Max 100MB</p>
+    <button id="selectBtn">Select File</button>
+    <input type="file" id="fileInput" hidden>
+  </div>
+
+  <div class="progress" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="uploadResult"></div>
+
+  <div class="history">
+    <h3>Upload History</h3>
+    <table>
+      <thead><tr><th>Name</th><th>Size</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-info">
+      <div class="logo"><img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9"><span>BotzApi</span></div>
+      <p>Empowering developers with reliable and powerful API solutions.</p>
+      <div class="social-icons">
+        <a class="social-link" href="https://instagram.com/botzaku"><i class="bi bi-instagram"></i></a>
+        <a class="social-link" href="https://t.me/BotzAku"><i class="bi bi-telegram"></i></a>
+      </div>
+    </div>
+    <div class="footer-links"><h3>Resources</h3><a href="https://host.optikl.ink/docs">Docs</a><a href="https://host.optikl.ink/upload">Uploader</a></div>
+    <div class="footer-links"><h3>Legal</h3><a href="https://host.optikl.ink/terms">Terms</a><a href="https://host.optikl.ink/privacy">Privacy</a></div>
+  </div>
+  <div class="footer-bottom">© <span id="current-year"></span> BotzAku</div>
+</footer>
+
+<script>
+document.getElementById('current-year').textContent=new Date().getFullYear();
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.onclick=()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('active')}
+</script>
+
+<!-- SCRIPT UPLOAD ASLI TIDAK DIHAPUS -->
+<script>
+const fileInput=document.getElementById('fileInput');
+const selectBtn=document.getElementById('selectBtn');
+const dropZone=document.getElementById('dropZone');
+const progressWrap=document.getElementById('progressWrap');
+const progressBar=document.getElementById('progressBar');
+const uploadResult=document.getElementById('uploadResult');
+const historyTable=document.getElementById('historyTable');
+
+const STORAGE_KEY='botzapi_upload_history';
+let history=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
+
+const formatSize=b=>(b/1024/1024).toFixed(2)+' MB';
+const saveHistory=()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(history));
+
+selectBtn.onclick=()=>fileInput.click();
+fileInput.onchange=()=>uploadFile(fileInput.files[0]);
+
+['dragover','dragenter'].forEach(e=>dropZone.addEventListener(e,ev=>{ev.preventDefault();dropZone.classList.add('active')}));
+['dragleave','drop'].forEach(e=>dropZone.addEventListener(e,()=>dropZone.classList.remove('active')));
+dropZone.addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files.length)uploadFile(e.dataTransfer.files[0])});
+
+/* ===== DETECT MOBILE ===== */
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+/* ===== TOAST PROGRESS STATE ===== */
+let uploadToast = null;
+let uploadStartTime = 0;
+
+/* ===== HELPER FORMAT ===== */
+const formatSpeed = bps => (bps / 1024 / 1024).toFixed(2) + ' MB/s';
+const formatETA = sec => sec > 60 ? Math.ceil(sec/60)+' min' : Math.ceil(sec)+' sec';
+
+/* ===== SHOW / UPDATE TOAST ===== */
+function showProgressToast(percent, speed, eta){
+  const title = isMobile ? 'Uploading (Mobile)…' : 'Uploading…';
+
+  const html = `
+    <strong>${title}</strong>
+    <div style="margin-top:4px">${percent}%</div>
+    <div style="font-size:12px;opacity:.7">
+      ${speed} • ETA ${eta}
+    </div>
+  `;
+
+  if(!uploadToast){
+    uploadToast = Swal.fire({
+      toast: true,
+      position: isMobile ? 'bottom' : 'top',
+      showConfirmButton: false,
+      timer: undefined,
+      didOpen: () => {
+        Swal.getHtmlContainer().innerHTML = html;
+      }
+    });
+  } else {
+    Swal.getHtmlContainer().innerHTML = html;
+  }
+}
+
+
+function uploadFile(file, retryCount = 0){
+  if(!file) return;
+
+  const MAX_RETRY = 2;
+  const TIMEOUT_DESKTOP = 30000;
+  const TIMEOUT_MOBILE  = 60000;
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  progressWrap.style.display = 'block';
+  progressBar.style.width = '0%';
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+  xhr.timeout = isMobile ? TIMEOUT_MOBILE : TIMEOUT_DESKTOP;
+
+  xhr.upload.onprogress = e => {
+    if(!e.lengthComputable) return;
+
+    const percent = Math.round((e.loaded / e.total) * 100);
+    progressBar.style.width = percent + '%';
+
+    const now = Date.now();
+    const elapsed = Math.max((now - uploadStartTime) / 1000, 0.3);
+    const speedBps = e.loaded / elapsed;
+    const remaining = (e.total - e.loaded) / speedBps;
+
+    showProgressToast(
+      percent,
+      formatSpeed(speedBps),
+      formatETA(remaining)
+    );
+  };
+
+  xhr.onload = () => {
+    progressWrap.style.display = 'none';
+    uploadToast = null;
+    Swal.close();
+
+    let res = {};
+    try{ res = JSON.parse(xhr.responseText); }catch(e){}
+
+    if(!res.success){
+      Swal.fire('Error', res.message || 'Upload failed', 'error');
+      return;
+    }
+
+    Toast.fire({ icon:'success', title:'Upload successful' });
+
+    const f = { ...res.file, sizeFormatted: res.file.size };
+    history.unshift(f);
+    saveHistory();
+    showResult(f);
+    renderHistory();
+  };
+
+  xhr.onerror = () => {
+    progressWrap.style.display='none';
+    uploadToast = null;
+    Swal.close();
+
+    if(retryCount < MAX_RETRY){
+      Toast.fire({ icon:'warning', title:`Retrying... (${retryCount+1}/${MAX_RETRY})` });
+      setTimeout(() => uploadFile(file, retryCount + 1), 1200);
+    } else {
+      Toast.fire({ icon:'error', title:'Network error' });
+    }
+  };
+
+  xhr.ontimeout = () => {
+    progressWrap.style.display='none';
+    uploadToast = null;
+    Swal.close();
+
+    if(retryCount < MAX_RETRY){
+      Toast.fire({ icon:'warning', title:`Timeout, retrying... (${retryCount+1}/${MAX_RETRY})` });
+      setTimeout(() => uploadFile(file, retryCount + 1), 1500);
+    } else {
+      Toast.fire({ icon:'error', title:'Request timeout' });
+    }
+  };
+
+  uploadStartTime = Date.now();
+  xhr.send(fd);
+}
+
+
+
+
+function showResult(f){
+ let preview='';
+ if(f.mimeType.startsWith('image'))preview=`<img src="${f.url}">`;
+ else if(f.mimeType.startsWith('video'))preview=`<video controls src="${f.url}"></video>`;
+ else if(f.mimeType.startsWith('audio'))preview=`<audio controls src="${f.url}"></audio>`;
+ uploadResult.innerHTML=`<div class="result-card"><h3>Upload Successful</h3><strong>${f.name}</strong><div>${f.sizeFormatted}</div>${preview}<div class="actions"><button onclick="copyLink('${f.url}')">Copy</button><button onclick="doneUpload()">Done</button><button class="danger" onclick="deleteFile('${f.deleteUrl}')">Delete</button></div></div>`;
+}
+
+function doneUpload(){
+  uploadResult.innerHTML='';
+  fileInput.value='';
+  progressWrap.style.display='none';
+  Toast.fire({ icon:'info', title:'Ready for new upload' });
+}
+
+
+function renderHistory(){
+  historyTable.innerHTML = '';
+
+  history.forEach((f,i)=>{
+    const date = f.createdTime
+      ? new Date(f.createdTime).toLocaleString()
+      : '-';
+
+    historyTable.innerHTML += `
+      <tr>
+        <td>${f.name || '-'}</td>
+        <td>${f.sizeFormatted || f.size || '-'}</td>
+        <td>${date}</td>
+        <td>
+          <div class="history-actions">
+            <button onclick="copyLink('${f.url}')">📋</button>
+            <button onclick="showInfo(${i})">ℹ️</button>
+            <button class="del" onclick="deleteFile('${f.deleteUrl}',${i})">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function showInfo(i){const f=history[i];Swal.fire({title:'File Information',background:'#000',color:'#fff',html:`<div class="info-grid"><div class="info-item"><div class="info-label">Name</div><div class="info-value">${f.name}</div></div><div class="info-item"><div class="info-label">Size</div><div class="info-value">${f.sizeFormatted}</div></div><div class="info-item"><div class="info-label">MIME</div><div class="info-value">${f.mimeType}</div></div><div class="info-item"><div class="info-label">ID</div><div class="info-value">${f.id}</div></div><div class="info-item full"><div class="info-label">URL</div><div class="info-value"><a href="${f.url}" target="_blank">${f.url}</a></div></div></div>`})}
+
+function copyLink(u){
+  navigator.clipboard.writeText(u);
+  Toast.fire({ icon:'success', title:'Copied to clipboard' });
+}
+
+function deleteFile(url,i){
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This file will be deleted permanently',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#7CFF7C',
+    cancelButtonColor: '#555',
+    confirmButtonText: 'Yes, delete it'
+  }).then(result=>{
+    if(!result.isConfirmed) return;
+
+    fetch(url).catch(()=>{});
+
+    if(i!==undefined){
+      history.splice(i,1);
+      saveHistory();
+      renderHistory();
+    }
+
+    uploadResult.innerHTML='';
+    Toast.fire({ icon:'success', title:'Deleted' });
+  });
+}
+
+renderHistory();
+</script>
+</body>
+</html>
