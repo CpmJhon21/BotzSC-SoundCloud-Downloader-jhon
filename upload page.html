@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BotzApi Uploader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+body{margin:0;background:#000;color:#eaeaea}
+
+/* ===== HEADER / NAV ===== */
+header{
+  padding:14px 18px;
+  border-bottom:1px solid #1a1a1a;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  cursor:pointer;
+}
+.logo img{
+  width:32px;
+  height:32px;
+  border-radius:8px;
+}
+.logo span{
+  font-weight:700;
+  font-size:1.25rem;
+  color:#98ff98;
+}
+
+nav{
+  background:#000;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.nav-container{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:4rem;
+}
+
+.nav-links{
+  display:flex;
+  gap:1.25rem;
+}
+.nav-links a{
+  color:#ddd;
+  text-decoration:none;
+  font-size:.95rem;
+  transition:.3s;
+}
+.nav-links a:hover{
+  color:#98ff98;
+}
+
+
+/* ===== FOOTER ===== */
+footer{
+  padding:16px;
+  border-top:1px solid #1a1a1a;
+  display:flex;
+  justify-content:center;
+  color:#777;
+}
+
+/* ===== FOOTER ===== */
+.site-footer{
+  background:#070707;
+  border-top:1px solid #1a1a1a;
+  padding:40px 20px 20px;
+  margin-top:40px;
+}
+
+
+.footer-grid{
+  max-width:1280px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:2rem;
+  text-align:center
+}
+
+..footer-info{text-align:center}
+.footer-info p{
+  margin-top:1rem;
+  color:#aaa
+}
+
+.footer-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.footer-logo img{
+  width:36px;
+  height:36px;
+  border-radius:8px;
+}
+.footer-logo span{
+  font-size:20px;
+  font-weight:700;
+  color:#7CFF7C;
+}
+
+.footer-desc{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+.footer-links a:hover{color:#98ff98}
+.social-links{margin-top:1.5rem}
+.social-icons{
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  flex-wrap:wrap
+}
+
+.social-link:hover{
+  color:#fff;
+  background:rgba(152,255,152,.2)
+}
+
+/* Footer links */
+.footer-links h3{
+  color:#fff;
+  margin-bottom:1rem
+}
+.footer-links a{
+  display:block;
+  color:#aaa;
+  margin-bottom:.5rem;
+  text-decoration:none
+}
+
+/* Bottom */
+.footer-bottom{
+  margin-top:2rem;
+  text-align:center;
+  color:#777;
+  font-size:.875rem
+}
+
+/* Hamburger */
+.hamburger{
+  display:none;
+  flex-direction:column;
+  cursor:pointer;
+  gap:5px;
+}
+.hamburger span{
+  height:3px;
+  width:25px;
+  background:#98ff98;
+  transition:.3s;
+}
+.hamburger.active span:nth-child(1){
+  transform:rotate(45deg) translate(5px,5px)
+}
+.hamburger.active span:nth-child(2){
+  opacity:0
+}
+.hamburger.active span:nth-child(3){
+  transform:rotate(-45deg) translate(5px,-5px)
+}
+
+/* Mobile menu */
+.mobile-menu{
+  display:none;
+  background:#000;
+  padding:1.5rem;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.mobile-menu.active{
+  display:grid;
+  gap:1.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr))
+}
+.mobile-menu h3{
+  color:#fff;
+  margin-bottom:.5rem;
+}
+.mobile-menu a{
+  color:#ccc;
+  padding:.25rem 0;
+  text-decoration:none;
+  display:block;
+  transition:.3s;
+}
+.mobile-menu a:hover{
+  color:#98ff98;
+}
+
+
+/* ===== CONTAINER ===== */
+.container{padding:20px;max-width:720px;margin:auto}
+
+/* ===== DROP ZONE ===== */
+.drop-zone{
+  border:2px dashed #2a2a2a;
+  border-radius:18px;
+  padding:42px 20px;
+  text-align:center;
+  transition:.3s;
+}
+.drop-zone.active{border-color:#7CFF7C}
+.drop-zone h2{margin:12px 0 4px}
+.drop-zone p{color:#aaa;margin-bottom:14px}
+.drop-zone button{
+  padding:10px 18px;
+  border:none;
+  background:#1e1e1e;
+  color:#fff;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* ===== PROGRESS ===== */
+.progress{
+  margin-top:14px;
+  height:10px;
+  background:#1e1e1e;
+  border-radius:10px;
+  overflow:hidden;
+  display:none;
+}
+.progress-bar{height:100%;width:0%;background:#7CFF7C}
+
+/* ===== RESULT CARD ===== */
+.result-card{
+  background:#0f0f0f;
+  margin-top:22px;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+}
+.result-card h3{margin:0 0 8px;color:#7CFF7C}
+.result-card img,
+.result-card video{
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#000;
+  margin-top:12px;
+}
+.result-card audio{width:100%;margin-top:12px}
+.actions{display:flex;gap:12px;margin-top:16px}
+.actions button{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#1e1e1e;
+  color:#fff;
+}
+.actions .danger{background:#6b1111}
+
+/* ===== HISTORY ===== */
+.history{
+  margin-top:28px;
+  background:#0f0f0f;
+  border-radius:18px;
+  padding:16px;
+  overflow:hidden;
+}
+.history h3{margin:0 0 12px}
+
+.history table{
+  width:100%;
+  table-layout:fixed;
+  border-collapse:collapse;
+}
+.history th,
+.history td{
+  padding:10px;
+  border-bottom:1px solid #1e1e1e;
+  font-size:14px;
+  word-break:break-all;
+  white-space:normal;
+  max-width:0;
+}
+.history th{color:#aaa;text-align:left}
+
+.history-actions{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.history-actions button{
+  min-width:32px;
+  height:32px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#1e1e1e;
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+}
+.history-actions .del{background:#6b1111}
+
+/* ===== INFO MODAL ===== */
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  font-size:14px;
+}
+.info-item{
+  background:#0f0f0f;
+  border:1px solid #1e1e1e;
+  border-radius:12px;
+  padding:12px;
+}
+.info-item.full{grid-column:1/-1}
+.info-label{font-size:12px;color:#888;margin-bottom:4px}
+.info-value{word-break:break-all}
+.info-value a{color:#7CFF7C;text-decoration:none}
+.info-copy{
+  margin-top:6px;
+  font-size:12px;
+  color:#7CFF7C;
+  cursor:pointer;
+}
+ .main-content{max-width:900px;margin:0 auto;padding:6rem 1rem 3rem}
+
+/* ===== MOBILE ===== */
+@media (max-width:600px){
+  .container{padding:16px 14px}
+  .drop-zone{padding:36px 16px}
+  .history th,.history td{font-size:13px;padding:8px}
+  .info-grid{grid-template-columns:1fr}
+    .footer-grid{
+    grid-template-columns:1fr;
+    gap:26px}
+    .nav-links{display:none}
+  .hamburger{display:flex}
+  
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='https://host.optikl.ink'">
+      <img src="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G" alt="BotzYT Logo"/>
+      <span>BotzYT</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="https://host.optikl.ink/docs">Docs</a>
+      <a href="/web">Tools</a>
+      <a href="https://host.optikl.ink/upload">Uploader</a>
+      <a href="https://riskynd.eu.org/website">Other</a>
+      <a href="https://host.optikl.ink/terms">Terms</a>
+      <a href="https://host.optikl.ink/privacy">Privacy</a>
+    </div>
+
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div>
+      <h3>Resources</h3>
+      <a href="https://host.optikl.ink/docs">Docs</a>
+      <a href="https://host.optikl.ink/web">Tools</a>
+      <a href="https://host.optikl.ink/upload">Uploader</a>
+      <a href="https://riskynd.eu.org/website">Other</a>
+    </div>
+    <div>
+      <h3>Legal</h3>
+      <a href="https://host.optikl.ink/terms">Terms</a>
+      <a href="https://host.optikl.ink/privacy">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+
+  <main>
+<div class="container">
+
+  <!-- UPLOAD -->
+  <div class="drop-zone" id="dropZone">
+    <div style="font-size:28px">⬆</div>
+    <h2>Drag & Drop or Click to Upload</h2>
+    <p>Max 100MB</p>
+    <button id="selectBtn">Select File</button>
+    <input type="file" id="fileInput" hidden>
+  </div>
+
+  <div class="progress" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="uploadResult"></div>
+
+  <!-- HISTORY -->
+  <div class="history">
+    <h3>Upload History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-info">
+      <div class="logo">
+        <img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" alt="BotzApi Logo"/>
+        <span>BotzApi</span>
+      </div>
+
+      <p>
+        Empowering developers with reliable and powerful API solutions
+        for modern applications.
+      </p>
+
+      <div class="social-links">
+        <h3>Connect With Us</h3>
+        <div class="social-icons">
+          <a href="https://instagram.com/botzaku" class="social-link"><i class="bi bi-instagram"></i></a>
+          <a href="https://tiktok.com/@botzaku" class="social-link"><i class="bi bi-tiktok"></i></a>
+          <a href="https://twitter.com/botz_aku" class="social-link"><i class="bi bi-twitter"></i></a>
+          <a href="https://t.me/BotzAku" class="social-link"><i class="bi bi-telegram"></i></a>
+          <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x" class="social-link"><i class="bi bi-whatsapp"></i></a>
+          <a href="https://discord.gg/Ehr7DrsU" class="social-link"><i class="bi bi-discord"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h3>Resources</h3>
+      <a href="https://host.optikl.ink/docs">API Documentation</a>
+      <a href="https://host.optikl.ink/web">Web Tools</a>
+      <a href="https://host.optikl.ink/upload">Uploader Service</a>
+      <a href="https://riskynd.eu.org/website">Other</a>
+    </div>
+
+    <div class="footer-links">
+      <h3>Legal</h3>
+      <a href="https://host.optikl.ink/terms">Terms of Service</a>
+      <a href="https://host.optikl.ink/privacy">Privacy Policy</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © <span id="current-year"></span> BotzAku. All rights reserved.
+  </div>
+</footer>
+
+
+
+<script>
+  document.getElementById('current-year').textContent =
+    new Date().getFullYear();
+</script>
+
+<script>
+  document.getElementById('current-year').textContent =
+    new Date().getFullYear();
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+</script>
+
+<script>
+const fileInput=document.getElementById('fileInput');
+const selectBtn=document.getElementById('selectBtn');
+const dropZone=document.getElementById('dropZone');
+const progressWrap=document.getElementById('progressWrap');
+const progressBar=document.getElementById('progressBar');
+const uploadResult=document.getElementById('uploadResult');
+const historyTable=document.getElementById('historyTable');
+
+const STORAGE_KEY='botzapi_upload_history';
+let history=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
+
+const formatSize=b=>(b/1024/1024).toFixed(2)+' MB';
+const saveHistory=()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(history));
+
+selectBtn.onclick=()=>fileInput.click();
+fileInput.onchange=()=>uploadFile(fileInput.files[0]);
+
+['dragover','dragenter'].forEach(e=>{
+  dropZone.addEventListener(e,ev=>{
+    ev.preventDefault();dropZone.classList.add('active');
+  });
+});
+['dragleave','drop'].forEach(e=>{
+  dropZone.addEventListener(e,()=>dropZone.classList.remove('active'));
+});
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();
+  if(e.dataTransfer.files.length) uploadFile(e.dataTransfer.files[0]);
+});
+
+function uploadFile(file){
+  if(!file) return;
+  const fd=new FormData();
+  fd.append('file',file);
+
+  progressWrap.style.display='block';
+  progressBar.style.width='0%';
+
+  const xhr=new XMLHttpRequest();
+  xhr.open('POST','https://api.botzaku.eu.org/api/upload');
+
+  xhr.upload.onprogress=e=>{
+    progressBar.style.width=(e.loaded/e.total)*100+'%';
+  };
+
+  xhr.onload=()=>{
+    progressWrap.style.display='none';
+    const res=JSON.parse(xhr.responseText);
+    if(!res.success) return Swal.fire('Error',res.message,'error');
+
+    const f={...res.file,sizeFormatted:formatSize(res.file.size)};
+    history.unshift(f);saveHistory();
+    showResult(f);renderHistory();
+  };
+  xhr.send(fd);
+}
+
+function showResult(f){
+  let preview='';
+  if(f.mimeType.startsWith('image')) preview=`<img src="${f.url}">`;
+  else if(f.mimeType.startsWith('video')) preview=`<video controls src="${f.url}"></video>`;
+  else if(f.mimeType.startsWith('audio')) preview=`<audio controls src="${f.url}"></audio>`;
+
+  uploadResult.innerHTML=`
+    <div class="result-card">
+      <h3>Upload Successful</h3>
+      <strong>${f.name}</strong>
+      <div>${f.sizeFormatted}</div>
+      <div>${new Date(f.createdTime).toLocaleString()}</div>
+      ${preview}
+      <div class="actions">
+        <button onclick="copyLink('${f.url}')">Copy</button>
+        <button onclick="doneUpload()">Done</button>
+        <button class="danger" onclick="deleteFile('${f.deleteUrl}')">Delete</button>
+      </div>
+    </div>`;
+}
+
+function doneUpload(){
+  uploadResult.innerHTML='';
+  fileInput.value='';
+  progressWrap.style.display='none';
+  progressBar.style.width='0%';
+}
+
+function renderHistory(){
+  historyTable.innerHTML='';
+  history.forEach((f,i)=>{
+    historyTable.innerHTML+=`
+      <tr>
+        <td title="${f.name}">${f.name}</td>
+        <td>${f.sizeFormatted}</td>
+        <td>${new Date(f.createdTime).toLocaleString()}</td>
+        <td>
+          <div class="history-actions">
+            <button onclick="copyLink('${f.url}')">📋</button>
+            <button onclick="showInfo(${i})">ℹ️</button>
+            <button class="del" onclick="deleteFile('${f.deleteUrl}',${i})">🗑</button>
+          </div>
+        </td>
+      </tr>`;
+  });
+}
+
+function showInfo(i){
+  const f=history[i];
+  Swal.fire({
+    title:'File Information',
+    width:600,
+    background:'#000',
+    color:'#fff',
+    confirmButtonText:'Close',
+    html:`
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">Name</div><div class="info-value">${f.name}</div></div>
+        <div class="info-item"><div class="info-label">Size</div><div class="info-value">${f.sizeFormatted}</div></div>
+        <div class="info-item"><div class="info-label">MIME Type</div><div class="info-value">${f.mimeType}</div></div>
+        <div class="info-item"><div class="info-label">File ID</div><div class="info-value">${f.id}</div></div>
+        <div class="info-item full"><div class="info-label">Uploaded</div><div class="info-value">${new Date(f.createdTime).toLocaleString()}</div></div>
+        <div class="info-item full"><div class="info-label">File URL</div><div class="info-value"><a href="${f.url}" target="_blank">${f.url}</a><div class="info-copy" onclick="copyLink('${f.url}')">Copy URL</div></div></div>
+        <div class="info-item full"><div class="info-label">Delete URL</div><div class="info-value">${f.deleteUrl}</div></div>
+      </div>`
+  });
+}
+
+function copyLink(url){
+  navigator.clipboard.writeText(url);
+  Swal.fire({toast:true,icon:'success',title:'Copied',position:'top',timer:1200,showConfirmButton:false});
+}
+
+function deleteFile(url,index){
+  Swal.fire({title:'Are you sure?',icon:'warning',showCancelButton:true})
+  .then(async r=>{
+    if(!r.isConfirmed) return;
+    await fetch(url);
+    if(index!==undefined){history.splice(index,1);saveHistory();renderHistory();}
+    uploadResult.innerHTML='';
+  });
+}
+
+renderHistory();
+</script>
+
+</body>
+</html>
