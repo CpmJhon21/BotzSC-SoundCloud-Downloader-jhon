@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>YouTube Downloader - Download MP4 MP3 YouTube Video</title>
+  <meta name="description" content="Download YouTube videos and audio in multiple qualities (mp3, 144, 240, 360, 480, 720, 1080) using the CpmJhon YouTube downloader. Fast, responsive and easy to use."/>
+  <meta name="keywords" content="YouTube downloader, download youtube, youtube to mp3, youtube download 720p, youtube download 1080p, CpmJhon"/>
+  <meta name="theme-color" content="#000000"/>
+  <link rel="icon" href="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G"/>
+  <link rel="apple-touch-icon" href="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G"/>
+  <meta property="og:title" content="YouTube Downloader - Download MP4 MP3 YouTube Video"/>
+  <meta property="og:description" content="Download YouTube videos and audio in multiple qualities quickly and securely via CpmJhon."/>
+  <meta property="og:image" content="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <meta name="monetag" content="92d2bb72a7848f6c1ae04187acfdb659">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:#000;color:#f1fdf1;line-height:1.6;min-height:100vh}
+    nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);z-index:1000}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+    .logo{display:flex;align-items:center;gap:.75rem;cursor:pointer}
+    .logo img{height:2rem;width:2rem;border-radius:50%}
+    .logo span{font-size:1.25rem;font-weight:bold;color:#98ff98}
+    .nav-links{display:flex;gap:1.5rem}
+    .nav-links a{text-decoration:none;color:#fff;transition:.3s}
+    .nav-links a:hover{color:#98ff98}
+    .hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}
+    .hamburger span{height:3px;width:25px;background:#98ff98;transition:.3s}
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mobile-menu{display:none;background:#000;padding:1rem}
+    .mobile-menu.active{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+    .mobile-menu h3{color:#fff;margin-bottom:.5rem}
+    .mobile-menu a{color:#fff;padding:.25rem 0;text-decoration:none;display:block;transition:.3s}
+    .mobile-menu a:hover{color:#98ff98}
+    .main-content{max-width:900px;margin:0 auto;padding:6rem 1rem 3rem}
+    .card{background:rgba(255,255,255,.03);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,.04)}
+    .title-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
+    .yt-icon{display:flex;align-items:center;justify-content:center;height:44px;width:44px;border-radius:8px;background:#ff0000;color:#fff;font-weight:bold}
+    .yt-icon svg{display:block}
+    .page-title{font-size:1.75rem;font-weight:700;color:#98ff98}
+    .subtitle{color:#aaa;text-align:center;margin-bottom:1rem}
+    .input-row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:center}
+    .text-input{flex:1;min-width:220px;padding:.75rem 1rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.06);background:transparent;color:#fff}
+    .select{padding:.65rem 1rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.06);background:transparent;color:#fff}
+    .btn{border:none;background:#98ff98;color:#000;padding:.75rem 1.25rem;border-radius:.5rem;cursor:pointer;transition:.3s;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;gap:.5rem}
+    .btn:hover{background:#7ae87a;transform:translateY(-1px)}
+    .btn:disabled{background:#666;color:#ccc;cursor:not-allowed;transform:none}
+    .result-area{display:none;margin-top:1rem}
+    .result-card{display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+    .thumb{width:300px;max-width:100%;border-radius:.5rem;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.04)}
+    .thumb img{width:100%;display:block}
+    .meta{flex:1;min-width:220px}
+    .meta h2{color:#98ff98;margin-bottom:.25rem}
+    .meta p{color:#ccc;margin-bottom:.25rem}
+    .meta .tag{display:inline-block;padding:.25rem .5rem;border-radius:.35rem;background:rgba(152,255,152,.08);color:#98ff98;font-weight:600;margin-right:.5rem}
+    .quality-list{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+    .quality-item{padding:.45rem .7rem;border-radius:.45rem;background:rgba(255,255,255,.03);color:#fff;border:1px solid rgba(255,255,255,.04);cursor:pointer}
+    .quality-item.active{background:#98ff98;color:#000;border-color:#7ae87a}
+    .actions{margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap}
+    .info{color:#aaa;font-size:.95rem;margin-top:.75rem}
+    .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center}
+    .loading-spinner{width:60px;height:60px;border:4px solid rgba(152,255,152,.3);border-top:4px solid #98ff98;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1rem}
+    .loading-text{color:#98ff98;font-size:1.1rem;text-align:center}
+    .faq{margin-top:2rem;padding:1rem;border-radius:.75rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03)}
+    .faq h3{color:#98ff98;margin-bottom:.5rem}
+    .seo-hidden{display:none}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    footer{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:3rem 1rem 1.5rem;margin-top:3rem}
+    .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center}
+    .footer-info{text-align:center}
+    .footer-info p{margin-top:1rem;color:#aaa}
+    .footer-links h3{color:#fff;margin-bottom:1rem}
+    .footer-links a{display:block;color:#aaa;margin-bottom:.5rem;text-decoration:none}
+    .footer-links a:hover{color:#98ff98}
+    .social-links{margin-top:1.5rem}
+    .social-icons{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+    .social-link{color:#aaa;padding:.5rem;border-radius:.5rem;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:.3s;font-size:1.5rem}
+    .social-link:hover{color:#fff;background:rgba(152,255,152,.2)}
+    .footer-bottom{margin-top:2rem;text-align:center;color:#777;font-size:.875rem}
+    @media(max-width:768px){
+      .nav-links{display:none}.hamburger{display:flex}
+      .input-row{flex-direction:column;align-items:stretch}
+      .actions{justify-content:center}
+      .result-card{flex-direction:column;align-items:center}
+      .meta{text-align:center}
+    }
+    .swal2-popup{background:rgba(0,0,0,.95)!important;color:#f1fdf1!important;border:1px solid rgba(255,255,255,.1)!important}
+    .swal2-title{color:#98ff98!important}
+    .swal2-confirm{background:#3cb371!important}
+    .swal2-cancel{background:#666!important}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='https://host.optikl.ink'">
+        <img src="https://cdn.botzaku.eu.org/1dgrg_UmOtvHsMwCfoK0eYgdulOD-pa6G" alt="BotzYT Logo"/>
+        <span>BotzYT</span>
+      </div>
+      <div class="nav-links">
+        <a href="https://host.optikl.ink/docs">Docs</a>
+        <a href="/web">Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+        <a href="https://host.optikl.ink/terms">Terms</a>
+        <a href="https://host.optikl.ink/privacy">Privacy</a>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <div>
+        <h3>Resources</h3>
+        <a href="https://host.optikl.ink/docs">Docs</a>
+        <a href="https://host.optikl.ink/web">Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <a href="https://host.optikl.ink/terms">Terms</a>
+        <a href="https://host.optikl.ink/privacy">Privacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="main-content">
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div class="title-row">
+          <div class="yt-icon" style="background:#ff0000;">
+            <svg width="22" height="14" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block">
+              <path d="M23.5 2.002C23.5 2.002 23.25 0.5 22.156 0.248 20.25 0 12 0 12 0s-8.25 0-10.156.248C0.75.5.5 2.002.5 2.002S0 3.75 0 5.5v5c0 1.75.5 3.498.5 3.498S.75 15.5 1.844 15.752C3.75 16 12 16 12 16s8.25 0 10.156-.248C23.25 15.5 23.5 13.998 23.5 13.998S24 12.25 24 10.5v-5c0-1.75-.5-3.498-.5-3.498z" fill="#fff"/>
+              <path d="M9.75 11.5V4.5l6 3.5-6 3.5z" fill="#ff0000"/>
+            </svg>
+          </div>
+          <div>
+            <div class="page-title">YouTube Downloader</div>
+            <div class="subtitle">Easily download YouTube videos or extract audio in multiple qualities</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="text-align:center;margin-bottom:1rem;">
+          <strong style="color:#98ff98">How it works</strong>
+          <div class="info">Paste a YouTube link, pick a format (mp3 or video quality) and click Download. Files are fetched via our API and served to you.</div>
+        </div>
+
+        <div class="input-row" style="margin-top:0.5rem;">
+          <input id="ytUrl" class="text-input" type="text" placeholder="Paste YouTube URL here (https://youtube.com/watch?v=...)" aria-label="YouTube URL"/>
+          <select id="formatSelect" class="select" aria-label="Select format">
+            <option value="mp3">MP3 (Audio)</option>
+            <option value="144">144p</option>
+            <option value="240">240p</option>
+            <option value="360">360p</option>
+            <option value="480">480p</option>
+            <option value="720" selected>720p</option>
+            <option value="1080">1080p</option>
+          </select>
+          <button id="fetchBtn" class="btn"><i class="bi bi-search"></i> Download</button>
+        </div>
+      </div>
+
+      <div id="resultArea" class="result-area card">
+        <div class="result-card">
+          <div class="thumb" id="thumbContainer">
+            <img id="thumbImage" src="" alt="thumbnail"/>
+          </div>
+          <div class="meta">
+            <h2 id="videoTitle"></h2>
+            <p id="videoType"><span class="tag" id="typeTag"></span><span id="videoDuration"></span></p>
+            <p id="videoQuality" class="info"></p>
+
+            <div style="margin-top:.5rem">
+              <div class="quality-list" id="qualityList" aria-hidden="true"></div>
+            </div>
+
+            <div class="actions">
+              <button id="downloadBtn" class="btn" disabled><i class="bi bi-download"></i> Download</button>
+              <a id="directLink" class="btn" style="background:#444;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem" target="_blank" rel="noopener noreferrer"><i class="bi bi-box-arrow-up-right"></i> Open Source</a>
+              <button id="resetBtn" class="btn" style="background:#666"><i class="bi bi-arrow-clockwise"></i> New</button>
+            </div>
+
+            <div id="notes" class="info" style="margin-top:.75rem"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq">
+        <h3>Usage</h3>
+        <p>Paste the YouTube URL into the input field, select the desired format (mp3 for audio or a video resolution), then click Fetch. Once the API returns the available download link, click Download to get the file directly from the API source.</p>
+
+        <h3 style="margin-top:1rem">FAQ</h3>
+        <strong>Q: Which formats are supported?</strong>
+        <p>A: The downloader supports mp3 (audio) and video qualities: 144, 240, 360, 480, 720, 1080.</p>
+
+        <strong>Q: Is this free to use?</strong>
+        <p>A: Yes! The web interface uses the CpmJhon, which is always free.</p>
+
+        <strong>Q: How does the download work?</strong>
+        <p>A: The download link is fetched from the CpmJhon and opens directly in a new tab for download.</p>
+
+        <strong>Q: Will copyrighted content be handled?</strong>
+        <p>A: Ensure you have rights to download or use any content. This tool is provided for personal use and convenience; respect copyright and terms of service.</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">
+      <div style="font-weight:bold;margin-bottom:.5rem;">Processing your request...</div>
+      <div style="font-size:.9rem;opacity:.8;">This may take a few moments</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-info">
+        <div class="logo">
+          <img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" alt="CpmJhon Logo"/>
+          <span>CpmJhon</span>
+        </div>
+        <p>Empowering developers with reliable and powerful API solutions for modern applications.</p>
+        <div class="social-links">
+          <h3>Connect With Us</h3>
+          <div class="social-icons">
+            <a href="https://instagram.com/botzaku" class="social-link"><i class="bi bi-instagram"></i></a>
+            <a href="https://tiktok.com/@botzaku" class="social-link"><i class="bi bi-tiktok"></i></a>
+            <a href="https://twitter.com/botz_aku" class="social-link"><i class="bi bi-twitter"></i></a>
+            <a href="https://t.me/BotzAku" class="social-link"><i class="bi bi-telegram"></i></a>
+            <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x" class="social-link"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://discord.gg/Ehr7DrsU" class="social-link"><i class="bi bi-discord"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <a href="https://host.optikl.ink/docs">API Documentation</a>
+        <a href="https://host.optikl.ink/web">Web Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader Service</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+      </div>
+      <div class="footer-links">
+        <h3>Legal</h3>
+        <a href="https://host.optikl.ink/terms">Terms of Service</a>
+        <a href="https://host.optikl.ink/privacy">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="current-year"></span> CpmJhon. All rights reserved.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); mobileMenu.classList.toggle('active'); });
+
+    const ytUrl = document.getElementById('ytUrl');
+    const formatSelect = document.getElementById('formatSelect');
+    const fetchBtn = document.getElementById('fetchBtn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const resultArea = document.getElementById('resultArea');
+    const thumbImage = document.getElementById('thumbImage');
+    const videoTitle = document.getElementById('videoTitle');
+    const videoType = document.getElementById('videoType');
+    const typeTag = document.getElementById('typeTag');
+    const videoDuration = document.getElementById('videoDuration');
+    const videoQuality = document.getElementById('videoQuality');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const directLink = document.getElementById('directLink');
+    const resetBtn = document.getElementById('resetBtn');
+    const notes = document.getElementById('notes');
+    const qualityList = document.getElementById('qualityList');
+    const thumbContainer = document.getElementById('thumbContainer');
+
+    let lastResponse = null;
+    let selectedFormat = formatSelect.value;
+
+    function showLoading(show = true) {
+      loadingOverlay.style.display = show ? 'flex' : 'none';
+    }
+
+    function humanDuration(sec) {
+      if (!sec && sec !== 0) return '';
+      const s = Number(sec);
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const ss = s % 60;
+      if (h > 0) return h + 'h ' + m + 'm ' + ss + 's';
+      if (m > 0) return m + 'm ' + ss + 's';
+      return ss + 's';
+    }
+
+    function resetUI() {
+      resultArea.style.display = 'none';
+      thumbImage.src = '';
+      videoTitle.textContent = '';
+      typeTag.textContent = '';
+      videoDuration.textContent = '';
+      videoQuality.textContent = '';
+      downloadBtn.disabled = true;
+      directLink.href = '#';
+      notes.textContent = '';
+      qualityList.innerHTML = '';
+      lastResponse = null;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      ytUrl.value = '';
+      resetUI();
+    });
+
+    fetchBtn.addEventListener('click', async () => {
+      const url = ytUrl.value.trim();
+      const format = formatSelect.value;
+      if (!url) {
+        Swal.fire({ title: 'Missing URL', text: 'Please paste a YouTube URL', icon: 'warning', toast: true, position: 'top', showConfirmButton: false, timer: 2000 });
+        return;
+      }
+
+      showLoading(true);
+      resultArea.style.display = 'none';
+      downloadBtn.disabled = true;
+      try {
+        const apiUrl = 'https://host.optikl.ink/download/youtube?url=' + encodeURIComponent(url) + '&format=' + encodeURIComponent(format);
+        const res = await fetch(apiUrl, { method: 'GET' });
+        if (!res.ok) {
+          throw new Error('API returned HTTP ' + res.status);
+        }
+        const data = await res.json();
+
+        if (data && (data.status === true || data.code === 200) && data.result) {
+          lastResponse = data.result;
+
+          thumbImage.src = data.result.thumbnail || '';
+          videoTitle.textContent = data.result.title || 'Untitled';
+          typeTag.textContent = (data.result.type || 'video').toUpperCase();
+          videoDuration.textContent = data.result.duration ? (' • ' + humanDuration(data.result.duration)) : '';
+          videoQuality.textContent = 'Quality: ' + (data.result.quality || data.result.format || format);
+
+          qualityList.innerHTML = '';
+          const qualities = ['mp3','144','240','360','480','720','1080'];
+          qualities.forEach(q => {
+            const el = document.createElement('div');
+            el.className = 'quality-item' + ((q === (data.result.format || format)) ? ' active' : '');
+            el.textContent = q.toUpperCase();
+            el.dataset.q = q;
+            el.addEventListener('click', async (e) => {
+              const targetQ = e.currentTarget.dataset.q;
+              formatSelect.value = targetQ;
+              await fetchForFormat(ytUrl.value.trim(), targetQ);
+            });
+            qualityList.appendChild(el);
+          });
+
+          if (data.result.download) {
+            downloadBtn.disabled = false;
+            directLink.href = data.result.download;
+            directLink.style.display = 'inline-flex';
+            notes.textContent = 'Click Download to open the file directly from CpmJhon source.';
+          } else {
+            downloadBtn.disabled = true;
+            directLink.style.display = 'none';
+            notes.textContent = 'No download link provided by API for the selected format.';
+          }
+
+          resultArea.style.display = 'block';
+          setTimeout(()=>{ resultArea.scrollIntoView({behavior:'smooth', block:'start'}); }, 120);
+          Swal.fire({ title: 'Fetched!', text: 'Video information retrieved', icon: 'success', toast: true, position: 'top', showConfirmButton: false, timer: 1500 });
+        } else {
+          const msg = (data && data.message) ? data.message : 'Failed to retrieve video data';
+          Swal.fire({ title: 'Failed', text: msg, icon: 'error', toast: true, position: 'top', showConfirmButton: false, timer: 3000 });
+        }
+      } catch (err) {
+        Swal.fire({ title: 'Error', text: err.message, icon: 'error', toast: true, position: 'top', showConfirmButton: false, timer: 4000 });
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    async function fetchForFormat(url, format) {
+      if (!url) return;
+      showLoading(true);
+      try {
+        const apiUrl = 'https://host.optikl.ink/download/youtube?url=' + encodeURIComponent(url) + '&format=' + encodeURIComponent(format);
+        const res = await fetch(apiUrl, { method: 'GET' });
+        if (!res.ok) throw new Error('API returned HTTP ' + res.status);
+        const data = await res.json();
+        if (data && (data.status === true || data.code === 200) && data.result) {
+          lastResponse = data.result;
+          thumbImage.src = data.result.thumbnail || thumbImage.src;
+          videoTitle.textContent = data.result.title || videoTitle.textContent;
+          typeTag.textContent = (data.result.type || 'video').toUpperCase();
+          videoDuration.textContent = data.result.duration ? (' • ' + humanDuration(data.result.duration)) : '';
+          videoQuality.textContent = 'Quality: ' + (data.result.quality || data.result.format || format);
+
+          [...qualityList.children].forEach(child => {
+            child.classList.toggle('active', child.dataset.q === (data.result.format || format));
+          });
+
+          if (data.result.download) {
+            downloadBtn.disabled = false;
+            directLink.href = data.result.download;
+            directLink.style.display = 'inline-flex';
+            notes.textContent = 'Click Download to open the file directly from CpmJhon source.';
+          } else {
+            downloadBtn.disabled = true;
+            directLink.style.display = 'none';
+            notes.textContent = 'No download link provided by API for the selected format.';
+          }
+
+          resultArea.style.display = 'block';
+          Swal.fire({ title: 'Format Updated', text: 'New format information loaded', icon: 'success', toast: true, position: 'top', showConfirmButton: false, timer: 1300 });
+        } else {
+          Swal.fire({ title: 'Failed', text: 'Could not fetch for selected format', icon: 'error', toast: true, position: 'top', showConfirmButton: false, timer: 2500 });
+        }
+      } catch (err) {
+        Swal.fire({ title: 'Error', text: err.message, icon: 'error', toast: true, position: 'top', showConfirmButton: false, timer: 3000 });
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      if (!lastResponse || !lastResponse.download) {
+        Swal.fire({ title: 'No file', text: 'No downloadable file available', icon: 'warning', toast: true, position: 'top', showConfirmButton: false, timer: 2000 });
+        return;
+      }
+
+      window.open(lastResponse.download, '_blank');
+      Swal.fire({ title: 'Opening Download', text: 'Opening download link in new tab', icon: 'success', toast: true, position: 'top', showConfirmButton: false, timer: 1500 });
+    });
+
+    ytUrl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        fetchBtn.click();
+      }
+    });
+
+    resetUI();
+  </script>
+  <script>(function(s){s.dataset.zone='10289064',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script>(function(s){s.dataset.zone='10289071',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://3nbf4.com/act/files/tag.min.js?z=10289074" data-cfasync="false" async></script>
+  <script>(function(s){s.dataset.zone='10289078',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+</body>
+</html>

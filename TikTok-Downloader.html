@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>TikTok Downloader - Download TikTok Video & Images Without Watermark</title>
+  <meta name="description" content="Download TikTok videos and images without watermark in HD quality using the CpmJhon TikTok downloader. Fast, responsive and easy to use."/>
+  <meta name="keywords" content="TikTok downloader, download tiktok, tiktok no watermark, tiktok download hd, tiktok images, BotzAku"/>
+  <meta name="theme-color" content="#000000"/>
+  <link rel="icon" href="https://cdn.botzaku.eu.org/1mCRzUgdnJUl1YyLzLIqmMpy9pYMuIjpT"/>
+  <link rel="apple-touch-icon" href="https://cdn.botzaku.eu.org/1mCRzUgdnJUl1YyLzLIqmMpy9pYMuIjpT"/>
+  <meta property="og:title" content="TikTok Downloader - Download TikTok Video & Images Without Watermark"/>
+  <meta property="og:description" content="Download TikTok videos and images without watermark quickly and securely via CpmJhon."/>
+  <meta property="og:image" content="https://cdn.botzaku.eu.org/1mCRzUgdnJUl1YyLzLIqmMpy9pYMuIjpT"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <meta name="monetag" content="4d00f8bd718e23d3c4ec6f575d6bc482">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:#000;color:#f1fdf1;line-height:1.6;min-height:100vh}
+    nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);z-index:1000}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+    .logo{display:flex;align-items:center;gap:.75rem;cursor:pointer}
+    .logo img{height:2rem;width:2rem;border-radius:50%}
+    .logo span{font-size:1.25rem;font-weight:bold;color:#98ff98}
+    .nav-links{display:flex;gap:1.5rem}
+    .nav-links a{text-decoration:none;color:#fff;transition:.3s}
+    .nav-links a:hover{color:#98ff98}
+    .hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}
+    .hamburger span{height:3px;width:25px;background:#98ff98;transition:.3s}
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mobile-menu{display:none;background:#000;padding:1rem}
+    .mobile-menu.active{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+    .mobile-menu h3{color:#fff;margin-bottom:.5rem}
+    .mobile-menu a{color:#fff;padding:.25rem 0;text-decoration:none;display:block;transition:.3s}
+    .mobile-menu a:hover{color:#98ff98}
+    .main-content{max-width:900px;margin:0 auto;padding:6rem 1rem 3rem}
+    .card{background:rgba(255,255,255,.03);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,.04)}
+    .title-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
+    .tt-icon{display:flex;align-items:center;justify-content:center;height:44px;width:44px;border-radius:8px;background:linear-gradient(45deg,#00f2ea,#ff0050);color:#fff;font-weight:bold}
+    .tt-icon svg{display:block}
+    .page-title{font-size:1.75rem;font-weight:700;color:#98ff98}
+    .subtitle{color:#aaa;text-align:center;margin-bottom:1rem}
+    .input-row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:center}
+    .text-input{flex:1;min-width:220px;padding:.75rem 1rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.06);background:transparent;color:#fff}
+    .btn{border:none;background:#98ff98;color:#000;padding:.75rem 1.25rem;border-radius:.5rem;cursor:pointer;transition:.3s;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;gap:.5rem}
+    .btn:hover{background:#7ae87a;transform:translateY(-1px)}
+    .btn:disabled{background:#666;color:#ccc;cursor:not-allowed;transform:none}
+    .result-area{display:none;margin-top:1rem}
+    .author-section{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:rgba(255,255,255,.02);border-radius:.75rem;border:1px solid rgba(255,255,255,.03)}
+    .author-avatar{width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid #98ff98}
+    .author-avatar img{width:100%;height:100%;object-fit:cover}
+    .author-info{flex:1}
+    .author-name{font-weight:bold;color:#98ff98;margin-bottom:.25rem}
+    .author-username{color:#aaa;font-size:.9rem}
+    .stats-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem}
+    .stat-item{display:flex;align-items:center;gap:.35rem;color:#ccc;font-size:.85rem}
+    .stat-item i{color:#98ff98}
+    .content-section{margin-bottom:1.5rem}
+    .cover-image{width:100%;max-width:400px;border-radius:.75rem;overflow:hidden;margin:0 auto 1rem;display:block;border:1px solid rgba(255,255,255,.04)}
+    .cover-image img{width:100%;display:block}
+    .description{color:#ddd;padding:1rem;background:rgba(255,255,255,.02);border-radius:.5rem;border-left:3px solid #98ff98;margin-bottom:1rem}
+    .type-badge{display:inline-block;padding:.35rem .75rem;border-radius:.5rem;background:linear-gradient(45deg,#00f2ea,#ff0050);color:#fff;font-weight:bold;font-size:.85rem;margin-bottom:1rem}
+    .download-section{margin-top:1.5rem}
+    .download-title{color:#98ff98;font-weight:bold;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+    .download-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.75rem;margin-bottom:1rem}
+    .download-card{padding:1rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:.75rem;display:flex;flex-direction:column;gap:.75rem}
+    .download-card-title{font-weight:600;color:#fff;display:flex;align-items:center;gap:.5rem}
+    .download-card-desc{color:#aaa;font-size:.85rem}
+    .image-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;margin-bottom:1rem}
+    .image-item{position:relative;border-radius:.5rem;overflow:hidden;aspect-ratio:1;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+    .image-item img{width:100%;height:100%;object-fit:cover;transition:.3s}
+    .image-item:hover img{transform:scale(1.05)}
+    .image-overlay{position:absolute;bottom:0;left:0;right:0;padding:.5rem;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);display:flex;justify-content:center;opacity:0;transition:.3s}
+    .image-item:hover .image-overlay{opacity:1}
+    .btn-small{padding:.4rem .75rem;font-size:.8rem}
+    .btn-secondary{background:#444;color:#fff}
+    .btn-secondary:hover{background:#555}
+    .actions{margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
+    .info{color:#aaa;font-size:.95rem;margin-top:.75rem}
+    .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center}
+    .loading-spinner{width:60px;height:60px;border:4px solid rgba(152,255,152,.3);border-top:4px solid #98ff98;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1rem}
+    .loading-text{color:#98ff98;font-size:1.1rem;text-align:center}
+    .faq{margin-top:2rem;padding:1rem;border-radius:.75rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03)}
+    .faq h3{color:#98ff98;margin-bottom:.5rem}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    footer{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:3rem 1rem 1.5rem;margin-top:3rem}
+    .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center}
+    .footer-info{text-align:center}
+    .footer-info p{margin-top:1rem;color:#aaa}
+    .footer-links h3{color:#fff;margin-bottom:1rem}
+    .footer-links a{display:block;color:#aaa;margin-bottom:.5rem;text-decoration:none}
+    .footer-links a:hover{color:#98ff98}
+    .social-links{margin-top:1.5rem}
+    .social-icons{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+    .social-link{color:#aaa;padding:.5rem;border-radius:.5rem;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:.3s;font-size:1.5rem}
+    .social-link:hover{color:#fff;background:rgba(152,255,152,.2)}
+    .footer-bottom{margin-top:2rem;text-align:center;color:#777;font-size:.875rem}
+    @media(max-width:768px){
+      .nav-links{display:none}.hamburger{display:flex}
+      .input-row{flex-direction:column;align-items:stretch}
+      .download-grid{grid-template-columns:1fr}
+      .image-gallery{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+      .stats-row{font-size:.8rem}
+    }
+    .swal2-popup{background:rgba(0,0,0,.95)!important;color:#f1fdf1!important;border:1px solid rgba(255,255,255,.1)!important}
+    .swal2-title{color:#98ff98!important}
+    .swal2-confirm{background:#3cb371!important}
+    .swal2-cancel{background:#666!important}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo" onclick="window.location.href='https://host.optikl.ink'">
+        <img src="https://cdn.botzaku.eu.org/1mCRzUgdnJUl1YyLzLIqmMpy9pYMuIjpT" alt="TikBotz Logo"/>
+        <span>TikBotz</span>
+      </div>
+      <div class="nav-links">
+        <a href="https://host.optikl.ink/docs">Docs</a>
+        <a href="/web">Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+        <a href="https://host.optikl.ink/terms">Terms</a>
+        <a href="https://host.optikl.ink/privacy">Privacy</a>
+      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <div>
+        <h3>Resources</h3>
+        <a href="https://host.optikl.ink/docs">Docs</a>
+        <a href="https://host.optikl.ink/web">Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <a href="https://host.optikl.ink/terms">Terms</a>
+        <a href="https://host.optikl.ink/privacy">Privacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="main-content">
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div class="title-row">
+          <div class="tt-icon">
+            <svg width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block">
+              <path d="M19.321 5.562a5.124 5.124 0 0 1-.443-.258 6.228 6.228 0 0 1-1.138-.943c-.877-1.01-1.344-2.427-1.344-3.784V.207h-3.689l-.003 18.535c-.003.85-.33 1.647-.922 2.244a3.15 3.15 0 0 1-2.234.922 3.16 3.16 0 0 1-2.242-.922 3.158 3.158 0 0 1-.926-2.247c0-.852.33-1.65.927-2.246a3.158 3.158 0 0 1 2.241-.923c.327 0 .64.05.937.143v-3.756a6.97 6.97 0 0 0-.937-.068c-1.849 0-3.582.719-4.881 2.023a6.904 6.904 0 0 0-2.021 4.896c0 1.858.723 3.603 2.035 4.916a6.888 6.888 0 0 0 4.886 2.018c1.848 0 3.582-.72 4.881-2.023a6.904 6.904 0 0 0 2.021-4.896l-.012-9.443a10.046 10.046 0 0 0 5.854 1.873V4.337a6.123 6.123 0 0 1-2.99-1.775z" fill="#fff"/>
+            </svg>
+          </div>
+          <div>
+            <div class="page-title">TikTok Downloader</div>
+            <div class="subtitle">Download TikTok videos & images without watermark in HD quality</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="inputCard">
+        <div style="text-align:center;margin-bottom:1rem;">
+          <strong style="color:#98ff98">How it works</strong>
+          <div class="info">Paste a TikTok link and click Download. Get videos without watermark, images, and audio in high quality.</div>
+        </div>
+
+        <div class="input-row" style="margin-top:0.5rem;">
+          <input id="ttUrl" class="text-input" type="text" placeholder="Paste TikTok URL here (https://www.tiktok.com/@username/video/... )" aria-label="TikTok URL"/>
+          <button id="fetchBtn" class="btn"><i class="bi bi-download"></i> Download</button>
+        </div>
+      </div>
+
+      <div id="resultArea" class="result-area card">
+        <div id="authorSection" class="author-section">
+          <div class="author-avatar">
+            <img id="authorAvatar" src="" alt="Author"/>
+          </div>
+          <div class="author-info">
+            <div class="author-name" id="authorName"></div>
+            <div class="author-username" id="authorUsername"></div>
+            <div class="stats-row">
+              <div class="stat-item"><i class="bi bi-eye-fill"></i><span id="viewCount"></span></div>
+              <div class="stat-item"><i class="bi bi-heart-fill"></i><span id="likeCount"></span></div>
+              <div class="stat-item"><i class="bi bi-chat-fill"></i><span id="commentCount"></span></div>
+              <div class="stat-item"><i class="bi bi-share-fill"></i><span id="shareCount"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="type-badge" id="typeBadge"></div>
+          <div class="description" id="description"></div>
+          
+          <div id="coverSection" style="display:none;">
+            <div class="cover-image">
+              <img id="coverImage" src="" alt="Cover"/>
+            </div>
+          </div>
+
+          <div id="imageGallerySection" style="display:none;">
+            <div class="download-title"><i class="bi bi-images"></i> Image Gallery</div>
+            <div class="image-gallery" id="imageGallery"></div>
+          </div>
+        </div>
+
+        <div class="download-section">
+          <div class="download-title"><i class="bi bi-download"></i> Download Options</div>
+          
+          <div id="videoDownloads" style="display:none;">
+            <div class="download-grid">
+              <div class="download-card">
+                <div class="download-card-title"><i class="bi bi-badge-hd"></i> HD Video (No Watermark)</div>
+                <div class="download-card-desc">Best quality without TikTok watermark</div>
+                <button class="btn" id="btnVideoHD"><i class="bi bi-download"></i> Download HD</button>
+              </div>
+              <div class="download-card">
+                <div class="download-card-title"><i class="bi bi-play-circle"></i> Standard Video (No Watermark)</div>
+                <div class="download-card-desc">Standard quality without watermark</div>
+                <button class="btn" id="btnVideoStd"><i class="bi bi-download"></i> Download Standard</button>
+              </div>
+              <div class="download-card">
+                <div class="download-card-title"><i class="bi bi-badge-tm"></i> Video With Watermark</div>
+                <div class="download-card-desc">Original with TikTok watermark</div>
+                <button class="btn btn-secondary" id="btnVideoWM"><i class="bi bi-download"></i> Download WM</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="download-grid">
+            <div class="download-card">
+              <div class="download-card-title"><i class="bi bi-music-note-beamed"></i> Audio (MP3)</div>
+              <div class="download-card-desc">Extract audio from TikTok</div>
+              <button class="btn" id="btnAudio"><i class="bi bi-download"></i> Download Audio</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="resetBtn" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i> Download Another</button>
+        </div>
+      </div>
+
+      <div class="faq">
+        <h3>Usage</h3>
+        <p>Paste the TikTok URL into the input field, then click Download. The tool will fetch the video, images, or audio and provide download options for HD video without watermark, standard quality, and audio.</p>
+
+        <h3 style="margin-top:1rem">FAQ</h3>
+        <strong>Q: Can I download without watermark?</strong>
+        <p>A: Yes! The downloader provides HD and standard quality videos without TikTok watermark.</p>
+
+        <strong>Q: Can I download TikTok images?</strong>
+        <p>A: Yes! If the TikTok post contains images, all images will be displayed in a gallery with individual download buttons.</p>
+
+        <strong>Q: Is this free to use?</strong>
+        <p>A: Yes! The web interface uses the CpmJhon, which is always free.</p>
+
+        <strong>Q: What about audio?</strong>
+        <p>A: You can extract and download the audio (MP3) from any TikTok video.</p>
+
+        <strong>Q: Legal considerations?</strong>
+        <p>A: Ensure you have rights to download or use any content. This tool is provided for personal use and convenience; respect copyright and terms of service.</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">
+      <div style="font-weight:bold;margin-bottom:.5rem;">Processing your request...</div>
+      <div style="font-size:.9rem;opacity:.8;">Fetching TikTok content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-info">
+        <div class="logo">
+          <img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" alt="CpmJhon Logo"/>
+          <span>CpmJhon</span>
+        </div>
+        <p>Empowering developers with reliable and powerful API solutions for modern applications.</p>
+        <div class="social-links">
+          <h3>Connect With Us</h3>
+          <div class="social-icons">
+            <a href="https://instagram.com/botzaku" class="social-link"><i class="bi bi-instagram"></i></a>
+            <a href="https://tiktok.com/@botzaku" class="social-link"><i class="bi bi-tiktok"></i></a>
+            <a href="https://twitter.com/botz_aku" class="social-link"><i class="bi bi-twitter"></i></a>
+            <a href="https://t.me/BotzAku" class="social-link"><i class="bi bi-telegram"></i></a>
+            <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x" class="social-link"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://discord.gg/Ehr7DrsU" class="social-link"><i class="bi bi-discord"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <a href="https://host.optikl.ink/docs">API Documentation</a>
+        <a href="https://host.optikl.ink/web">Web Tools</a>
+        <a href="https://host.optikl.ink/upload">Uploader Service</a>
+        <a href="https://riskynd.eu.org/website">Other</a>
+      </div>
+      <div class="footer-links">
+        <h3>Legal</h3>
+        <a href="https://host.optikl.ink/terms">Terms of Service</a>
+        <a href="https://host.optikl.ink/privacy">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="current-year"></span> BotzAku. All rights reserved.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    const ttUrl = document.getElementById('ttUrl');
+    const fetchBtn = document.getElementById('fetchBtn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const inputCard = document.getElementById('inputCard');
+    const resultArea = document.getElementById('resultArea');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const authorAvatar = document.getElementById('authorAvatar');
+    const authorName = document.getElementById('authorName');
+    const authorUsername = document.getElementById('authorUsername');
+    const viewCount = document.getElementById('viewCount');
+    const likeCount = document.getElementById('likeCount');
+    const commentCount = document.getElementById('commentCount');
+    const shareCount = document.getElementById('shareCount');
+
+    const typeBadge = document.getElementById('typeBadge');
+    const description = document.getElementById('description');
+    const coverSection = document.getElementById('coverSection');
+    const coverImage = document.getElementById('coverImage');
+    const imageGallerySection = document.getElementById('imageGallerySection');
+    const imageGallery = document.getElementById('imageGallery');
+
+    const videoDownloads = document.getElementById('videoDownloads');
+    const btnVideoHD = document.getElementById('btnVideoHD');
+    const btnVideoStd = document.getElementById('btnVideoStd');
+    const btnVideoWM = document.getElementById('btnVideoWM');
+    const btnAudio = document.getElementById('btnAudio');
+
+    let currentData = null;
+
+    function showLoading(show = true) {
+      loadingOverlay.style.display = show ? 'flex' : 'none';
+    }
+
+    function formatNumber(num) {
+      if (!num) return '0';
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    function makeSafeTitle(rawTitle, fallback) {
+      const base = (rawTitle || fallback || 'TikTok')
+        .toString()
+        .trim()
+        .replace(/\s+/g, ' ')
+        .slice(0, 60);
+      return base.replace(/[^\w\d\- ]+/g, '').replace(/\s+/g, '_') || 'TikTok';
+    }
+
+    function resetUI() {
+      inputCard.style.display = 'block';
+      resultArea.style.display = 'none';
+      coverSection.style.display = 'none';
+      imageGallerySection.style.display = 'none';
+      videoDownloads.style.display = 'none';
+      imageGallery.innerHTML = '';
+      currentData = null;
+      document.title = 'TikTok Downloader - Download TikTok Video & Images Without Watermark';
+    }
+
+    async function downloadFile(url, filename) {
+      try {
+        showLoading(true);
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+        showLoading(false);
+        Swal.fire({
+          title: 'Downloaded!',
+          text: 'File downloaded successfully',
+          icon: 'success',
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 2000
+        });
+      } catch (err) {
+        showLoading(false);
+        Swal.fire({
+          title: 'Download Failed',
+          text: 'Could not download file. Try opening the link directly.',
+          icon: 'error',
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        window.open(url, '_blank');
+      }
+    }
+
+    window.downloadFile = downloadFile;
+
+    resetBtn.addEventListener('click', () => {
+      ttUrl.value = '';
+      resetUI();
+    });
+
+    fetchBtn.addEventListener('click', async () => {
+      const url = ttUrl.value.trim();
+      if (!url) {
+        Swal.fire({
+          title: 'Missing URL',
+          text: 'Please paste a TikTok URL',
+          icon: 'warning',
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 2000
+        });
+        return;
+      }
+
+      showLoading(true);
+      try {
+        const apiUrl = 'https://host.optikl.ink/download/tiktok?url=' + encodeURIComponent(url);
+        const res = await fetch(apiUrl, { method: 'GET' });
+        if (!res.ok) {
+          throw new Error('API returned HTTP ' + res.status);
+        }
+        const data = await res.json();
+
+        if (data && data.ok && data.detail && data.downloadUrls) {
+          currentData = data;
+
+          const detail = data.detail;
+          const safeTitle = makeSafeTitle(detail.description, 'TikBotz');
+
+          document.title = `${safeTitle} - TikTok Downloader | TikBotz`;
+
+          authorAvatar.src = detail.authorProfile || '';
+          authorName.textContent = detail.author || 'Unknown';
+          authorUsername.textContent = '@' + (detail.authorUsername || '');
+          viewCount.textContent = formatNumber(detail.view);
+          likeCount.textContent = formatNumber(detail.like);
+          commentCount.textContent = formatNumber(detail.comment);
+          shareCount.textContent = formatNumber(detail.share);
+
+          typeBadge.textContent = (detail.type || 'video').toUpperCase();
+          description.textContent = detail.description || 'No description';
+
+          coverSection.style.display = 'block';
+          coverImage.src = detail.cover || '';
+
+          imageGallerySection.style.display = 'none';
+          imageGallery.innerHTML = '';
+          videoDownloads.style.display = 'none';
+
+          if (detail.type === 'image' && Array.isArray(data.downloadUrls.images) && data.downloadUrls.images.length > 0) {
+            imageGallerySection.style.display = 'block';
+
+            data.downloadUrls.images.forEach((imgUrl, index) => {
+              const imgItem = document.createElement('div');
+              imgItem.className = 'image-item';
+              imgItem.innerHTML = `
+                <img src="${imgUrl}" alt="Image ${index + 1}"/>
+                <div class="image-overlay">
+                  <button class="btn btn-small" onclick="downloadFile('${imgUrl}', '${safeTitle || 'TikTok'}-image-${index + 1}.jpg')">
+                    <i class="bi bi-download"></i>
+                  </button>
+                </div>
+              `;
+              imageGallery.appendChild(imgItem);
+            });
+          } else {
+            videoDownloads.style.display = 'block';
+          }
+
+          if (data.downloadUrls.video) {
+            btnVideoHD.onclick = () =>
+              downloadFile(data.downloadUrls.video, `${safeTitle || 'TikTok'}-HD.mp4`);
+          }
+          if (data.downloadUrls.video_standard) {
+            btnVideoStd.onclick = () =>
+              downloadFile(data.downloadUrls.video_standard, `${safeTitle || 'TikTok'}-Standard.mp4`);
+          }
+          if (data.downloadUrls.video_wm) {
+            btnVideoWM.onclick = () =>
+              downloadFile(data.downloadUrls.video_wm, `${safeTitle || 'TikTok'}-Watermark.mp4`);
+          }
+          if (data.downloadUrls.music) {
+            btnAudio.onclick = () =>
+              downloadFile(data.downloadUrls.music, `${safeTitle || 'TikTok'}-Audio.mp3`);
+          }
+
+          inputCard.style.display = 'none';
+          resultArea.style.display = 'block';
+
+          setTimeout(() => {
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 120);
+
+          Swal.fire({
+            title: 'Success!',
+            text: 'TikTok content loaded',
+            icon: 'success',
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } else {
+          const msg = (data && data.message) ? data.message : 'Failed to retrieve TikTok data';
+          Swal.fire({
+            title: 'Failed',
+            text: msg,
+            icon: 'error',
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          title: 'Error',
+          text: err.message,
+          icon: 'error',
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 4000
+        });
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    ttUrl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        fetchBtn.click();
+      }
+    });
+
+    resetUI();
+  </script>
+  <script>(function(s){s.dataset.zone='10289790',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script>(function(s){s.dataset.zone='10289791',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script>(function(s){s.dataset.zone='10289792',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://3nbf4.com/act/files/tag.min.js?z=10289759" data-cfasync="false" async></script>
+</body>
+</html>
