@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pengguna - Edit Foto & Nama</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            width: 100%;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .settings-btn {
+            background-color: #1e293b;
+            border: none;
+            color: #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-btn:hover {
+            background-color: #334155;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .profile-section {
+            background-color: #1e293b;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #3b82f6;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .profile-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .edit-section {
+            background-color: #1e293b;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #60a5fa;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        
+        .input-field {
+            width: 100%;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 14px;
+            color: #f8fafc;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #60a5fa;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #0f172a;
+            border: 2px dashed #475569;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-label:hover {
+            background-color: #1e293b;
+            border-color: #60a5fa;
+        }
+        
+        .file-label i {
+            font-size: 2rem;
+            color: #60a5fa;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background-color: #475569;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #64748b;
+        }
+        
+        .btn-reset {
+            background-color: transparent;
+            color: #94a3b8;
+            border: 1px solid #475569;
+        }
+        
+        .btn-reset:hover {
+            background-color: #1e293b;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            padding: 20px 0;
+            border-top: 1px solid #334155;
+            width: 100%;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #10b981;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-section, .edit-section {
+                padding: 25px;
+            }
+            
+            .profile-name {
+                font-size: 1.8rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        .ranking-badge {
+            background-color: #3b82f6;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .new-badge {
+            background-color: #10b981;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-user-circle"></i>
+                <span>ProfilKu</span>
+            </div>
+            <button class="settings-btn">
+                <i class="fas fa-cog"></i>
+                <span>Pengaturan</span>
+            </button>
+        </header>
+        
+        <main class="main-content">
+            <section class="profile-section">
+                <div class="profile-preview">
+                    <img src="https://lonyml.vercel.app/images/avatar-placeholder.png" alt="Foto Profil" class="profile-pic" id="profileImage">
+                    <h1 class="profile-name" id="displayName">Habahah</h1>
+                    <div class="profile-status">
+                        <div class="status-indicator"></div>
+                        <span>Aktif</span>
+                    </div>
+                    <div class="ranking-badge">
+                        3 ンス 🔵
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <p style="text-align: center; color: #94a3b8; max-width: 600px; line-height: 1.6;">
+                        Profil ini dapat disesuaikan dengan mengubah foto dan nama di bagian pengaturan di bawah. 
+                        Perubahan akan langsung terlihat di preview di atas.
+                    </p>
+                </div>
+            </section>
+            
+            <section class="edit-section">
+                <h2 class="section-title">
+                    <i class="fas fa-edit"></i>
+                    <span>Edit Profil</span>
+                    <span class="new-badge">NEW</span>
+                </h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="nameInput">
+                        <i class="fas fa-user"></i> Nama Pengguna
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nameInput" 
+                        class="input-field" 
+                        placeholder="Masukkan nama baru"
+                        value="Habahah"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="fileInput">
+                        <i class="fas fa-image"></i> Foto Profil
+                    </label>
+                    <div class="file-upload">
+                        <input 
+                            type="file" 
+                            id="fileInput" 
+                            class="file-input" 
+                            accept="image/*"
+                        >
+                        <label for="fileInput" class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 5px;">Klik untuk mengunggah foto</div>
+                                <div>Format yang didukung: JPG, PNG, GIF. Maksimal 5MB.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                    <button class="btn btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2023 ProfilKu. Semua hak dilindungi. Dibuat dengan HTML, CSS & JavaScript.</p>
+            <p style="margin-top: 10px;">API dari: <a href="https://lonyml.vercel.app/" style="color: #60a5fa; text-decoration: none;">lonyml.vercel.app</a></p>
+        </footer>
+        
+        <div class="notification" id="notification">
+            <i class="fas fa-check-circle"></i> Perubahan berhasil disimpan!
+        </div>
+    </div>
+
+    <script>
+        // Elemen DOM
+        const profileImage = document.getElementById('profileImage');
+        const displayName = document.getElementById('displayName');
+        const nameInput = document.getElementById('nameInput');
+        const fileInput = document.getElementById('fileInput');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const notification = document.getElementById('notification');
+        
+        // Data default
+        const defaultName = "Habahah";
+        const defaultImage = "https://lonyml.vercel.app/images/avatar-placeholder.png";
+        
+        // Simpan perubahan
+        saveBtn.addEventListener('click', function() {
+            const newName = nameInput.value.trim();
+            
+            if (newName) {
+                displayName.textContent = newName;
+                showNotification("Nama berhasil diubah menjadi: " + newName);
+            }
+            
+            // Di aplikasi nyata, di sini akan ada kode untuk mengirim data ke API
+            // Contoh penggunaan API referensi (dummy call)
+            fetch('https://lonyml.vercel.app/', { method: 'GET' })
+                .then(response => {
+                    // Meskipun kita tidak benar-benar mengirim data ke API,
+                    // ini menunjukkan bagaimana kita bisa menggunakan API referensi
+                    console.log("API referensi diakses:", response.status);
+                })
+                .catch(error => {
+                    console.log("Error mengakses API referensi:", error);
+                });
+        });
+        
+        // Reset ke default
+        resetBtn.addEventListener('click', function() {
+            nameInput.value = defaultName;
+            displayName.textContent = defaultName;
+            profileImage.src = defaultImage;
+            fileInput.value = '';
+            showNotification("Profil direset ke pengaturan default");
+        });
+        
+        // Handle upload gambar
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                
+                // Validasi tipe file
+                if (!file.type.match('image.*')) {
+                    showNotification("Silakan pilih file gambar (JPG, PNG, GIF)", true);
+                    this.value = '';
+                    return;
+                }
+                
+                // Validasi ukuran file (maks 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification("Ukuran file terlalu besar. Maksimal 5MB", true);
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    profileImage.src = e.target.result;
+                    showNotification("Foto profil berhasil diubah");
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            
+            // Ubah warna notifikasi jika error
+            if (isError) {
+                notification.style.backgroundColor = "#ef4444";
+                notification.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            } else {
+                notification.style.backgroundColor = "#10b981";
+                notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            }
+            
+            // Tampilkan notifikasi
+            notification.classList.add('show');
+            
+            // Sembunyikan setelah 3 detik
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Simulasi mengambil data dari API (dummy data)
+        function loadInitialData() {
+            // Di aplikasi nyata, ini akan mengambil data dari API
+            // Untuk demo, kita gunakan data default
+            console.log("Mengambil data dari API referensi...");
+            
+            // Contoh penggunaan API referensi
+            fetch('https://lonyml.vercel.app/', { method: 'GET' })
+                .then(response => {
+                    console.log("API referensi tersedia");
+                    // Di sini kita bisa memproses data dari API jika diperlukan
+                })
+                .catch(error => {
+                    console.log("Tidak dapat mengakses API, menggunakan data default");
+                });
+        }
+        
+        // Inisialisasi
+        window.addEventListener('DOMContentLoaded', function() {
+            loadInitialData();
+            
+            // Tambahkan event listener untuk tombol pengaturan
+            document.querySelector('.settings-btn').addEventListener('click', function() {
+                showNotification("Fitur pengaturan lengkap akan segera hadir!");
+            });
+        });
+    </script>
+</body>
+</html>
