@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Lobby Generator - Fan-made / Parody</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid #e94560;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #e94560;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: #0fce7c;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .panel {
+            background: rgba(25, 25, 40, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #2d4059;
+        }
+        
+        .panel-title {
+            color: #0fce7c;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e94560;
+        }
+        
+        .info-panel {
+            background: rgba(25, 25, 40, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #2d4059;
+        }
+        
+        .info-title {
+            color: #e94560;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0fce7c;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eee;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #2d4059;
+            background: #1a1a2e;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #e94560;
+            box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.3);
+        }
+        
+        .char-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .file-upload {
+            background: #1a1a2e;
+            border: 2px dashed #2d4059;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload:hover {
+            border-color: #e94560;
+            background: #1f1f35;
+        }
+        
+        .file-upload i {
+            font-size: 2.5rem;
+            color: #0fce7c;
+            margin-bottom: 10px;
+        }
+        
+        .file-name {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(to right, #e94560, #d32f4e);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .generate-btn:hover {
+            background: linear-gradient(to right, #d32f4e, #b71c3b);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .generate-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .info-text {
+            background: rgba(15, 206, 124, 0.1);
+            border-left: 4px solid #0fce7c;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-text p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .social-media {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .social-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .telegram { background: #0088cc; }
+        .tiktok { background: #000000; }
+        .whatsapp { background: #25D366; }
+        .website { background: #e94560; }
+        
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .result-container {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(15, 25, 35, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #0fce7c;
+        }
+        
+        .result-title {
+            color: #0fce7c;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .result-image-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .result-image {
+            max-width: 100%;
+            width: 400px;
+            border-radius: 10px;
+            border: 3px solid #0fce7c;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .result-username {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #0fce7c, #0db367);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #0db367, #0b9e5a);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(15, 206, 124, 0.4);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #0fce7c;
+            font-size: 1.2rem;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #0fce7c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #2d4059;
+            color: #aaa;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .api-info {
+            background: rgba(15, 206, 124, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: #0fce7c;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid #e94560;
+            color: #ff9999;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .demo-notice {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid #ffc107;
+            color: #ffd54f;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .panel, .info-panel {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .result-image {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        .generated-count {
+            color: #0fce7c;
+            font-weight: bold;
+        }
+        
+        .result-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0fce7c;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ML Lobby Generator</h1>
+            <div class="subtitle">Fan-made / Parody</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="panel">
+                <h2 class="panel-title">GENERATOR PANEL</h2>
+                
+                <div class="form-group">
+                    <label>Upload Avatar</label>
+                    <div class="file-upload" id="fileUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>Klik untuk upload gambar</div>
+                        <div class="file-name" id="fileName">Tidak ada file yang dipilih</div>
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username (maks 8 karakter)" maxlength="8">
+                    <div class="char-counter"><span id="charCount">0</span>/8 karakter</div>
+                </div>
+                
+                <button class="generate-btn" id="generateBtn">
+                    <i class="fas fa-bolt"></i> Generate
+                </button>
+                
+                <div class="demo-notice">
+                    <i class="fas fa-info-circle"></i> Mode Demo: Menggunakan gambar placeholder karena API asli tidak dapat diakses dari browser.
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <div>Loading... <span id="loadingText">Membuat lobby ML...</span></div>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> <span id="errorText">Terjadi kesalahan</span>
+                </div>
+                
+                <div class="result-container" id="resultContainer">
+                    <h3 class="result-title">Hasil Generate:</h3>
+                    
+                    <div class="result-image-container">
+                        <img id="resultImage" class="result-image" src="" alt="ML Lobby Result">
+                        <div class="result-username" id="resultUsername">USERNAME</div>
+                    </div>
+                    
+                    <div class="result-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="statMatches">1,234</div>
+                            <div class="stat-label">Total Match</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statWinrate">78.5%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statRank">Mythic</div>
+                            <div class="stat-label">Rank</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button class="download-btn" onclick="downloadImage()">
+                            <i class="fas fa-download"></i> Download Gambar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="api-info">
+                    <i class="fas fa-link"></i> Menggunakan API: https://lonyml.vercel.app/
+                    <div style="font-size: 0.7rem; margin-top: 5px; color: #aaa;">
+                        (Mode demo aktif - API tidak dapat diakses langsung dari browser)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <h2 class="info-title">INFORMASI !!</h2>
+                
+                <div class="info-text">
+                    <p>Website ini <strong>GRATIS 100%</strong> dan <strong>DILARANG DIJUAL BELIKAN</strong>. Tools ini dibuat hanya untuk <strong>DigeratiskanIBy onedev</strong>.</p>
+                </div>
+                
+                <h3 style="color: #0fce7c; margin-bottom: 15px;">IKUTI AKUN SOSMED KAMI</h3>
+                
+                <div class="social-media">
+                    <div class="social-item">
+                        <div class="social-icon telegram">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div>
+                            <strong>Telegram</strong><br>
+                            <span style="font-size: 0.9rem; color: #aaa;">@onedev_channel</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-item">
+                        <div class="social-icon tiktok">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <div>
+                            <strong>TikTok</strong><br>
+                            <span style="font-size: 0.9rem; color: #aaa;">@onedev_tiktok</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-item">
+                        <div class="social-icon whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <strong>WhatsApp Channel</strong><br>
+                            <span style="font-size: 0.9rem; color: #aaa;">+62 812-3456-7890</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-item">
+                        <div class="social-icon website">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div>
+                            <strong>Website</strong><br>
+                            <span style="font-size: 0.9rem; color: #aaa;">www.onedev.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkbox">
+                    <input type="checkbox" id="followCheck" checked>
+                    <label for="followCheck">Onedev</label>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <p>Hasil di-generate: <span class="generated-count" id="generatedCount">0</span> kali</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>ML Lobby Generator &copy; 2023 - Fan-made / Parody</p>
+            <p>Dibuat untuk tujuan hiburan. Mobile Legends adalah merek dagang dari Moonton.</p>
+        </div>
+    </div>
+
+    <script>
+        // Elemen DOM
+        const avatarInput = document.getElementById('avatarInput');
+        const fileUpload = document.getElementById('fileUpload');
+        const fileName = document.getElementById('fileName');
+        const usernameInput = document.getElementById('username');
+        const charCount = document.getElementById('charCount');
+        const generateBtn = document.getElementById('generateBtn');
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loadingText');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultImage = document.getElementById('resultImage');
+        const resultUsername = document.getElementById('resultUsername');
+        const generatedCount = document.getElementById('generatedCount');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        
+        // Statistik
+        const statMatches = document.getElementById('statMatches');
+        const statWinrate = document.getElementById('statWinrate');
+        const statRank = document.getElementById('statRank');
+        
+        // Gambar contoh untuk demo
+        const demoImages = [
+            'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            'https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            'https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w-600&q=80',
+            'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+        ];
+        
+        // Rank untuk demo
+        const ranks = ['Warrior', 'Elite', 'Master', 'Grandmaster', 'Epic', 'Legend', 'Mythic', 'Mythical Glory'];
+        
+        // Hitung karakter username
+        usernameInput.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+        
+        // Upload file avatar
+        fileUpload.addEventListener('click', function() {
+            avatarInput.click();
+        });
+        
+        avatarInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileName.textContent = this.files[0].name;
+                
+                // Validasi ukuran file (maks 2MB)
+                if (this.files[0].size > 2 * 1024 * 1024) {
+                    showError('Ukuran file maksimal 2MB');
+                    this.value = '';
+                    fileName.textContent = 'Tidak ada file yang dipilih';
+                    return;
+                }
+                
+                // Validasi tipe file
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                if (!validTypes.includes(this.files[0].type)) {
+                    showError('Hanya file gambar (JPEG, PNG, GIF) yang diizinkan');
+                    this.value = '';
+                    fileName.textContent = 'Tidak ada file yang dipilih';
+                    return;
+                }
+                
+                // Sembunyikan error jika ada
+                hideError();
+            }
+        });
+        
+        // Fungsi untuk menampilkan error
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(hideError, 5000);
+        }
+        
+        // Fungsi untuk menyembunyikan error
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+        
+        // Fungsi untuk generate gambar
+        generateBtn.addEventListener('click', async function() {
+            const username = usernameInput.value.trim();
+            
+            // Validasi input
+            if (!username) {
+                showError('Masukkan username terlebih dahulu!');
+                usernameInput.focus();
+                return;
+            }
+            
+            if (username.length > 8) {
+                showError('Username maksimal 8 karakter!');
+                return;
+            }
+            
+            // Tampilkan loading
+            loading.style.display = 'block';
+            generateBtn.disabled = true;
+            resultContainer.style.display = 'none';
+            hideError();
+            
+            try {
+                // Update teks loading
+                const loadingSteps = [
+                    'Menyiapkan data...',
+                    'Memproses username...',
+                    'Membuat lobby...',
+                    'Menambahkan statistik...',
+                    'Menyelesaikan...'
+                ];
+                
+                let step = 0;
+                const loadingInterval = setInterval(() => {
+                    loadingText.textContent = loadingSteps[step];
+                    step = (step + 1) % loadingSteps.length;
+                }, 500);
+                
+                // Simulasi proses generate (3 detik)
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                clearInterval(loadingInterval);
+                
+                // Pilih gambar demo acak
+                const randomImageIndex = Math.floor(Math.random() * demoImages.length);
+                const imageUrl = demoImages[randomImageIndex];
+                
+                // Set gambar hasil
+                resultImage.src = imageUrl;
+                resultUsername.textContent = username;
+                
+                // Generate statistik acak untuk demo
+                const matches = Math.floor(Math.random() * 5000) + 1000;
+                const winrate = (Math.random() * 30 + 60).toFixed(1);
+                const rank = ranks[Math.floor(Math.random() * ranks.length)];
+                
+                statMatches.textContent = matches.toLocaleString();
+                statWinrate.textContent = `${winrate}%`;
+                statRank.textContent = rank;
+                
+                // Update counter
+                let count = parseInt(localStorage.getItem('generatedCount') || '0');
+                count++;
+                localStorage.setItem('generatedCount', count.toString());
+                generatedCount.textContent = count;
+                
+                // Simpan data untuk download
+                localStorage.setItem('lastGeneratedImage', imageUrl);
+                localStorage.setItem('lastGeneratedUsername', username);
+                localStorage.setItem('lastGeneratedMatches', matches);
+                localStorage.setItem('lastGeneratedWinrate', winrate);
+                localStorage.setItem('lastGeneratedRank', rank);
+                
+                // Tampilkan hasil
+                loading.style.display = 'none';
+                resultContainer.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loading.style.display = 'none';
+                showError('Terjadi kesalahan saat generate. Silakan coba lagi.');
+            } finally {
+                generateBtn.disabled = false;
+            }
+        });
+        
+        // Fungsi untuk download gambar
+        function downloadImage() {
+            const username = localStorage.getItem('lastGeneratedUsername') || usernameInput.value || 'MLPlayer';
+            
+            // Buat canvas untuk menggambar hasil
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Ukuran canvas
+            canvas.width = 800;
+            canvas.height = 600;
+            
+            // Gambar latar belakang
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Tambahkan gradien
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, '#e94560');
+            gradient.addColorStop(1, '#0fce7c');
+            
+            // Judul
+            ctx.font = 'bold 40px Arial';
+            ctx.fillStyle = gradient;
+            ctx.textAlign = 'center';
+            ctx.fillText('ML Lobby Generator', canvas.width / 2, 60);
+            
+            // Username
+            ctx.font = 'bold 50px Arial';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(username, canvas.width / 2, 130);
+            
+            // Kotak untuk gambar
+            ctx.fillStyle = '#0fce7c';
+            ctx.fillRect(150, 170, 500, 300);
+            
+            // Gambar placeholder
+            ctx.font = '30px Arial';
+            ctx.fillStyle = '#1a1a2e';
+            ctx.textAlign = 'center';
+            ctx.fillText('Gambar Lobby ML', canvas.width / 2, 320);
+            
+            // Statistik
+            ctx.font = 'bold 25px Arial';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'left';
+            
+            const matches = localStorage.getItem('lastGeneratedMatches') || '1,234';
+            const winrate = localStorage.getItem('lastGeneratedWinrate') || '78.5%';
+            const rank = localStorage.getItem('lastGeneratedRank') || 'Mythic';
+            
+            ctx.fillText(`Total Match: ${matches}`, 180, 500);
+            ctx.fillText(`Win Rate: ${winrate}`, 180, 540);
+            ctx.fillText(`Rank: ${rank}`, 450, 540);
+            
+            // Footer
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#aaa';
+            ctx.textAlign = 'center';
+            ctx.fillText('Dibuat dengan ML Lobby Generator - Fan-made / Parody', canvas.width / 2, 580);
+            
+            // Konversi canvas ke gambar dan download
+            const link = document.createElement('a');
+            link.download = `ml-lobby-${username}.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Inisialisasi
+        window.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi counter
+            const count = localStorage.getItem('generatedCount') || '0';
+            generatedCount.textContent = count;
+            
+            // Set karakter count awal
+            charCount.textContent = usernameInput.value.length;
+            
+            // Contoh username
+            const exampleUsernames = ['Skayerki', 'Habahah', 'ProPlayer', 'MLBBFan', 'OneDev', 'LingMain', 'GusionPro'];
+            const randomUsername = exampleUsernames[Math.floor(Math.random() * exampleUsernames.length)];
+            usernameInput.placeholder = `Contoh: ${randomUsername}`;
+            
+            // Sembunyikan elemen yang tidak perlu
+            hideError();
+        });
+    </script>
+</body>
+</html>
