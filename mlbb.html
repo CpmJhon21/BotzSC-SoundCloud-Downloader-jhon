@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Lobby Generator - Fan-made / Parody</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff4757;
+        }
+        
+        h1 {
+            color: #ff4757;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            color: #00d2d3;
+            font-size: 1.2rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .control-panel {
+            background: rgba(30, 30, 50, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #374785;
+        }
+        
+        .preview-panel {
+            background: rgba(30, 30, 50, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            flex: 2;
+            min-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #374785;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-title {
+            color: #00d2d3;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff4757;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #374785;
+            background: #1a1a2e;
+            color: white;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff4757;
+        }
+        
+        .char-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .file-upload {
+            background: #1a1a2e;
+            border: 2px dashed #374785;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload:hover {
+            border-color: #ff4757;
+        }
+        
+        .file-name {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(to right, #ff4757, #ff3838);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .generate-btn:hover {
+            background: linear-gradient(to right, #ff3838, #ff2e2e);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #00d2d3;
+            font-size: 1.2rem;
+        }
+        
+        .error-message {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid #ff4757;
+            color: #ff9999;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .lobby-preview {
+            flex: 1;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lobby-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lobby-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .nickname-overlay {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Arial Black', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-align: center;
+            width: 80%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .avatar-overlay {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #00d2d3;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .default-avatar {
+            font-size: 60px;
+            color: #666;
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #00d2d3, #00a8a8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            align-self: center;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #00a8a8, #009595);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #374785;
+            color: #aaa;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .info-text {
+            background: rgba(0, 210, 211, 0.1);
+            border-left: 4px solid #00d2d3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .generated-count {
+            color: #00d2d3;
+            font-weight: bold;
+        }
+        
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #00d2d3;
+            margin: 15px auto;
+            overflow: hidden;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .control-panel, .preview-panel {
+                min-width: 100%;
+            }
+            
+            .lobby-container {
+                height: 400px;
+            }
+            
+            .nickname-overlay {
+                font-size: 20px;
+                top: 41%;
+            }
+            
+            .avatar-overlay {
+                width: 120px;
+                height: 120px;
+                top: 47%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .lobby-container {
+                height: 300px;
+            }
+            
+            .nickname-overlay {
+                font-size: 18px;
+                top: 40%;
+            }
+            
+            .avatar-overlay {
+                width: 100px;
+                height: 100px;
+                top: 46%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ML Lobby Generator</h1>
+            <div class="subtitle">Fan-made / Parody</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="control-panel">
+                <h2 class="panel-title">CONTROL PANEL</h2>
+                
+                <div class="form-group">
+                    <label>Upload Avatar</label>
+                    <div class="file-upload" id="fileUpload">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: #00d2d3; margin-bottom: 10px;"></i>
+                        <div>Klik untuk upload gambar</div>
+                        <div class="file-name" id="fileName">Tidak ada file yang dipilih</div>
+                    </div>
+                    
+                    <div class="avatar-preview" id="avatarPreview">
+                        <div class="default-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username" maxlength="15">
+                    <div class="char-counter"><span id="charCount">0</span>/15 karakter</div>
+                </div>
+                
+                <div class="info-text">
+                    <p><strong>INFORMASI:</strong> Website ini GRATIS 100% dan DILARANG DIJUAL BELIKAN. Tools ini dibuat hanya untuk hiburan.</p>
+                </div>
+                
+                <button class="generate-btn" id="generateBtn">
+                    <i class="fas fa-bolt"></i> GENERATE LOBBY
+                </button>
+                
+                <div class="loading" id="loading">
+                    <div class="loading-spinner" style="border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #00d2d3; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+                    <div>Loading... <span id="loadingText">Membuat lobby...</span></div>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> <span id="errorText">Terjadi kesalahan</span>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p>Hasil di-generate: <span class="generated-count" id="generatedCount">0</span> kali</p>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <h2 class="panel-title">LOBBY PREVIEW</h2>
+                
+                <div class="lobby-preview">
+                    <div class="lobby-container">
+                        <!-- Background lobby image -->
+                        <img src="https://via.placeholder.com/800x500/000000/374785?text=Lobby+Background" alt="Lobby Background" class="lobby-bg" id="lobbyBg">
+                        
+                        <!-- Nickname overlay -->
+                        <div class="nickname-overlay" id="nicknameOverlay">
+                            YOUR_NICKNAME
+                        </div>
+                        
+                        <!-- Avatar overlay -->
+                        <div class="avatar-overlay" id="avatarOverlay">
+                            <div class="default-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="download-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i> DOWNLOAD LOBBY
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>ML Lobby Generator &copy; 2023 - Fan-made / Parody</p>
+            <p>Dibuat untuk tujuan hiburan. Mobile Legends adalah merek dagang dari Moonton.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">Menggunakan template lobby dari screenshots yang diberikan</p>
+        </div>
+    </div>
+
+    <script>
+        // Elemen DOM
+        const avatarInput = document.getElementById('avatarInput');
+        const fileUpload = document.getElementById('fileUpload');
+        const fileName = document.getElementById('fileName');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const usernameInput = document.getElementById('username');
+        const charCount = document.getElementById('charCount');
+        const generateBtn = document.getElementById('generateBtn');
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loadingText');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const generatedCount = document.getElementById('generatedCount');
+        const nicknameOverlay = document.getElementById('nicknameOverlay');
+        const avatarOverlay = document.getElementById('avatarOverlay');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const lobbyBg = document.getElementById('lobbyBg');
+        
+        // Gambar template lobby
+        const lobbyTemplates = [
+            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDgwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjMDAwMDAwIi8+CjxyZWN0IHg9IjUwIiB5PSI1MCIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI0MDAiIHJ4PSIyMCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzE2MF8xNjEpIiBzdHlsZT0ic3Ryb2tlOiMzNzQ3ODU7c3Ryb2tlLXdpZHRoOjI7Ii8+Cjx0ZXh0IHg9IjQwMCIgeT0iMTAwIiBmaWxsPSIjRkZGRkZGIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb2RlIFJhbmsgRHJhZnQgUGljazwvdGV4dD4KPHRleHQgeD0iNDAwIiB5PSIxNDAiIGZpbGw9IiNGRkZGRkYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjg4bXM8L3RleHQ+CjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI1MCIgcj0iNzAiIGZpbGw9IiMyMjIyMjIiIHN0cm9rZT0iIzAwRDFEMyIgc3Ryb2tlLXdpZHRoPSIzIi8+Cjx0ZXh0IHg9IjQwMCIgeT0iMzIwIiBmaWxsPSIjRkZGRkZGIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtc2hhZG93PSIyIDIgNHB4IHJnYSgwLDAsMCwwLjgpIj5Zb3VyIE5pY2tuYW1lPC90ZXh0Pgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE2MF8xNjEiIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjQwMCIgeTI9IjQ1MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEUwRTE5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzE2MTYyQyIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==',
+            // Template 2 dengan "slayerking" (akan diganti dengan input user)
+            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDgwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjMDAwMDAwIi8+CjxyZWN0IHg9IjUwIiB5PSI1MCIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI0MDAiIHJ4PSIyMCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzE2MF8xNjIpIiBzdHlsZT0ic3Ryb2tlOiMzNzQ3ODU7c3Ryb2tlLXdpZHRoOjI7Ii8+Cjx0ZXh0IHg9IjQwMCIgeT0iMTAwIiBmaWxsPSIjRkZGRkZGIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb2RlIFJhbmsgRHJhZnQgUGljazwvdGV4dD4KPHRleHQgeD0iNDAwIiB5PSIxNDAiIGZpbGw9IiNGRkZGRkYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjg4bXM8L3RleHQ+CjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI1MCIgcj0iNzAiIGZpbGw9IiMyMjIyMjIiIHN0cm9rZT0iIzAwRDFEMyIgc3Ryb2tlLXdpZHRoPSIzIi8+Cjx0ZXh0IHg9IjQwMCIgeT0iMzIwIiBmaWxsPSIjRkZGRkZGIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI5MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtc2hhZG93PSIyIDIgNHB4IHJnYSgwLDAsMCwwLjgpIj5zbGF5ZXJraW5nPC90ZXh0Pgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE2MF8xNjIiIHgxPSI0MDAiIHkxPSI1MCIgeDI9IjQwMCIgeTI9IjQ1MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEUwRTE5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzE2MTYyQyIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg=='
+        ];
+        
+        // Variabel state
+        let uploadedAvatar = null;
+        let avatarUrl = null;
+        let currentLobbyTemplate = 1; // Mulai dengan template kedua (yang ada slayerking)
+        
+        // Hitung karakter username
+        usernameInput.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            // Update preview nickname secara real-time
+            if (this.value.trim()) {
+                nicknameOverlay.textContent = this.value.trim();
+            } else {
+                nicknameOverlay.textContent = 'YOUR_NICKNAME';
+            }
+        });
+        
+        // Upload file avatar
+        fileUpload.addEventListener('click', () => avatarInput.click());
+        
+        avatarInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                fileName.textContent = file.name;
+                
+                // Validasi ukuran file
+                if (file.size > 5 * 1024 * 1024) {
+                    showError('Ukuran file maksimal 5MB');
+                    this.value = '';
+                    fileName.textContent = 'Tidak ada file yang dipilih';
+                    return;
+                }
+                
+                // Validasi tipe file
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    showError('Hanya file gambar (JPEG, PNG, GIF, WebP) yang diizinkan');
+                    this.value = '';
+                    fileName.textContent = 'Tidak ada file yang dipilih';
+                    return;
+                }
+                
+                // Baca file sebagai URL
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarUrl = e.target.result;
+                    
+                    // Tampilkan preview avatar
+                    avatarPreview.innerHTML = `<img src="${avatarUrl}" alt="Avatar Preview">`;
+                    
+                    // Update preview di lobby
+                    updateAvatarPreview();
+                    
+                    uploadedAvatar = file;
+                };
+                reader.readAsDataURL(file);
+                
+                hideError();
+            }
+        });
+        
+        // Update avatar preview di lobby
+        function updateAvatarPreview() {
+            if (avatarUrl) {
+                avatarOverlay.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="avatar-img">`;
+            } else {
+                avatarOverlay.innerHTML = '<div class="default-avatar"><i class="fas fa-user"></i></div>';
+            }
+        }
+        
+        // Tampilkan error
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(hideError, 5000);
+        }
+        
+        // Sembunyikan error
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+        
+        // Generate lobby
+        generateBtn.addEventListener('click', async function() {
+            const username = usernameInput.value.trim();
+            
+            if (!username) {
+                showError('Masukkan username terlebih dahulu!');
+                usernameInput.focus();
+                return;
+            }
+            
+            // Tampilkan loading
+            loading.style.display = 'block';
+            generateBtn.disabled = true;
+            loadingText.textContent = 'Membuat lobby...';
+            
+            try {
+                // Simulasi proses
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Update preview
+                nicknameOverlay.textContent = username;
+                updateAvatarPreview();
+                
+                // Gunakan template kedua (yang ada placeholder untuk nickname)
+                currentLobbyTemplate = 1;
+                
+                // Update counter
+                let count = parseInt(localStorage.getItem('generatedCount') || '0');
+                count++;
+                localStorage.setItem('generatedCount', count.toString());
+                generatedCount.textContent = count;
+                
+                // Simpan data
+                localStorage.setItem('lastUsername', username);
+                if (avatarUrl) {
+                    localStorage.setItem('lastAvatar', avatarUrl);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Terjadi kesalahan saat generate. Silakan coba lagi.');
+            } finally {
+                loading.style.display = 'none';
+                generateBtn.disabled = false;
+            }
+        });
+        
+        // Download gambar lobby
+        downloadBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim() || localStorage.getItem('lastUsername') || 'Player';
+            
+            // Buat canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Ukuran canvas
+            canvas.width = 800;
+            canvas.height = 500;
+            
+            // Gambar background hitam
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Gambar background lobby
+            ctx.fillStyle = '#0e0e19';
+            ctx.beginPath();
+            ctx.roundRect(50, 50, 700, 400, 20);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#374785';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Teks "Mode Rank Draft Pick"
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.fillText('Mode Rank Draft Pick', canvas.width / 2, 100);
+            
+            // Teks "88ms"
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('88ms', canvas.width / 2, 140);
+            
+            // Lingkaran untuk avatar
+            ctx.fillStyle = '#222222';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, 250, 70, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#00d2d3';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Gambar avatar jika ada
+            if (avatarUrl) {
+                const avatarImg = new Image();
+                avatarImg.crossOrigin = 'anonymous';
+                avatarImg.onload = function() {
+                    // Gambar avatar dalam lingkaran
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(canvas.width / 2, 250, 67, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.clip();
+                    ctx.drawImage(avatarImg, canvas.width / 2 - 67, 250 - 67, 134, 134);
+                    ctx.restore();
+                    
+                    // Gambar nickname
+                    ctx.font = '900 24px "Arial Black", sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                    ctx.shadowBlur = 4;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                    ctx.fillText(username.toUpperCase(), canvas.width / 2, 320);
+                    
+                    // Reset shadow
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    // Download gambar
+                    const link = document.createElement('a');
+                    link.download = `ml-lobby-${username}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                };
+                avatarImg.src = avatarUrl;
+            } else {
+                // Gambar icon default jika tidak ada avatar
+                ctx.font = '48px Arial';
+                ctx.fillStyle = '#666666';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('👤', canvas.width / 2, 250);
+                
+                // Gambar nickname
+                ctx.font = '900 24px "Arial Black", sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+                ctx.fillText(username.toUpperCase(), canvas.width / 2, 320);
+                
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                
+                // Download gambar
+                const link = document.createElement('a');
+                link.download = `ml-lobby-${username}.png`;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+        
+        // Fungsi untuk rounded rectangle
+        CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+            if (width < 2 * radius) radius = width / 2;
+            if (height < 2 * radius) radius = height / 2;
+            this.beginPath();
+            this.moveTo(x + radius, y);
+            this.arcTo(x + width, y, x + width, y + height, radius);
+            this.arcTo(x + width, y + height, x, y + height, radius);
+            this.arcTo(x, y + height, x, y, radius);
+            this.arcTo(x, y, x + width, y, radius);
+            this.closePath();
+            return this;
+        };
+        
+        // Inisialisasi
+        window.addEventListener('DOMContentLoaded', function() {
+            // Load counter
+            const count = localStorage.getItem('generatedCount') || '0';
+            generatedCount.textContent = count;
+            
+            // Load last username jika ada
+            const lastUsername = localStorage.getItem('lastUsername');
+            if (lastUsername) {
+                usernameInput.value = lastUsername;
+                nicknameOverlay.textContent = lastUsername;
+                charCount.textContent = lastUsername.length;
+            }
+            
+            // Load last avatar jika ada
+            const lastAvatar = localStorage.getItem('lastAvatar');
+            if (lastAvatar) {
+                avatarUrl = lastAvatar;
+                avatarPreview.innerHTML = `<img src="${lastAvatar}" alt="Avatar Preview">`;
+                avatarOverlay.innerHTML = `<img src="${lastAvatar}" alt="Avatar" class="avatar-img">`;
+            }
+            
+            // Set template awal
+            lobbyBg.src = lobbyTemplates[currentLobbyTemplate];
+        });
+        
+        // CSS untuk animasi loading spinner
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
