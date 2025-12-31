@@ -8,7 +8,7 @@
     </title>
     <style>
       *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:&#39;Segoe UI&#39;,sans-serif;background:#000;color:#fff;overflow:hidden}
+    body{font-family:'Segoe UI',sans-serif;background:#000;color:#fff;overflow:hidden}
     /* ====== BACKGROUND NEBULA + CAHAYA ====== */
     .nebula-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(128,0,255,.4),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(0,255,255,.3),transparent 60%),radial-gradient(ellipse at center,#0f0c29,#302b63,#24243e);background-size:200% 200%;animation:nebula 20s infinite alternate;z-index:-2}
     @keyframes nebula{0%{background-position:0% 50%}100%{background-position:100% 50%}}
@@ -105,37 +105,67 @@
       </div>
     </div>
     <script>
-      const home = document.getElementById(&#39;homePage&#39;);
-    const load = document.getElementById(&#39;loadingPage&#39;);
-    const result = document.getElementById(&#39;resultPage&#39;);
-    const hasilImg = document.getElementById(&#39;hasilImg&#39;);
-    const downloadBtn = document.getElementById(&#39;downloadBtn&#39;);
+      const home = document.getElementById('homePage');
+    const load = document.getElementById('loadingPage');
+    const result = document.getElementById('resultPage');
+    const hasilImg = document.getElementById('hasilImg');
+    const downloadBtn = document.getElementById('downloadBtn');
 
     function tampilkan(el){
-      [home,load,result].forEach(p=&gt;p.classList.add(&#39;hidden&#39;));
-      el.classList.remove(&#39;hidden&#39;);
+      [home,load,result].forEach(p=>p.classList.add('hidden'));
+      el.classList.remove('hidden');
     }
 
     function buatGambar(){
-      const time = document.getElementById(&#39;time&#39;).value.trim();
-      const battery = document.getElementById(&#39;battery&#39;).value.trim();
-      const carrier = document.getElementById(&#39;carrier&#39;).value.trim();
-      const message = document.getElementById(&#39;message&#39;).value.trim();
-      if(!time||!battery||!carrier||!message)return alert(&#39;Lengkapi semua field!&#39;);
+      const time = document.getElementById('time').value.trim();
+      const battery = document.getElementById('battery').value.trim();
+      const carrier = document.getElementById('carrier').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if(!time||!battery||!carrier||!message)return alert('Lengkapi semua field!');
 
       tampilkan(load);
-      const msg = encodeURIComponent(message);
-      const url = `https://brat.siputzx.my.id/iphone-quoted?time=${encodeURIComponent(time)}&amp;batteryPercentage=${battery}&amp;carrierName=${encodeURIComponent(carrier)}&amp;messageText=${msg}&amp;emojiStyle=apple`;
       
-      hasilImg.src = url;
-      hasilImg.onload = () =&gt; {
-        downloadBtn.href = url;
-        tampilkan(result);
+      // Menggunakan API baru
+      const apiUrl = 'https://iphonequotechatdlii.vercel.app/api/create';
+      
+      // Data yang akan dikirim
+      const requestData = {
+        time: time,
+        batteryPercentage: battery,
+        carrierName: carrier,
+        messageText: message,
+        emojiStyle: 'apple'
       };
-      hasilImg.onerror = () =&gt; {
-        alert(&#39;Gagal memuat gambar, coba lagi.&#39;);
+
+      // Menggunakan fetch untuk POST request
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Gagal memuat gambar dari API');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Asumsi API mengembalikan objek dengan properti 'url'
+        if (data && data.url) {
+          hasilImg.src = data.url;
+          downloadBtn.href = data.url;
+          tampilkan(result);
+        } else {
+          throw new Error('Format respons API tidak sesuai');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Gagal memuat gambar, coba lagi. Error: ' + error.message);
         tampilkan(home);
-      };
+      });
     }
 
     function kembali(){
