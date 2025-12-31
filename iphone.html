@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      IQC iPhone - Nebula
+    </title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#000;color:#fff;overflow:hidden}
+    /* ====== BACKGROUND NEBULA + CAHAYA ====== */
+    .nebula-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(128,0,255,.4),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(0,255,255,.3),transparent 60%),radial-gradient(ellipse at center,#0f0c29,#302b63,#24243e);background-size:200% 200%;animation:nebula 20s infinite alternate;z-index:-2}
+    @keyframes nebula{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+    .light{position:fixed;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.15),transparent 70%);border-radius:50%;filter:blur(80px);animation:float 12s infinite ease-in-out;z-index:-1}
+    .light1{top:10%;left:10%;animation-delay:0s}.light2{top:60%;right:10%;animation-delay:4s}.light3{bottom:10%;left:50%;animation-delay:8s}
+    @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-30px) scale(1.2)}}
+
+    /* ====== HALAMAN ====== */
+    .page{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
+    .hidden{opacity:0;pointer-events:none}
+
+    /* ====== FORM ====== */
+    .form-card{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);padding:30px 40px;border-radius:20px;border:1px solid rgba(255,255,255,.1);width:90%;max-width:420px;box-shadow:0 0 40px rgba(128,0,255,.4)}
+    h2{margin-bottom:20px;text-align:center;color:#e0c3ff;font-size:26px}
+    label{margin-top:15px;display:block;font-weight:bold}
+    input{width:100%;padding:12px;margin-top:5px;border:none;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:16px}
+    input::placeholder{color:#ccc}
+    button{width:100%;padding:14px;margin-top:25px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;transition:transform .2s}
+    button:hover{transform:scale(1.03)}
+
+    /* ====== LOADING ====== */
+    .loading{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .loader{width:80px;height:80px;border:8px solid rgba(255,255,255,.1);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading p{margin-top:20px;font-size:18px;color:#e0c3ff}
+
+    /* ====== HASIL ====== */
+    .result-card{text-align:center;background:rgba(255,255,255,.05);backdrop-filter:blur(12px);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,.1);box-shadow:0 0 40px rgba(128,0,255,.4)}
+    img{max-width:90%;border-radius:15px;box-shadow:0 0 30px rgba(128,0,255,.6)}
+    .back{margin-top:20px;background:transparent;border:2px solid #fff;color:#fff}
+    
+    /* ====== ERROR MESSAGE ====== */
+    .error-message{color:#ff6b6b;margin-top:15px;padding:10px;background:rgba(255,0,0,0.1);border-radius:8px;border:1px solid #ff6b6b;}
+    </style>
+  </head>
+  <body>
+    <div class="nebula-bg">
+    </div>
+    <div class="light light1">
+    </div>
+    <div class="light light2">
+    </div>
+    <div class="light light3">
+    </div>
+    <!-- ========== HALAMAN UTAMA ========== -->
+    <div id="homePage" class="page">
+      <div class="form-card">
+        <h2>
+          📱 IQC iPhone
+        </h2>
+        <label>
+          🕒 Jam (contoh: 18:00)
+        </label>
+        <input type="text" id="time" placeholder="18:00" />
+        <label>
+          🔋 Baterai (%)
+        </label>
+        <input type="number" id="battery" placeholder="40" min="0" max="100" />
+        <label>
+          📶 Merek Kartu
+        </label>
+        <input type="text" id="carrier" placeholder="Indosat" />
+        <label>
+          💬 Teks Pesan
+        </label>
+        <input type="text" id="message" placeholder="Hai hai" />
+        <button onclick="buatGambar()">
+          Buat Gambar
+        </button>
+        <div id="errorMessage" class="error-message hidden"></div>
+      </div>
+    </div>
+    <!-- ========== LOADING ========== -->
+    <div id="loadingPage" class="page hidden">
+      <div class="loading">
+        <div class="loader">
+        </div>
+        <p>
+          Mohon tunggu...
+        </p>
+      </div>
+    </div>
+    <!-- ========== HASIL ========== -->
+    <div id="resultPage" class="page hidden">
+      <div class="result-card">
+        <h2>
+          ✅ Berhasil!
+        </h2>
+        <img id="hasilImg" src="" alt="hasil" />
+        <br />
+        <a id="downloadBtn" download="iqc-iphone.jpg">        <button>
+          Download
+        </button>
+</a>
+        <button class="back" onclick="kembali()">
+          Kembali
+        </button>
+      </div>
+    </div>
+    <script>
+      const home = document.getElementById('homePage');
+    const load = document.getElementById('loadingPage');
+    const result = document.getElementById('resultPage');
+    const hasilImg = document.getElementById('hasilImg');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const errorMessage = document.getElementById('errorMessage');
+
+    function tampilkan(el){
+      [home,load,result].forEach(p=>p.classList.add('hidden'));
+      el.classList.remove('hidden');
+      errorMessage.classList.add('hidden');
+      errorMessage.textContent = '';
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.remove('hidden');
+      tampilkan(home);
+    }
+
+    async function buatGambar(){
+      const time = document.getElementById('time').value.trim();
+      const battery = document.getElementById('battery').value.trim();
+      const carrier = document.getElementById('carrier').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      if(!time||!battery||!carrier||!message){
+        showError('Lengkapi semua field!');
+        return;
+      }
+
+      // Validasi format waktu
+      if(!/^\d{1,2}:\d{2}$/.test(time)){
+        showError('Format waktu salah! Gunakan format HH:MM (contoh: 18:00)');
+        return;
+      }
+
+      tampilkan(load);
+      
+      // Coba beberapa format API yang mungkin
+      const apiVersions = [
+        // Versi 1: API dengan parameter query (GET)
+        `https://iphonequotechatdlii.vercel.app/api/create?time=${encodeURIComponent(time)}&batteryPercentage=${battery}&carrierName=${encodeURIComponent(carrier)}&messageText=${encodeURIComponent(message)}&emojiStyle=apple`,
+        
+        // Versi 2: API endpoint yang berbeda
+        `https://iphonequotechatdlii.vercel.app/generate?time=${encodeURIComponent(time)}&battery=${battery}&carrier=${encodeURIComponent(carrier)}&message=${encodeURIComponent(message)}&emoji=apple`,
+        
+        // Versi 3: Path-based API
+        `https://iphonequotechatdlii.vercel.app/iphone-quote/${encodeURIComponent(time)}/${battery}/${encodeURIComponent(carrier)}/${encodeURIComponent(message)}/apple`
+      ];
+
+      let imageGenerated = false;
+
+      // Coba setiap versi API sampai berhasil
+      for (let i = 0; i < apiVersions.length; i++) {
+        const apiUrl = apiVersions[i];
+        console.log(`Mencoba API: ${apiUrl}`);
+        
+        try {
+          // Coba dengan method GET dulu (lebih umum untuk API gambar)
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'image/jpeg,image/png,image/*,*/*',
+            }
+          });
+
+          if (response.ok) {
+            // Jika response adalah gambar langsung
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            hasilImg.src = imageUrl;
+            downloadBtn.href = imageUrl;
+            imageGenerated = true;
+            tampilkan(result);
+            break;
+          }
+        } catch (error) {
+          console.log(`API versi ${i + 1} gagal:`, error.message);
+          continue;
+        }
+      }
+
+      // Jika tidak ada yang berhasil, coba method POST
+      if (!imageGenerated) {
+        try {
+          const apiUrl = 'https://iphonequotechatdlii.vercel.app/api/create';
+          const requestData = {
+            time: time,
+            batteryPercentage: battery,
+            carrierName: carrier,
+            messageText: message,
+            emojiStyle: 'apple'
+          };
+
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.url) {
+              hasilImg.src = data.url;
+              downloadBtn.href = data.url;
+              tampilkan(result);
+            } else if (data && data.imageUrl) {
+              hasilImg.src = data.imageUrl;
+              downloadBtn.href = data.imageUrl;
+              tampilkan(result);
+            } else {
+              showError('API tidak mengembalikan URL gambar yang valid');
+            }
+          } else {
+            showError(`Server error: ${response.status}`);
+          }
+        } catch (error) {
+          console.error('Error POST:', error);
+          showError(`Gagal terhubung ke server: ${error.message}`);
+        }
+      }
+    }
+
+    function kembali(){
+      // Hapus blob URL jika ada untuk mencegah memory leak
+      if (hasilImg.src && hasilImg.src.startsWith('blob:')) {
+        URL.revokeObjectURL(hasilImg.src);
+      }
+      tampilkan(home);
+    }
+
+    // Event listener untuk input validation
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            buatGambar();
+          }
+        });
+      });
+    });
+    </script>
+  </body>
+</html>
