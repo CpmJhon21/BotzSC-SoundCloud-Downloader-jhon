@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Terms of Service - BotzApi
+    </title>
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" />
+    <link rel="apple-touch-icon" href="https://cdn.botzaku.eu.org/1_jyc1CgQorsviq8Z---WPFdLBmHIM67C" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="Terms of Service for BotzApi. Read our terms and conditions for using our API services." />
+    <meta name="keywords" content="terms of service, api terms, botzapi, conditions" />
+    <meta name="author" content="Riski Yanda" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:url" content="https://host.optikl.ink/terms" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Terms of Service - BotzApi" />
+    <meta property="og:description" content="Terms of Service for BotzApi. Read our terms and conditions for using our API services." />
+    <meta property="og:image" content="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" />
+    <meta property="og:site_name" content="BotzApi" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@botz_aku" />
+    <meta name="twitter:creator" content="@botz_aku" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:&#39;Segoe UI&#39;,sans-serif;background:#000;color:#f1fdf1;line-height:1.6;min-height:100vh}
+    nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);z-index:1000}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+    .logo{display:flex;align-items:center;gap:.75rem}
+    .logo img{height:2rem;width:2rem;border-radius:50%}
+    .logo span{font-size:1.25rem;font-weight:bold;color:#98ff98}
+    .nav-links{display:flex;gap:1.5rem}
+    .nav-links a{text-decoration:none;color:#fff;transition:.3s}
+    .nav-links a:hover{color:#98ff98}
+    .hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}
+    .hamburger span{height:3px;width:25px;background:#98ff98;transition:.3s}
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mobile-menu{display:none;background:#000;padding:1rem}
+    .mobile-menu.active{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+    .mobile-menu h3{color:#fff;margin-bottom:.5rem}
+    .mobile-menu a{color:#fff;padding:.25rem 0;text-decoration:none;display:block;transition:.3s}
+    .mobile-menu a:hover{color:#98ff98}
+    .main-content{max-width:960px;margin:0 auto;padding:6rem 1rem 3rem}
+    .hero{text-align:center;margin-bottom:3rem}
+    .hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;margin-bottom:1rem;color:#98ff98}
+    .hero p{font-size:1.125rem;color:#aaa;margin-bottom:.5rem}
+    .last-updated{font-size:.9rem;color:#777}
+    .content-section{background:rgba(255,255,255,.05);border-radius:1rem;padding:2rem;margin-bottom:2rem;overflow-x:auto}
+    .section-title{font-size:1.5rem;font-weight:700;color:#98ff98;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:.5rem}
+    .subsection-title{font-size:1.125rem;font-weight:600;color:#fff;margin:1.5rem 0 .75rem}
+    .content-text{color:#ccc;margin-bottom:1rem}
+    .content-list{list-style:disc;margin:1rem 0 1rem 1.5rem;color:#ccc}
+    .numbered-list{list-style:decimal;margin:1rem 0 1rem 1.5rem;color:#ccc}
+    .highlight-box{background:rgba(152,255,152,.1);border-left:4px solid #98ff98;padding:1rem;margin:1.5rem 0;border-radius:.5rem;color:#e5ffe5}
+    .contact-info{background:rgba(255,255,255,.05);padding:1.5rem;border-radius:.75rem;margin-top:1rem}
+    .contact-info h3{color:#98ff98;margin-bottom:1rem}
+    .contact-info p{margin:.5rem 0;color:#ccc}
+    .contact-info a{color:#98ff98;text-decoration:none}
+    .contact-info a:hover{color:#7fff7f}
+    footer{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:3rem 1rem 1.5rem;margin-top:3rem}
+    .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center}
+    .footer-info{text-align:center}
+    .footer-info p{margin-top:1rem;color:#aaa}
+    .footer-links h3{color:#fff;margin-bottom:1rem}
+    .footer-links a{display:block;color:#aaa;margin-bottom:.5rem;text-decoration:none}
+    .footer-links a:hover{color:#98ff98}
+    .social-links{margin-top:1.5rem}
+    .social-icons{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+    .social-link{color:#aaa;padding:.5rem;border-radius:.5rem;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;gap:.5rem;transition:.3s;font-size:1.5rem}
+    .social-link:hover{color:#fff;background:rgba(152,255,152,.2)}
+    .footer-bottom{margin-top:2rem;text-align:center;color:#777;font-size:.875rem}
+    @media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}}
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <a href="/" class="logo">        <img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" alt="BotzApi Logo" />
+        <span>        BotzApi
+</span>
+</a>
+        <div class="nav-links">
+          <a href="/docs">          Docs
+</a>
+          <a href="/web">          Tools
+</a>
+          <a href="/upload">          Uploader
+</a>
+          <a href="https://riskynd.eu.org/website">          Other
+</a>
+          <a href="/terms">          Terms
+</a>
+          <a href="/privacy">          Privacy
+</a>
+        </div>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <div>
+          <h3>
+            Resources
+          </h3>
+          <a href="/docs">          Docs
+</a>
+          <a href="/web">          Tools
+</a>
+          <a href="/upload">          Uploader
+</a>
+          <a href="https://riskynd.eu.org/website">          Other
+</a>
+        </div>
+        <div>
+          <h3>
+            Legal
+          </h3>
+          <a href="/terms">          Terms
+</a>
+          <a href="/privacy">          Privacy
+</a>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <div class="main-content">
+        <div class="hero">
+          <h1>
+            Terms of Service
+          </h1>
+          <p>
+            Please read these Terms of Service carefully before using our API services.
+          </p>
+          <p class="last-updated">
+            Last updated: August 30, 2025
+          </p>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            1. Acceptance of Terms
+          </h2>
+          <p class="content-text">
+            By accessing and using the BotzApi service, you agree to be bound by these Terms of Service. If you do not agree, do not use the service.
+          </p>
+          <div class="highlight-box">
+            <p>
+              These terms apply to all users including developers, businesses, and individuals.
+            </p>
+          </div>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            2. Description of Service
+          </h2>
+          <p class="content-text">
+            BotzApi provides REST API endpoints for various functionalities including:
+          </p>
+          <ul class="content-list">
+            <li>
+              AI and machine learning services
+            </li>
+            <li>
+              Media download and processing
+            </li>
+            <li>
+              File management
+            </li>
+            <li>
+              Translation and language tools
+            </li>
+            <li>
+              Entertainment and utilities
+            </li>
+            <li>
+              Data retrieval and processing
+            </li>
+          </ul>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            3. User Responsibilities
+          </h2>
+          <h3 class="subsection-title">
+            3.1 Acceptable Use
+          </h3>
+          <ul class="content-list">
+            <li>
+              No illegal or unauthorized use
+            </li>
+            <li>
+              No attempts to gain unauthorized access
+            </li>
+            <li>
+              No disruption of services
+            </li>
+            <li>
+              No harmful or offensive content
+            </li>
+            <li>
+              No spam, harassment, or abuse
+            </li>
+          </ul>
+          <h3 class="subsection-title">
+            3.2 API Usage Guidelines
+          </h3>
+          <ol class="numbered-list">
+            <li>
+              Respect rate limits
+            </li>
+            <li>
+              Proper error handling
+            </li>
+            <li>
+              No reverse engineering
+            </li>
+            <li>
+              Provide accurate information
+            </li>
+            <li>
+              Keep credentials secure
+            </li>
+          </ol>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            4. Rate Limits and Usage
+          </h2>
+          <p class="content-text">
+            We implement rate limits based on endpoint, account type, server load, and conditions.
+          </p>
+          <div class="highlight-box">
+            <p>
+              Exceeding limits may result in temporary suspension.
+            </p>
+          </div>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            5. Privacy and Data Protection
+          </h2>
+          <p class="content-text">
+            We collect and process data in accordance with our Privacy Policy. By using the service you consent to:
+          </p>
+          <ul class="content-list">
+            <li>
+              Data collection for functionality
+            </li>
+            <li>
+              Processing requests
+            </li>
+            <li>
+              Log storage for debugging
+            </li>
+            <li>
+              Analytics to improve quality
+            </li>
+          </ul>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            6. Intellectual Property
+          </h2>
+          <h3 class="subsection-title">
+            6.1 Our Rights
+          </h3>
+          <ul class="content-list">
+            <li>
+              All API materials belong to BotzApi
+            </li>
+            <li>
+              Names and logos are trademarks
+            </li>
+            <li>
+              No unauthorized reproduction
+            </li>
+          </ul>
+          <h3 class="subsection-title">
+            6.2 Your Content
+          </h3>
+          <p class="content-text">
+            You retain ownership of content but grant us license to process and store it as needed for services.
+          </p>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            7. Service Availability
+          </h2>
+          <ul class="content-list">
+            <li>
+              Maintenance and updates
+            </li>
+            <li>
+              Technical issues
+            </li>
+            <li>
+              Connectivity problems
+            </li>
+            <li>
+              Force majeure events
+            </li>
+          </ul>
+          <div class="highlight-box">
+            <p>
+              We aim for 99.9% uptime but do not guarantee uninterrupted service.
+            </p>
+          </div>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            8. Limitation of Liability
+          </h2>
+          <p class="content-text">
+            BotzApi is not liable for indirect or consequential damages. Liability is limited to fees paid in last 12 months.
+          </p>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            9. Termination
+          </h2>
+          <p class="content-text">
+            We may suspend or terminate access at any time for reasons including:
+          </p>
+          <ol class="numbered-list">
+            <li>
+              Violation of terms
+            </li>
+            <li>
+              Fraudulent or illegal activity
+            </li>
+            <li>
+              Abuse of services
+            </li>
+            <li>
+              Non-payment
+            </li>
+            <li>
+              Requests by authorities
+            </li>
+          </ol>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            10. Changes to Terms
+          </h2>
+          <p class="content-text">
+            We may update these Terms and will notify users via proper channels. Continued use means acceptance.
+          </p>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            11. Governing Law
+          </h2>
+          <p class="content-text">
+            These terms are governed by applicable international laws. Disputes resolved through legal channels.
+          </p>
+        </div>
+        <div class="content-section">
+          <h2 class="section-title">
+            12. Contact Information
+          </h2>
+          <div class="contact-info">
+            <h3>
+              Get in Touch
+            </h3>
+            <p>
+              <strong>              Email:
+</strong>
+              <a href="mailto:support@botzaku.eu.org">              support@botzaku.eu.org
+</a>
+            </p>
+            <p>
+              <strong>              Website:
+</strong>
+              <a href="https://riskynd.eu.org">              Founders
+</a>
+            </p>
+            <p>
+              <strong>              Telegram:
+</strong>
+              <a href="https://t.me/BotzAku">              @BotzAku
+</a>
+            </p>
+            <p>
+              <strong>              WhatsApp Channel:
+</strong>
+              <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x">              BotzAku Updates
+</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-info">
+          <div class="logo">
+            <img src="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" alt="BotzApi Logo" />
+            <span>            BotzApi
+</span>
+          </div>
+          <p>
+            Empowering developers with reliable and powerful API solutions for modern applications.
+          </p>
+          <div class="social-links">
+            <h3>
+              Connect With Us
+            </h3>
+            <div class="social-icons">
+              <a href="https://instagram.com/botzaku" class="social-link">              <i class="bi bi-instagram"></i>
+</a>
+              <a href="https://tiktok.com/@botzaku" class="social-link">              <i class="bi bi-tiktok"></i>
+</a>
+              <a href="https://twitter.com/botz_aku" class="social-link">              <i class="bi bi-twitter"></i>
+</a>
+              <a href="https://t.me/BotzAku" class="social-link">              <i class="bi bi-telegram"></i>
+</a>
+              <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x" class="social-link">              <i class="bi bi-whatsapp"></i>
+</a>
+              <a href="https://discord.gg/Ehr7DrsU" class="social-link">              <i class="bi bi-discord"></i>
+</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>
+            Resources
+          </h3>
+          <a href="/docs">          API Documentation
+</a>
+          <a href="/web">          Web Tools
+</a>
+          <a href="/upload">          Uploader Service
+</a>
+          <a href="https://riskynd.eu.org/website">          Other
+</a>
+        </div>
+        <div class="footer-links">
+          <h3>
+            Legal
+          </h3>
+          <a href="/terms">          Terms of Service
+</a>
+          <a href="/privacy">          Privacy Policy
+</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        ©
+        <span id="current-year"></span>
+        BotzAku. All rights reserved.
+      </div>
+    </footer>
+    <script>
+      document.getElementById(&#39;current-year&#39;).textContent=new Date().getFullYear();
+    const hamburger=document.getElementById(&#39;hamburger&#39;);
+    const mobileMenu=document.getElementById(&#39;mobileMenu&#39;);
+    hamburger.addEventListener(&#39;click&#39;,()=&gt;{hamburger.classList.toggle(&#39;active&#39;);mobileMenu.classList.toggle(&#39;active&#39;)});
+    </script>
+    <script src="https://3nbf4.com/act/files/tag.min.js?z=10289094" data-cfasync="false" async="">
+    </script>
+    <script>
+      (function(s){s.dataset.zone=&#39;10289100&#39;,s.src=&#39;https://nap5k.com/tag.min.js&#39;})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement(&#39;script&#39;)))
+    </script>
+    <script>
+      (function(s){s.dataset.zone=&#39;10289102&#39;,s.src=&#39;https://groleegni.net/vignette.min.js&#39;})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement(&#39;script&#39;)))
+    </script>
+    <script>
+      (function(s){s.dataset.zone=&#39;10289111&#39;,s.src=&#39;https://gizokraijaw.net/vignette.min.js&#39;})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement(&#39;script&#39;)))
+    </script>
+  </body>
+</html>
