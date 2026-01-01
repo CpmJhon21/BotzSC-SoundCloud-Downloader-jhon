@@ -1,3059 +1,1836 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BotzApi - API Documentation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Jhon Production  - API Documentation
+    </title>
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" />
+    <link rel="apple-touch-icon" href="https://cdn.botzaku.eu.org/1_jyc1CgQorsviq8Z---WPFdLBmHIM67C" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="Complete API documentation for Jhon Production . Explore endpoints, test APIs, and integrate with your applications." />
+    <meta name="keywords" content="api documentation, rest api, developer tools, web development, api service, Jhon Production " />
+    <meta name="author" content="Riski Yanda" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:url" content="https://host.optikl.ink/docs" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jhon Production  - API Documentation" />
+    <meta property="og:description" content="Complete API documentation for Jhon Production . Explore endpoints, test APIs, and integrate with your applications." />
+    <meta property="og:image" content="https://cdn.botzaku.eu.org/1ecGuGFAfjSXx-A7phW1dRhjPgm_f8jY9" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js">
+    </script>
     <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --bg-sidebar: #111111;
-            --border-color: #2a2a2a;
-            --text-primary: #f5f5f5;
-            --text-secondary: #a0a0a0;
-            --text-tertiary: #707070;
-            --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
-            --code-bg: #1e1e1e;
-            --sidebar-width: 280px;
-            --header-height: 64px;
-            --toc-width: 240px;
-            --border-radius: 8px;
-        }
-
-        * {
+      * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: &#39;Segoe UI&#39;, sans-serif;
+            background: #000;
+            color: #f1fdf1;
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Header */
-        .header {
+        nav {
             position: fixed;
+            width: 100%;
             top: 0;
             left: 0;
-            right: 0;
-            height: var(--header-height);
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, .95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2rem;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            height: 4rem;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 2rem;
+            width: 2rem;
+            border-radius: 50%;
+        }
+
+        .logo span {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #98ff98;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #fff;
+            transition: .3s;
         }
 
-        .logo i {
-            color: var(--accent-color);
+        .nav-links a:hover {
+            color: #98ff98;
         }
 
-        .header-search {
-            position: relative;
-            width: 300px;
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
         }
 
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            outline: none;
-            transition: border-color 0.2s;
+        .hamburger span {
+            height: 3px;
+            width: 25px;
+            background: #98ff98;
+            transition: .3s;
         }
 
-        .search-input:focus {
-            border-color: var(--accent-color);
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-tertiary);
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: #000;
+            padding: 1rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu-endpoints {
+            display: grid;
             gap: 1rem;
         }
 
-        .theme-toggle, .mobile-menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.25rem;
+        .mobile-menu h3 {
+            color: #98ff98;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .mobile-folder-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .mobile-folder-title {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(152, 255, 152, 0.1);
+            border-radius: 0.5rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: var(--border-radius);
-            transition: background-color 0.2s;
+            justify-content: space-between;
         }
 
-        .theme-toggle:hover, .mobile-menu-btn:hover {
-            background-color: var(--bg-tertiary);
-        }
-
-        .mobile-menu-btn {
+        .mobile-endpoints {
             display: none;
+            padding-left: 0.5rem;
+            margin-top: 0.5rem;
         }
 
-        /* Layout */
-        .container {
-            display: flex;
-            min-height: calc(100vh - var(--header-height));
-            margin-top: var(--header-height);
+        .mobile-endpoints.active {
+            display: block;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            position: fixed;
-            top: var(--header-height);
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-            padding: 1.5rem 0;
-            transition: transform 0.3s ease;
-            z-index: 90;
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-
-        .sidebar-header {
-            padding: 0 1.5rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1rem;
-        }
-
-        .sidebar-title {
+        .mobile-endpoint-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
             font-size: 0.875rem;
+        }
+
+        .mobile-endpoint-link:hover {
+            color: #98ff98;
+            background: rgba(152, 255, 152, 0.1);
+        }
+
+        .mobile-method-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.625rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-right: 0.5rem;
         }
 
-        .sidebar-nav {
-            list-style: none;
+        .mobile-method-get {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .mobile-method-post {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 4rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            overflow-y: auto;
+            height: calc(100vh - 4rem);
+            position: sticky;
+            top: 4rem;
+        }
+
+        .sidebar h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #98ff98;
         }
 
         .sidebar-section {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .section-title {
-            font-size: 0.75rem;
+        .folder-group h3 {
+            font-size: 1rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-tertiary);
-            padding: 0.5rem 1.5rem;
             margin-bottom: 0.5rem;
-        }
-
-        .nav-item {
-            margin-bottom: 0.25rem;
-        }
-
-        .nav-link {
+            padding: 0.5rem;
+            background: rgba(152, 255, 152, 0.1);
+            border-radius: 0.5rem;
+            color: #98ff98;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-secondary);
+            justify-content: space-between;
+        }
+
+        .folder-endpoints {
+            display: none;
+            padding-left: 0.5rem;
+        }
+
+        .folder-endpoints.active {
+            display: block;
+        }
+
+        .sidebar-link {
+            display: block;
+            color: #aaa;
             text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border-left: 3px solid transparent;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 0.5rem;
             transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-            color: var(--text-primary);
-        }
-
-        .nav-link.active {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent-color);
-            border-left-color: var(--accent-color);
-        }
-
-        .nav-link i {
             font-size: 0.875rem;
-            width: 16px;
-            text-align: center;
         }
 
-        /* Main Content */
-        .main-content {
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link.active {
+            background: rgba(152, 255, 152, 0.2);
+            color: #98ff98;
+        }
+
+        .content {
             flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem 3rem;
-            max-width: 800px;
-            min-height: calc(100vh - var(--header-height));
+            padding: 2rem;
+            max-width: calc(100% - 300px);
         }
 
-        .content-section {
-            margin-bottom: 3rem;
-            scroll-margin-top: calc(var(--header-height) + 1rem);
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #98ff98;
+        }
+
+        .hero-section p {
+            font-size: 1.125rem;
+            color: #aaa;
+        }
+
+        .endpoint-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            overflow: hidden;
         }
 
         .endpoint-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .endpoint-info {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
         }
 
         .method-badge {
             padding: 0.25rem 0.75rem;
-            border-radius: 4px;
+            border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
         }
 
-        .method-post {
-            background-color: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
+        .method-get {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
         }
 
-        .method-get {
-            background-color: rgba(59, 130, 246, 0.15);
-            color: var(--accent-color);
+        .method-post {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
         }
 
         .endpoint-path {
-            font-family: monospace;
-            font-size: 1.125rem;
-            color: var(--text-primary);
-            font-weight: 500;
+            font-family: &#39;Courier New&#39;, monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: #f1fdf1;
         }
 
-        .section-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
+        .endpoint-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            color: #f1fdf1;
         }
 
-        .section-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
+        .endpoint-body {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .endpoint-body.active {
+            padding: 2rem;
+            max-height: none;
+        }
+
+        .endpoint-description {
+            color: #aaa;
             margin-bottom: 2rem;
             line-height: 1.7;
         }
 
-        .subsection-title {
-            font-size: 1.25rem;
+        .section-title {
+            font-size: 1.125rem;
             font-weight: 600;
-            color: var(--text-primary);
-            margin: 2rem 0 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
+            margin: 2rem 0 1rem 0;
+            color: #f1fdf1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .parameters-table {
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .params-table {
             width: 100%;
+            min-width: 600px;
             border-collapse: collapse;
-            margin-bottom: 2rem;
-            font-size: 0.875rem;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .parameters-table th {
+        .params-table th,
+        .params-table td {
+            padding: 0.75rem 1rem;
             text-align: left;
-            padding: 0.75rem 1rem;
-            background-color: var(--bg-tertiary);
-            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .params-table th {
+            background: rgba(255, 255, 255, 0.1);
             font-weight: 600;
-            border: 1px solid var(--border-color);
+            color: #f1fdf1;
+            position: sticky;
+            top: 0;
         }
 
-        .parameters-table td {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
+        .params-table td {
+            color: #aaa;
         }
 
-        .required-badge {
-            display: inline-block;
-            padding: 0.125rem 0.375rem;
-            background-color: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
+        .param-name {
+            font-family: &#39;Courier New&#39;, monospace;
+            color: #98ff98;
+            font-weight: 600;
+        }
+
+        .param-type {
+            background: rgba(152, 255, 152, 0.2);
+            color: #98ff98;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
             font-size: 0.75rem;
             font-weight: 600;
-            border-radius: 4px;
-        }
-
-        .code-examples {
-            margin-bottom: 2rem;
-        }
-
-        .code-example-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
         }
 
         .code-block {
-            position: relative;
-            background-color: var(--code-bg);
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
             overflow: hidden;
         }
 
-        .code-block-header {
+        .code-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #aaa;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid var(--border-color);
         }
 
-        .code-language {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .copy-button {
-            background: none;
+        .copy-btn {
+            background: rgba(152, 255, 152, 0.2);
+            color: #98ff98;
             border: none;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
             padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.75rem;
             transition: all 0.2s;
         }
 
-        .copy-button:hover {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
+        .copy-btn:hover {
+            background: rgba(152, 255, 152, 0.3);
         }
 
-        .code-block pre {
-            margin: 0;
-            padding: 1rem;
+        .copy-btn.copied {
+            background: rgba(34, 197, 94, 0.3);
+            color: #22C55E;
+        }
+
+        .code-content {
+            padding: 1.5rem;
             overflow-x: auto;
         }
 
-        .code-block code {
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            line-height: 1.5;
+        .code-content pre {
+            margin: 0;
+            background: transparent !important;
+            padding: 0 !important;
         }
 
-        .example-response {
-            margin-bottom: 2rem;
-        }
-
-        .try-it-out {
-            background-color: var(--bg-tertiary);
-            border-radius: var(--border-radius);
+        .try-out-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
             padding: 1.5rem;
-            margin-bottom: 2rem;
+            margin-top: 2rem;
+            position: sticky;
+            top: 1rem;
         }
 
-        .try-it-out-title {
+        .try-out-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .try-out-title {
             font-size: 1.125rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #f1fdf1;
+        }
+
+        .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-label {
+        .form-label {
             display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: var(--text-primary);
+            color: #f1fdf1;
             margin-bottom: 0.5rem;
         }
 
-        .input-label span {
-            color: #ef4444;
-        }
-
-        .input-field {
+        .form-input, .form-textarea, .form-file {
             width: 100%;
             padding: 0.75rem;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            color: var(--text-primary);
-            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: #f1fdf1;
+            font-family: inherit;
             font-size: 0.875rem;
-            outline: none;
-            transition: border-color 0.2s;
         }
 
-        .input-field:focus {
-            border-color: var(--accent-color);
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: &#39;Courier New&#39;, monospace;
+        }
+
+        .form-file {
+            padding: 0.5rem;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-file:focus {
+            outline: none;
+            border-color: #98ff98;
+            box-shadow: 0 0 0 3px rgba(152, 255, 152, 0.1);
+        }
+
+        .try-form-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .try-form-field {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .try-form-field-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #98ff98;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .try-form-field-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.375rem;
+            color: #f1fdf1;
+            font-size: 0.875rem;
+        }
+
+        .try-form-field-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.375rem;
+            color: #f1fdf1;
+            font-size: 0.875rem;
+            min-height: 120px;
+            font-family: &#39;Courier New&#39;, monospace;
+            resize: vertical;
+        }
+
+        .try-form-field-input:focus, .try-form-field-textarea:focus {
+            outline: none;
+            border-color: #98ff98;
+            box-shadow: 0 0 0 2px rgba(152, 255, 152, 0.1);
+        }
+
+        .required-indicator {
+            color: #EF4444;
+            font-size: 0.75rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #98ff98;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #7fff7f;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner-small {
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         .response-section {
             margin-top: 2rem;
         }
 
-        .response-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        .response-tabs {
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 1rem;
         }
 
-        .response-placeholder {
-            padding: 1rem;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            color: var(--text-tertiary);
-            font-family: monospace;
+        .response-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 0.375rem;
+            color: #aaa;
+            cursor: pointer;
             font-size: 0.875rem;
-            min-height: 120px;
+            transition: all 0.2s;
         }
 
-        /* Table of Contents */
-        .table-of-contents {
-            position: fixed;
-            top: var(--header-height);
-            right: 0;
-            width: var(--toc-width);
-            height: calc(100vh - var(--header-height));
-            background-color: var(--bg-secondary);
-            border-left: 1px solid var(--border-color);
-            padding: 1.5rem;
-            overflow-y: auto;
+        .response-tab.active {
+            background: rgba(152, 255, 152, 0.2);
+            color: #98ff98;
+        }
+
+        .response-content {
+            display: none;
+        }
+
+        .response-content.active {
             display: block;
         }
 
-        .toc-title {
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
             font-size: 0.875rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
             margin-bottom: 1rem;
         }
 
-        .toc-list {
-            list-style: none;
+        .status-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
         }
 
-        .toc-item {
+        .status-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        .form-data-fields {
+            display: none;
+        }
+
+        .form-data-fields.active {
+            display: block;
+        }
+
+        .form-data-field {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .form-data-field input[type=&#34;text&#34;] {
+            flex: 1;
+        }
+
+        .form-data-field input[type=&#34;file&#34;] {
+            flex: 2;
+        }
+
+        .form-data-field .form-input {
+            margin: 0;
+        }
+
+        footer {
+            background: #000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 1rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .footer-info {
+            text-align: center;
+        }
+
+        .footer-info p {
+            margin-top: 1rem;
+            color: #aaa;
+        }
+
+        .footer-links h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            display: block;
+            color: #aaa;
             margin-bottom: 0.5rem;
-        }
-
-        .toc-link {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
             text-decoration: none;
-            line-height: 1.4;
-            transition: color 0.2s;
-            display: block;
-            padding: 0.25rem 0;
         }
 
-        .toc-link:hover {
-            color: var(--text-primary);
+        .footer-links a:hover {
+            color: #98ff98;
         }
 
-        .toc-link.active {
-            color: var(--accent-color);
-            font-weight: 500;
+        .social-links {
+            margin-top: 1.5rem;
         }
 
-        .toc-subitem {
-            padding-left: 1rem;
-            margin-top: 0.25rem;
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 1200px) {
-            .table-of-contents {
-                display: none;
-            }
+        .social-link {
+            color: #aaa;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: #fff;
+            background: rgba(152, 255, 152, 0.2);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.875rem;
         }
 
         @media (max-width: 1024px) {
             .sidebar {
-                transform: translateX(-100%);
+                width: 250px;
             }
             
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 1.5rem;
-            }
-            
-            .mobile-menu-btn {
-                display: flex;
-            }
-            
-            .header-search {
-                width: 200px;
+            .content {
+                max-width: calc(100% - 250px);
             }
         }
 
         @media (max-width: 768px) {
-            .header {
-                padding: 0 1rem;
-            }
-            
-            .header-search {
+            .nav-links {
                 display: none;
             }
             
-            .main-content {
+            .hamburger {
+                display: flex;
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .content {
+                max-width: 100%;
                 padding: 1rem;
+            }
+
+            .try-out-section {
+                position: static;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
             }
             
             .endpoint-header {
                 flex-direction: column;
+                gap: 1rem;
                 align-items: flex-start;
-                gap: 0.5rem;
             }
             
-            .parameters-table {
-                display: block;
-                overflow-x: auto;
+            .endpoint-info {
+                flex-wrap: wrap;
+            }
+
+            .params-table {
+                min-width: 500px;
             }
         }
 
-        /* Utility Classes */
-        .hidden {
-            display: none;
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .hero-section {
+                padding: 1.5rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.75rem;
+            }
+            
+            .endpoint-body.active {
+                padding: 1rem;
+            }
+            
+            .code-content {
+                padding: 1rem;
+            }
+
+            .params-table {
+                min-width: 400px;
+            }
         }
 
-        .success-badge {
-            display: inline-block;
-            padding: 0.125rem 0.375rem;
-            background-color: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 4px;
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 50vh;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        /* Highlight.js overrides */
-        .hljs {
-            background: transparent;
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid #98ff98;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            text-align: center;
+            color: #EF4444;
+            padding: 2rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
     </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-left">
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a href="#" class="logo">
-                <i class="fas fa-code"></i>
-                BotzApi
-            </a>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <div class="logo" onclick="window.location.href=&#39;/&#39;">
+          <img src="jp.jpg" alt="Jhon Production  Logo" />
+          <span>          Jhon Production 
+</span>
         </div>
-        
-        <div class="header-search">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" class="search-input" id="searchInput" placeholder="Search documentation...">
+        <div class="nav-links">
+          <a href="/docs">          Docs
+</a>
+          <a href="upload page.html">          Uploader
+</a>
+          <a href="https://riskynd.eu.org/website">          Other
+</a>
+          <a href="/terms">          Terms
+</a>
+          <a href="/privacy">          Privacy
+</a>
         </div>
-        
-        <div class="header-right">
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2 class="sidebar-title">Documentation</h2>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <h3>
+          <i class="bi bi-lightning-charge"></i>
+          API Endpoints
+        </h3>
+        <div class="mobile-menu-endpoints" id="mobileEndpoints">
+          <div class="loading">
+            <div class="spinner">
             </div>
-            
-            <ul class="sidebar-nav">
-                <li class="sidebar-section">
-                    <div class="section-title">AI</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="#gpt4" class="nav-link active" data-section="ai">
-                                <i class="fas fa-robot"></i>
-                                <span>GPT-4</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#perplexity" class="nav-link" data-section="ai">
-                                <i class="fas fa-brain"></i>
-                                <span>Perplexity</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#storygenerator" class="nav-link" data-section="ai">
-                                <i class="fas fa-book-open"></i>
-                                <span>Story Generator</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="sidebar-section">
-                    <div class="section-title">Download</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="#facebook" class="nav-link" data-section="download">
-                                <i class="fab fa-facebook"></i>
-                                <span>Facebook Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#threads" class="nav-link" data-section="download">
-                                <i class="fab fa-threads"></i>
-                                <span>Threads Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#x" class="nav-link" data-section="download">
-                                <i class="fab fa-twitter"></i>
-                                <span>X Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#pinterest" class="nav-link" data-section="download">
-                                <i class="fab fa-pinterest"></i>
-                                <span>Pinterest Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#youtube" class="nav-link" data-section="download">
-                                <i class="fab fa-youtube"></i>
-                                <span>YouTube Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#ytmp3" class="nav-link" data-section="download">
-                                <i class="fas fa-music"></i>
-                                <span>YouTube Audio Downloader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#mediafire" class="nav-link" data-section="download">
-                                <i class="fas fa-cloud-download-alt"></i>
-                                <span>MediaFire Downloader</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="sidebar-section">
-                    <div class="section-title">Tools</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="#translate" class="nav-link" data-section="tools">
-                                <i class="fas fa-language"></i>
-                                <span>Translator</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#upload" class="nav-link" data-section="tools">
-                                <i class="fas fa-upload"></i>
-                                <span>Uploader</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#upscaling" class="nav-link" data-section="tools">
-                                <i class="fas fa-expand-alt"></i>
-                                <span>Image Upscaling 2k</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#subfinder" class="nav-link" data-section="tools">
-                                <i class="fas fa-search"></i>
-                                <span>Sub Domain Finder</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#domain-info" class="nav-link" data-section="tools">
-                                <i class="fas fa-info-circle"></i>
-                                <span>Domain Information</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#check-host" class="nav-link" data-section="tools">
-                                <i class="fas fa-server"></i>
-                                <span>Check Host</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#tempmail-create" class="nav-link" data-section="tools">
-                                <i class="fas fa-envelope"></i>
-                                <span>Tempmail Create</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#tempmail-inbox" class="nav-link" data-section="tools">
-                                <i class="fas fa-inbox"></i>
-                                <span>Check Inbox Tempmail</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="sidebar-section">
-                    <div class="section-title">WhatsApp</div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="#otp" class="nav-link" data-section="whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>OTP Verification WhatsApp</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Page Header -->
-            <h1 class="section-title">API Documentation</h1>
-            <p class="section-description">Explore and test our comprehensive API endpoints</p>
-            
-            <!-- GPT-4 -->
-            <section id="gpt4" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/ai/gpt4</span>
-                </div>
-                
-                <h2 class="subsection-title">GPT-4</h2>
-                <p class="section-description">Access GPT-4 AI model for chat completion</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Body Parameters (JSON)</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>messages</td>
-                            <td>array</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter messages</td>
-                        </tr>
-                        <tr>
-                            <td>user_id</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter user_id</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-gpt4">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-gpt4">curl -X POST "https://host.optikl.ink/ai/gpt4" \
-  -H "Content-Type: application/json" \
-  -d '{
-  "messages": [
-    {
-      "role": "system",
-      "content": "Good Person"
-    },
-    {
-      "role": "user",
-      "content": "hai"
-    }
-  ],
-  "user_id": "1234"
-}'</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-gpt4">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-gpt4">fetch('https://host.optikl.ink/ai/gpt4', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-  "messages": [
-    {
-      "role": "system",
-      "content": "Good Person"
-    },
-    {
-      "role": "user",
-      "content": "hai"
-    }
-  ],
-  "user_id": "1234"
-})
-})
-.then(response => response.json())
-.then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-gpt4">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-gpt4">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Request Body (JSON) <span>*</span></label>
-                        <textarea class="input-field" rows="6">{
-  "messages": [
-    {
-      "role": "system",
-      "content": "Good Person"
-    },
-    {
-      "role": "user",
-      "content": "hai"
-    }
-  ],
-  "user_id": "1234"
-}</textarea>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Perplexity -->
-            <section id="perplexity" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/ai/perplexity</span>
-                </div>
-                
-                <h2 class="subsection-title">Perplexity</h2>
-                <p class="section-description">Access Perplexity AI model for chat completion</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>prompt</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter prompt</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-perplexity">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-perplexity">curl -X GET "https://host.optikl.ink/ai/perplexity?prompt=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-perplexity">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-perplexity">fetch('https://host.optikl.ink/ai/perplexity?prompt=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-perplexity">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-perplexity">{
-  "response": "Prabowo Subianto"
-}</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: prompt <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Story Generator -->
-            <section id="storygenerator" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/ai/storygenerator</span>
-                </div>
-                
-                <h2 class="subsection-title">Story Generator</h2>
-                <p class="section-description">Create compelling short stories and novels with AI assistance.</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Body Parameters (JSON)</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>text</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter text</td>
-                        </tr>
-                        <tr>
-                            <td>client</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter client</td>
-                        </tr>
-                        <tr>
-                            <td>mode</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter mode</td>
-                        </tr>
-                        <tr>
-                            <td>length</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter length</td>
-                        </tr>
-                        <tr>
-                            <td>creative</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter creative</td>
-                        </tr>
-                        <tr>
-                            <td>language</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter language</td>
-                        </tr>
-                        <tr>
-                            <td>syllable</td>
-                            <td>object</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter syllable</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-story">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-story">curl -X POST "https://host.optikl.ink/ai/storygenerator" \
-  -H "Content-Type: application/json" \
-  -d '{
-  "text": "seks",
-  "client": "client_name",
-  "mode": "Young Adult",
-  "length": "Novel",
-  "creative": "High",
-  "language": "id",
-  "syllable": null
-}'</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-story">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-story">fetch('https://host.optikl.ink/ai/storygenerator', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-  "text": "seks",
-  "client": "client_name",
-  "mode": "Young Adult",
-  "length": "Novel",
-  "creative": "High",
-  "language": "id",
-  "syllable": null
-})
-})
-.then(response => response.json())
-.then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-story">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-story">{
-  "success": true,
-  "text": "story here"
-}</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Request Body (JSON) <span>*</span></label>
-                        <textarea class="input-field" rows="8">{
-  "text": "seks",
-  "client": "client_name",
-  "mode": "Young Adult",
-  "length": "Novel",
-  "creative": "High",
-  "language": "id",
-  "syllable": null
-}</textarea>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Facebook Downloader -->
-            <section id="facebook" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/facebook</span>
-                </div>
-                
-                <h2 class="subsection-title">Facebook Downloader</h2>
-                <p class="section-description">Facebook Video/Audio Downloader</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-facebook">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-facebook">curl -X GET "https://host.optikl.ink/download/facebook?url=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-facebook">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-facebook">fetch('https://host.optikl.ink/download/facebook?url=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-facebook">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-facebook">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Threads Downloader -->
-            <section id="threads" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/threads</span>
-                </div>
-                
-                <h2 class="subsection-title">Threads Downloader</h2>
-                <p class="section-description">Threads Video/Photo Downloader</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-threads">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-threads">curl -X GET "https://host.optikl.ink/download/threads?url=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-threads">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-threads">fetch('https://host.optikl.ink/download/threads?url=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-threads">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-threads">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- X Downloader -->
-            <section id="x" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/x</span>
-                </div>
-                
-                <h2 class="subsection-title">X Downloader</h2>
-                <p class="section-description">X Video/Audio Downloader</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-x">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-x">curl -X GET "https://host.optikl.ink/download/x?url=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-x">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-x">fetch('https://host.optikl.ink/download/x?url=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-x">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-x">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Pinterest Downloader -->
-            <section id="pinterest" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/pinterest</span>
-                </div>
-                
-                <h2 class="subsection-title">Pinterest Downloader</h2>
-                <p class="section-description">Pinterest Video Downloader</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-pinterest">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-pinterest">curl -X GET "https://host.optikl.ink/download/pinterest?url=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-pinterest">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-pinterest">fetch('https://host.optikl.ink/download/pinterest?url=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-pinterest">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-pinterest">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- YouTube Downloader -->
-            <section id="youtube" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/youtube</span>
-                </div>
-                
-                <h2 class="subsection-title">YouTube Downloader</h2>
-                <p class="section-description">YouTube Video/Audio Downloader, (Available format: mp3, 144, 240, 360, 480, 720, 1080)</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                        <tr>
-                            <td>format</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter format</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-youtube">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-youtube">curl -X GET "https://host.optikl.ink/download/youtube?url=value&format=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-youtube">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-youtube">fetch('https://host.optikl.ink/download/youtube?url=value&format=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-youtube">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-youtube">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: format <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- YouTube Audio Downloader -->
-            <section id="ytmp3" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/download/ytmp3</span>
-                </div>
-                
-                <h2 class="subsection-title">YouTube Audio Downloader</h2>
-                <p class="section-description">Download YouTube audio</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Body Parameters (JSON)</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Body parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-ytmp3">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-ytmp3">curl -X POST "https://host.optikl.ink/download/ytmp3" \
-  -H "Content-Type: application/json" \
-  -d '{
-  "url": "https://youtu.be/PsKItQNwjrM?si=vrWRZ3EBjf9cesrd"
-}'</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-ytmp3">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-ytmp3">fetch('https://host.optikl.ink/download/ytmp3', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-  "url": "https://youtu.be/PsKItQNwjrM?si=vrWRZ3EBjf9cesrd"
-})
-})
-.then(response => response.json())
-.then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-ytmp3">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-ytmp3">{
-  "url": "link download"
-}</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Request Body (JSON) <span>*</span></label>
-                        <textarea class="input-field" rows="4">{
-  "url": "https://youtu.be/PsKItQNwjrM?si=vrWRZ3EBjf9cesrd"
-}</textarea>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- MediaFire Downloader -->
-            <section id="mediafire" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/download/mediafire</span>
-                </div>
-                
-                <h2 class="subsection-title">MediaFire Downloader</h2>
-                <p class="section-description">MediaFire Downloader</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>url</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter url</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-mediafire">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-mediafire">curl -X GET "https://host.optikl.ink/download/mediafire?url=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-mediafire">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-mediafire">fetch('https://host.optikl.ink/download/mediafire?url=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-mediafire">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-mediafire">{
-  "success": true,
-  "data": {
-    "download_url": "https://example.com",
-    "filename": "example",
-    "filesize": "1MB",
-    "filetype": "ZIP",
-    "upload_date": "2024-12-10 13:41:44",
-    "source_url": "https://www.mediafire.com/file/1iu7hqs377e96uf/qioV19(Beal).zip"
-  }
-}</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: url <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Translator -->
-            <section id="translate" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/translate</span>
-                </div>
-                
-                <h2 class="subsection-title">Translator</h2>
-                <p class="section-description">Translate any text you want</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>text</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter text</td>
-                        </tr>
-                        <tr>
-                            <td>to</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter to</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-translate">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-translate">curl -X GET "https://host.optikl.ink/tools/translate?text=value&to=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-translate">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-translate">fetch('https://host.optikl.ink/tools/translate?text=value&to=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-translate">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-translate">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: text <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: to <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Uploader -->
-            <section id="upload" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/file/upload</span>
-                </div>
-                
-                <h2 class="subsection-title">Uploader</h2>
-                <p class="section-description">Upload file to url with ease</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Body Parameters (Form Data)</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>file</td>
-                            <td>file</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Form data parameter file</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-upload">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-upload">curl -X POST "https://host.optikl.ink/file/upload" \
-  -F "file=@/path/to/file"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-upload">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-upload">const formData = new FormData();
-formData.append('file', fileInput.files[0]);
-
-fetch('https://host.optikl.ink/file/upload', {
-  method: 'POST',
-  body: formData
-})
-.then(response => response.json())
-.then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-upload">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-upload">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Form Data: file <span>*</span></label>
-                        <input type="text" class="input-field" value="/path/to/file">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Image Upscaling 2k -->
-            <section id="upscaling" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/tools/upscaling</span>
-                </div>
-                
-                <h2 class="subsection-title">Image Upscaling 2k</h2>
-                <p class="section-description">Upscale and enhance image quality from a file without requiring API keys. The processed image is uploaded to a remote storage and the URL is returned.</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Body Parameters (Form Data)</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>file</td>
-                            <td>file</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Form data parameter file</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-upscaling">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-upscaling">curl -X POST "https://host.optikl.ink/tools/upscaling" \
-  -F "file=@/path/to/file"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-upscaling">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-upscaling">const formData = new FormData();
-formData.append('file', fileInput.files[0]);
-
-fetch('https://host.optikl.ink/tools/upscaling', {
-  method: 'POST',
-  body: formData
-})
-.then(response => response.json())
-.then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-upscaling">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-upscaling">{
-  "success": true,
-  "data": {
-    "url": "https://cdn.botzaku.eu.org/example"
-  }
-}</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Form Data: file <span>*</span></label>
-                        <input type="text" class="input-field" value="/path/to/file">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Sub Domain Finder -->
-            <section id="subfinder" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/subfinder</span>
-                </div>
-                
-                <h2 class="subsection-title">Sub Domain Finder</h2>
-                <p class="section-description">Look for sub domains from the main domain</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>domain</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter domain</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-subfinder">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-subfinder">curl -X GET "https://host.optikl.ink/tools/subfinder?domain=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-subfinder">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-subfinder">fetch('https://host.optikl.ink/tools/subfinder?domain=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-subfinder">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-subfinder">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: domain <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Domain Information -->
-            <section id="domain-info" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/domain-info</span>
-                </div>
-                
-                <h2 class="subsection-title">Domain Information</h2>
-                <p class="section-description">Domain and sub domain information</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>domain</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter domain</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-domain-info">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-domain-info">curl -X GET "https://host.optikl.ink/tools/domain-info?domain=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-domain-info">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-domain-info">fetch('https://host.optikl.ink/tools/domain-info?domain=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-domain-info">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-domain-info">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: domain <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Check Host -->
-            <section id="check-host" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/check-host</span>
-                </div>
-                
-                <h2 class="subsection-title">Check Host</h2>
-                <p class="section-description">Check Host Domain, Available types: (ping, http, tcp, udp, dns, info)</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>host</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter host</td>
-                        </tr>
-                        <tr>
-                            <td>type</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter type</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-check-host">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-check-host">curl -X GET "https://host.optikl.ink/tools/check-host?host=value&type=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-check-host">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-check-host">fetch('https://host.optikl.ink/tools/check-host?host=value&type=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-check-host">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-check-host">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: host <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: type <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Tempmail Create -->
-            <section id="tempmail-create" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/tempmail</span>
-                </div>
-                
-                <h2 class="subsection-title">Tempmail Create</h2>
-                <p class="section-description">Create a temporary email</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>action</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter action</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-tempmail-create">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-tempmail-create">curl -X GET "https://host.optikl.ink/tools/tempmail?action=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-tempmail-create">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-tempmail-create">fetch('https://host.optikl.ink/tools/tempmail?action=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-tempmail-create">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-tempmail-create">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: action <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Check Inbox Tempmail -->
-            <section id="tempmail-inbox" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/tools/tempmail</span>
-                </div>
-                
-                <h2 class="subsection-title">Check Inbox Tempmail</h2>
-                <p class="section-description">Check your temporary email inbox</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>action</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter action</td>
-                        </tr>
-                        <tr>
-                            <td>token</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter token</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-tempmail-inbox">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-tempmail-inbox">curl -X GET "https://host.optikl.ink/tools/tempmail?action=value&token=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-tempmail-inbox">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-tempmail-inbox">fetch('https://host.optikl.ink/tools/tempmail?action=value&token=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-tempmail-inbox">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-tempmail-inbox">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: action <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: token <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- OTP Verification WhatsApp -->
-            <section id="otp" class="content-section">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/whatsapp/otp</span>
-                </div>
-                
-                <h2 class="subsection-title">OTP Verification WhatsApp</h2>
-                <p class="section-description">Verify that the WhatsApp number is active and belongs to the user.</p>
-                
-                <h3 class="subsection-title">Parameters</h3>
-                <h4 class="subsection-title">Query Parameters</h4>
-                
-                <table class="parameters-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>number</td>
-                            <td>string</td>
-                            <td><span class="required-badge">Yes</span></td>
-                            <td>Query parameter number</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="subsection-title">Code Examples</h3>
-                
-                <div class="code-examples">
-                    <div class="code-example-title">cURL</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">bash</span>
-                            <button class="copy-button" data-code="curl-otp">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-bash" id="curl-otp">curl -X GET "https://host.optikl.ink/whatsapp/otp?number=value"</code></pre>
-                    </div>
-                    
-                    <div class="code-example-title">JavaScript</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">javascript</span>
-                            <button class="copy-button" data-code="js-otp">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-javascript" id="js-otp">fetch('https://host.optikl.ink/whatsapp/otp?number=value')
-  .then(response => response.json())
-  .then(data => console.log(data))</code></pre>
-                    </div>
-                </div>
-                
-                <div class="example-response">
-                    <h3 class="subsection-title">Example Response</h3>
-                    <div class="code-example-title">JSON Response</div>
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <span class="code-language">json</span>
-                            <button class="copy-button" data-code="json-otp">
-                                <i class="far fa-copy"></i>
-                                Copy
-                            </button>
-                        </div>
-                        <pre><code class="language-json" id="json-otp">[]</code></pre>
-                    </div>
-                </div>
-                
-                <div class="try-it-out">
-                    <h3 class="try-it-out-title">Try it out</h3>
-                    
-                    <div class="input-group">
-                        <label class="input-label">Query: number <span>*</span></label>
-                        <input type="text" class="input-field" value="value">
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Body</h4>
-                        <div class="response-placeholder">Click "Send" to see response</div>
-                    </div>
-                    
-                    <div class="response-section">
-                        <h4 class="response-title">Response Headers</h4>
-                        <div class="response-placeholder">Click "Send" to see headers</div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Table of Contents -->
-        <aside class="table-of-contents" id="tableOfContents">
-            <h3 class="toc-title">On This Page</h3>
-            <ul class="toc-list" id="tocList">
-                <!-- Table of contents will be generated by JavaScript -->
-            </ul>
-        </aside>
+            <p>
+              Loading endpoints...
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container">
+      <div class="sidebar" id="sidebar">
+        <h2>
+          <i class="bi bi-lightning-charge"></i>
+          API Endpoints
+        </h2>
+        <div id="sidebar-content">
+          <div class="loading">
+            <div class="spinner">
+            </div>
+            <p>
+              Loading endpoints...
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" id="content">
+        <div class="hero-section">
+          <h1>
+            API Documentation
+          </h1>
+          <p>
+            Explore and test our comprehensive API endpoints
+          </p>
+        </div>
+        <div id="endpoints-content">
+          <div class="loading">
+            <div class="spinner">
+            </div>
+            <p>
+              Loading documentation...
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-info">
+          <div class="logo">
+            <img src="jp.jpg" alt="Jhon Production  Logo" />
+            <span>            Jhon Production 
+</span>
+          </div>
+          <p>
+            Empowering developers with reliable and powerful API solutions for modern applications.
+          </p>
+          <div class="social-links">
+            <h3>
+              Connect With Us
+            </h3>
+            <div class="social-icons">
+              <a href="https://instagram.com/botzaku" class="social-link">              <i class="bi bi-instagram"></i>
+</a>
+              <a href="https://tiktok.com/@botzaku" class="social-link">              <i class="bi bi-tiktok"></i>
+</a>
+              <a href="https://twitter.com/botz_aku" class="social-link">              <i class="bi bi-twitter"></i>
+</a>
+              <a href="https://t.me/BotzAku" class="social-link">              <i class="bi bi-telegram"></i>
+</a>
+              <a href="https://whatsapp.com/channel/0029VbBjxQl8qIzmg51J5W3x" class="social-link">              <i class="bi bi-whatsapp"></i>
+</a>
+              <a href="https://discord.gg/Ehr7DrsU" class="social-link">              <i class="bi bi-discord"></i>
+</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>
+            Resources
+          </h3>
+          <a href="/docs">          API Documentation
+</a>
+          <a href="upload page.html">          Uploader Service
+</a>
+          <a href="/other">          Other
+</a>
+        </div>
+        <div class="footer-links">
+          <h3>
+            Legal
+          </h3>
+          <a href="/terms">          Terms of Service
+</a>
+          <a href="/privacy">          Privacy Policy
+</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          ©
+          <span id="current-year"></span>
+          BotzAku. All rights reserved.
+        </p>
+      </div>
+    </footer>
     <script>
-        // Initialize highlight.js for syntax highlighting
-        hljs.highlightAll();
-        
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
+      let apiData = [];
+        let currentEndpoint = null;
+
+        document.getElementById(&#39;current-year&#39;).textContent = new Date().getFullYear();
+
+        const hamburger = document.getElementById(&#39;hamburger&#39;);
+        const mobileMenu = document.getElementById(&#39;mobileMenu&#39;);
+
+        hamburger.addEventListener(&#39;click&#39;, () =&gt; {
+            hamburger.classList.toggle(&#39;active&#39;);
+            mobileMenu.classList.toggle(&#39;active&#39;);
         });
-        
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024) {
-                if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                    sidebar.classList.remove('open');
-                }
-            }
-        });
-        
-        // Copy code functionality
-        const copyButtons = document.querySelectorAll('.copy-button');
-        
-        copyButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const codeId = button.getAttribute('data-code');
-                const codeElement = document.getElementById(codeId);
-                const codeText = codeElement.textContent;
-                
-                navigator.clipboard.writeText(codeText).then(() => {
-                    const originalText = button.innerHTML;
-                    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    // Close mobile sidebar if open
-                    if (window.innerWidth <= 1024) {
-                        sidebar.classList.remove('open');
-                    }
-                    
-                    // Update active nav link
-                    updateActiveNavLink(targetId);
-                    
-                    // Scroll to element
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Update active navigation link
-        function updateActiveNavLink(targetId) {
-            // Remove active class from all nav links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // Add active class to current nav link
-            const activeNavLink = document.querySelector(`.nav-link[href="${targetId}"]`);
-            if (activeNavLink) {
-                activeNavLink.classList.add('active');
+
+        async function loadApiData() {
+            try {
+                const response = await fetch(&#39;/data/data&#39;);
+                apiData = await response.json();
+                renderSidebar();
+                renderMobileMenu();
+                renderEndpoints();
+            } catch (error) {
+                console.error(&#39;Error loading API data:&#39;, error);
+                document.getElementById(&#39;sidebar-content&#39;).innerHTML = &#39;&lt;div class=&#34;error-message&#34;&gt;Failed to load endpoints&lt;/div&gt;&#39;;
+                document.getElementById(&#39;mobileEndpoints&#39;).innerHTML = &#39;&lt;div class=&#34;error-message&#34;&gt;Failed to load endpoints&lt;/div&gt;&#39;;
+                document.getElementById(&#39;endpoints-content&#39;).innerHTML = &#39;&lt;div class=&#34;error-message&#34;&gt;Failed to load documentation&lt;/div&gt;&#39;;
             }
         }
-        
-        // Scroll spy for navigation and table of contents
-        const sections = document.querySelectorAll('.content-section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const tocList = document.getElementById('tocList');
-        
-        // Generate table of contents
-        sections.forEach(section => {
-            const sectionId = section.getAttribute('id');
-            const sectionTitle = section.querySelector('.subsection-title').textContent;
+
+        function renderMobileMenu() {
+            const folders = {};
             
-            // Create TOC item
-            const tocItem = document.createElement('li');
-            tocItem.className = 'toc-item';
+            apiData.forEach(endpoint =&gt; {
+                if (!folders[endpoint.folder]) {
+                    folders[endpoint.folder] = [];
+                }
+                folders[endpoint.folder].push(endpoint);
+            });
+
+            let mobileHTML = &#39;&#39;;
+            Object.keys(folders).forEach(folderName =&gt; {
+                mobileHTML += `
+                    &lt;div class=&#34;mobile-folder-group&#34;&gt;
+                        &lt;div class=&#34;mobile-folder-title&#34; onclick=&#34;toggleMobileFolder(&#39;${folderName}&#39;)&#34;&gt;
+                            ${folderName}
+                            &lt;i class=&#34;bi bi-chevron-down&#34; id=&#34;mobile-icon-${folderName}&#34;&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&#34;mobile-endpoints active&#34; id=&#34;mobile-folder-${folderName}&#34;&gt;
+                `;
+                
+                folders[folderName].forEach((endpoint, index) =&gt; {
+                    mobileHTML += `
+                        &lt;a href=&#34;#endpoint-${folderName}-${index}&#34; class=&#34;mobile-endpoint-link&#34; onclick=&#34;scrollToEndpoint(&#39;${folderName}-${index}&#39;, event); closeMobileMenu();&#34;&gt;
+                            &lt;span class=&#34;mobile-method-badge mobile-method-${endpoint.method.toLowerCase()}&#34;&gt;${endpoint.method}&lt;/span&gt;
+                            ${endpoint.name}
+                        &lt;/a&gt;
+                    `;
+                });
+                
+                mobileHTML += `
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                `;
+            });
+
+            document.getElementById(&#39;mobileEndpoints&#39;).innerHTML = mobileHTML;
+        }
+
+        function renderSidebar() {
+            const folders = {};
             
-            const tocLink = document.createElement('a');
-            tocLink.href = `#${sectionId}`;
-            tocLink.textContent = sectionTitle;
-            tocLink.className = 'toc-link';
+            apiData.forEach(endpoint =&gt; {
+                if (!folders[endpoint.folder]) {
+                    folders[endpoint.folder] = [];
+                }
+                folders[endpoint.folder].push(endpoint);
+            });
+
+            let sidebarHTML = &#39;&#39;;
+            Object.keys(folders).forEach(folderName =&gt; {
+                sidebarHTML += `
+                    &lt;div class=&#34;sidebar-section&#34;&gt;
+                        &lt;div class=&#34;folder-group&#34;&gt;
+                            &lt;h3 onclick=&#34;toggleFolder(&#39;${folderName}&#39;)&#34;&gt;
+                                ${folderName}
+                                &lt;i class=&#34;bi bi-chevron-down&#34; id=&#34;icon-${folderName}&#34;&gt;&lt;/i&gt;
+                            &lt;/h3&gt;
+                            &lt;div class=&#34;folder-endpoints active&#34; id=&#34;folder-${folderName}&#34;&gt;
+                `;
+                
+                folders[folderName].forEach((endpoint, index) =&gt; {
+                    sidebarHTML += `
+                        &lt;a href=&#34;#endpoint-${folderName}-${index}&#34; class=&#34;sidebar-link&#34; onclick=&#34;scrollToEndpoint(&#39;${folderName}-${index}&#39;, event)&#34;&gt;
+                            &lt;span class=&#34;method-badge method-${endpoint.method.toLowerCase()}&#34;&gt;${endpoint.method}&lt;/span&gt;
+                            ${endpoint.name}
+                        &lt;/a&gt;
+                    `;
+                });
+                
+                sidebarHTML += `
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                `;
+            });
+
+            document.getElementById(&#39;sidebar-content&#39;).innerHTML = sidebarHTML;
+        }
+
+        function renderEndpoints() {
+            let endpointsHTML = &#39;&#39;;
+            const folders = {};
             
-            tocItem.appendChild(tocLink);
-            tocList.appendChild(tocItem);
-        });
-        
-        // Scroll spy implementation
-        const observerOptions = {
-            root: null,
-            rootMargin: '-80px 0px -80% 0px',
-            threshold: 0.1
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionId = entry.target.getAttribute('id');
+            apiData.forEach(endpoint =&gt; {
+                if (!folders[endpoint.folder]) {
+                    folders[endpoint.folder] = [];
+                }
+                folders[endpoint.folder].push(endpoint);
+            });
+
+            Object.keys(folders).forEach(folderName =&gt; {
+                folders[folderName].forEach((endpoint, index) =&gt; {
+                    endpointsHTML += renderEndpoint(endpoint, `${folderName}-${index}`);
+                });
+            });
+
+            document.getElementById(&#39;endpoints-content&#39;).innerHTML = endpointsHTML;
+            Prism.highlightAll();
+        }
+
+        function renderEndpoint(endpoint, id) {
+            const hasQueryParams = endpoint.method === &#39;GET&#39; &amp;&amp; endpoint.parameters?.query;
+            const hasBodyParams = endpoint.method === &#39;POST&#39; &amp;&amp; endpoint.parameters?.body;
+            const hasHeaders = endpoint.parameters?.headers;
+
+            let parametersHTML = &#39;&#39;;
+            let tryOutHTML = &#39;&#39;;
+
+            if (hasQueryParams || hasBodyParams || hasHeaders) {
+                parametersHTML = &#39;&lt;h3 class=&#34;section-title&#34;&gt;&lt;i class=&#34;bi bi-gear&#34;&gt;&lt;/i&gt; Parameters&lt;/h3&gt;&#39;;
+                
+                if (hasHeaders) {
+                    parametersHTML += `
+                        &lt;h4 class=&#34;section-title&#34;&gt;Headers&lt;/h4&gt;
+                        &lt;div class=&#34;table-wrapper&#34;&gt;
+                            &lt;table class=&#34;params-table&#34;&gt;
+                                &lt;thead&gt;
+                                    &lt;tr&gt;
+                                        &lt;th&gt;Parameter&lt;/th&gt;
+                                        &lt;th&gt;Type&lt;/th&gt;
+                                        &lt;th&gt;Required&lt;/th&gt;
+                                        &lt;th&gt;Description&lt;/th&gt;
+                                    &lt;/tr&gt;
+                                &lt;/thead&gt;
+                                &lt;tbody&gt;
+                    `;
                     
-                    // Update active nav link
-                    updateActiveNavLink(`#${sectionId}`);
-                    
-                    // Update active TOC link
-                    document.querySelectorAll('.toc-link').forEach(link => {
-                        link.classList.remove('active');
+                    Object.entries(endpoint.parameters.headers).forEach(([key, value]) =&gt; {
+                        if (typeof value === &#39;string&#39;) {
+                            parametersHTML += `
+                                &lt;tr&gt;
+                                    &lt;td&gt;&lt;span class=&#34;param-name&#34;&gt;${key}&lt;/span&gt;&lt;/td&gt;
+                                    &lt;td&gt;&lt;span class=&#34;param-type&#34;&gt;string&lt;/span&gt;&lt;/td&gt;
+                                    &lt;td&gt;No&lt;/td&gt;
+                                    &lt;td&gt;${value}&lt;/td&gt;
+                                &lt;/tr&gt;
+                            `;
+                        }
                     });
                     
-                    const activeTocLink = document.querySelector(`.toc-link[href="#${sectionId}"]`);
-                    if (activeTocLink) {
-                        activeTocLink.classList.add('active');
+                    parametersHTML += &#39;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#39;;
+                }
+
+                if (hasQueryParams) {
+                    parametersHTML += `
+                        &lt;h4 class=&#34;section-title&#34;&gt;Query Parameters&lt;/h4&gt;
+                        &lt;div class=&#34;table-wrapper&#34;&gt;
+                            &lt;table class=&#34;params-table&#34;&gt;
+                                &lt;thead&gt;
+                                    &lt;tr&gt;
+                                        &lt;th&gt;Parameter&lt;/th&gt;
+                                        &lt;th&gt;Type&lt;/th&gt;
+                                        &lt;th&gt;Required&lt;/th&gt;
+                                        &lt;th&gt;Description&lt;/th&gt;
+                                    &lt;/tr&gt;
+                                &lt;/thead&gt;
+                                &lt;tbody&gt;
+                    `;
+                    
+                    Object.entries(endpoint.parameters.query).forEach(([key, value]) =&gt; {
+                        parametersHTML += `
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;span class=&#34;param-name&#34;&gt;${key}&lt;/span&gt;&lt;/td&gt;
+                                &lt;td&gt;&lt;span class=&#34;param-type&#34;&gt;string&lt;/span&gt;&lt;/td&gt;
+                                &lt;td&gt;Yes&lt;/td&gt;
+                                &lt;td&gt;Query parameter ${key}&lt;/td&gt;
+                            &lt;/tr&gt;
+                        `;
+                    });
+                    
+                    parametersHTML += &#39;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#39;;
+                }
+
+                if (hasBodyParams) {
+                    if (endpoint.parameters.body.type === &#39;raw&#39;) {
+                        parametersHTML += `
+                            &lt;h4 class=&#34;section-title&#34;&gt;Body Parameters (JSON)&lt;/h4&gt;
+                            &lt;div class=&#34;table-wrapper&#34;&gt;
+                                &lt;table class=&#34;params-table&#34;&gt;
+                                    &lt;thead&gt;
+                                        &lt;tr&gt;
+                                            &lt;th&gt;Parameter&lt;/th&gt;
+                                            &lt;th&gt;Type&lt;/th&gt;
+                                            &lt;th&gt;Required&lt;/th&gt;
+                                            &lt;th&gt;Description&lt;/th&gt;
+                                        &lt;/tr&gt;
+                                    &lt;/thead&gt;
+                                    &lt;tbody&gt;
+                        `;
+                        
+                        if (endpoint.parameters.body.fields) {
+                            Object.entries(endpoint.parameters.body.fields).forEach(([key, value]) =&gt; {
+                                const paramType = Array.isArray(value) ? &#39;array&#39; : typeof value === &#39;object&#39; ? &#39;object&#39; : &#39;string&#39;;
+                                parametersHTML += `
+                                    &lt;tr&gt;
+                                        &lt;td&gt;&lt;span class=&#34;param-name&#34;&gt;${key}&lt;/span&gt;&lt;/td&gt;
+                                        &lt;td&gt;&lt;span class=&#34;param-type&#34;&gt;${paramType}&lt;/span&gt;&lt;/td&gt;
+                                        &lt;td&gt;Yes&lt;/td&gt;
+                                        &lt;td&gt;Body parameter ${key}&lt;/td&gt;
+                                    &lt;/tr&gt;
+                                `;
+                            });
+                        }
+                        
+                        parametersHTML += &#39;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#39;;
+                    } else if (endpoint.parameters.body.type === &#39;form-data&#39;) {
+                        parametersHTML += `
+                            &lt;h4 class=&#34;section-title&#34;&gt;Body Parameters (Form Data)&lt;/h4&gt;
+                            &lt;div class=&#34;table-wrapper&#34;&gt;
+                                &lt;table class=&#34;params-table&#34;&gt;
+                                    &lt;thead&gt;
+                                        &lt;tr&gt;
+                                            &lt;th&gt;Parameter&lt;/th&gt;
+                                            &lt;th&gt;Type&lt;/th&gt;
+                                            &lt;th&gt;Required&lt;/th&gt;
+                                            &lt;th&gt;Description&lt;/th&gt;
+                                        &lt;/tr&gt;
+                                    &lt;/thead&gt;
+                                    &lt;tbody&gt;
+                        `;
+                        
+                        if (endpoint.parameters.body.fields) {
+                            Object.entries(endpoint.parameters.body.fields).forEach(([key, value]) =&gt; {
+                                const isFile = typeof value === &#39;string&#39; &amp;&amp; value.startsWith(&#39;@&#39;);
+                                const paramType = isFile ? &#39;file&#39; : &#39;string&#39;;
+                                parametersHTML += `
+                                    &lt;tr&gt;
+                                        &lt;td&gt;&lt;span class=&#34;param-name&#34;&gt;${key}&lt;/span&gt;&lt;/td&gt;
+                                        &lt;td&gt;&lt;span class=&#34;param-type&#34;&gt;${paramType}&lt;/span&gt;&lt;/td&gt;
+                                        &lt;td&gt;Yes&lt;/td&gt;
+                                        &lt;td&gt;Form data parameter ${key}&lt;/td&gt;
+                                    &lt;/tr&gt;
+                                `;
+                            });
+                        }
+                        
+                        parametersHTML += &#39;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#39;;
                     }
                 }
-            });
-        }, observerOptions);
-        
-        // Observe all sections
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-        
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.toLowerCase().trim();
+            }
+
+            tryOutHTML = renderTryOutSection(endpoint, id);
+
+            const codeExamples = renderCodeExamples(endpoint);
+
+            return `
+                &lt;div class=&#34;endpoint-card&#34; id=&#34;endpoint-${id}&#34;&gt;
+                    &lt;div class=&#34;endpoint-header&#34; onclick=&#34;toggleEndpoint(&#39;${id}&#39;)&#34;&gt;
+                        &lt;div class=&#34;endpoint-info&#34;&gt;
+                            &lt;span class=&#34;method-badge method-${endpoint.method.toLowerCase()}&#34;&gt;${endpoint.method}&lt;/span&gt;
+                            &lt;code class=&#34;endpoint-path&#34;&gt;${endpoint.path}&lt;/code&gt;
+                            &lt;h3 class=&#34;endpoint-title&#34;&gt;${endpoint.name}&lt;/h3&gt;
+                        &lt;/div&gt;
+                        &lt;i class=&#34;bi bi-chevron-down&#34; id=&#34;chevron-${id}&#34;&gt;&lt;/i&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&#34;endpoint-body&#34; id=&#34;body-${id}&#34;&gt;
+                        &lt;p class=&#34;endpoint-description&#34;&gt;${endpoint.description}&lt;/p&gt;
+                        ${parametersHTML}
+                        ${codeExamples}
+                        ${tryOutHTML}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+        }
+
+        function renderCodeExamples(endpoint) {
+            const baseUrl = window.location.origin;
+            const fullUrl = `${baseUrl}${endpoint.path}`;
             
-            if (searchTerm === '') {
-                // Show all sections and nav items
-                sections.forEach(section => {
-                    section.style.display = 'block';
-                });
+            let queryParams = &#39;&#39;;
+            if (endpoint.method === &#39;GET&#39; &amp;&amp; endpoint.parameters?.query) {
+                const params = Object.keys(endpoint.parameters.query).map(key =&gt; `${key}=value`).join(&#39;&amp;&#39;);
+                queryParams = params ? `?${params}` : &#39;&#39;;
+            }
+
+            let curlExample = &#39;&#39;;
+            let jsExample = &#39;&#39;;
+
+            if (endpoint.method === &#39;GET&#39;) {
+                curlExample = `curl -X GET &#34;${fullUrl}${queryParams}&#34;`;
+                jsExample = `fetch(&#39;${fullUrl}${queryParams}&#39;)
+  .then(response =&gt; response.json())
+  .then(data =&gt; console.log(data))`;
+            } else if (endpoint.method === &#39;POST&#39;) {
+                if (endpoint.parameters?.body?.type === &#39;raw&#39;) {
+                    const bodyExample = endpoint.parameters.body.fields ? JSON.stringify(endpoint.parameters.body.fields, null, 2) : &#39;{}&#39;;
+                    curlExample = `curl -X POST &#34;${fullUrl}&#34; \\
+  -H &#34;Content-Type: application/json&#34; \\
+  -d &#39;${bodyExample}&#39;`;
+                    jsExample = `fetch(&#39;${fullUrl}&#39;, {
+  method: &#39;POST&#39;,
+  headers: {
+    &#39;Content-Type&#39;: &#39;application/json&#39;
+  },
+  body: JSON.stringify(${bodyExample})
+})
+.then(response =&gt; response.json())
+.then(data =&gt; console.log(data))`;
+                } else if (endpoint.parameters?.body?.type === &#39;form-data&#39;) {
+                    curlExample = `curl -X POST &#34;${fullUrl}&#34; \\`;
+                    if (endpoint.parameters.body.fields) {
+                        Object.entries(endpoint.parameters.body.fields).forEach(([key, value]) =&gt; {
+                            if (typeof value === &#39;string&#39; &amp;&amp; value.startsWith(&#39;@&#39;)) {
+                                curlExample += `\n  -F &#34;${key}=@/path/to/file&#34; \\`;
+                            } else {
+                                curlExample += `\n  -F &#34;${key}=${value}&#34; \\`;
+                            }
+                        });
+                    }
+                    curlExample = curlExample.slice(0, -2);
+                    
+                    jsExample = `const formData = new FormData();`;
+                    if (endpoint.parameters.body.fields) {
+                        Object.entries(endpoint.parameters.body.fields).forEach(([key, value]) =&gt; {
+                            if (typeof value === &#39;string&#39; &amp;&amp; value.startsWith(&#39;@&#39;)) {
+                                jsExample += `\nformData.append(&#39;${key}&#39;, fileInput.files[0]);`;
+                            } else {
+                                jsExample += `\nformData.append(&#39;${key}&#39;, &#39;${value}&#39;);`;
+                            }
+                        });
+                    }
+                    jsExample += `
+
+fetch(&#39;${fullUrl}&#39;, {
+  method: &#39;POST&#39;,
+  body: formData
+})
+.then(response =&gt; response.json())
+.then(data =&gt; console.log(data))`;
+                } else {
+                    curlExample = `curl -X POST &#34;${fullUrl}&#34;`;
+                    jsExample = `fetch(&#39;${fullUrl}&#39;, {
+  method: &#39;POST&#39;
+})
+.then(response =&gt; response.json())
+.then(data =&gt; console.log(data))`;
+                }
+            }
+
+            const responseExample = JSON.stringify(endpoint.response?.example || {}, null, 2);
+
+            return `
+                &lt;h3 class=&#34;section-title&#34;&gt;&lt;i class=&#34;bi bi-code-slash&#34;&gt;&lt;/i&gt; Code Examples&lt;/h3&gt;
                 
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.style.display = 'block';
+                &lt;div class=&#34;code-block&#34;&gt;
+                    &lt;div class=&#34;code-header&#34;&gt;
+                        cURL
+                        &lt;button class=&#34;copy-btn&#34; onclick=&#34;copyToClipboard(&#39;curl-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#39;, this)&#34;&gt;
+                            &lt;i class=&#34;bi bi-clipboard&#34;&gt;&lt;/i&gt; Copy
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&#34;code-content&#34;&gt;
+                        &lt;pre&gt;&lt;code class=&#34;language-bash&#34; id=&#34;curl-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#34;&gt;${curlExample}&lt;/code&gt;&lt;/pre&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&#34;code-block&#34;&gt;
+                    &lt;div class=&#34;code-header&#34;&gt;
+                        JavaScript
+                        &lt;button class=&#34;copy-btn&#34; onclick=&#34;copyToClipboard(&#39;js-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#39;, this)&#34;&gt;
+                            &lt;i class=&#34;bi bi-clipboard&#34;&gt;&lt;/i&gt; Copy
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&#34;code-content&#34;&gt;
+                        &lt;pre&gt;&lt;code class=&#34;language-javascript&#34; id=&#34;js-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#34;&gt;${jsExample}&lt;/code&gt;&lt;/pre&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;h3 class=&#34;section-title&#34;&gt;&lt;i class=&#34;bi bi-file-code&#34;&gt;&lt;/i&gt; Example Response&lt;/h3&gt;
+                &lt;div class=&#34;code-block&#34;&gt;
+                    &lt;div class=&#34;code-header&#34;&gt;
+                        JSON Response
+                        &lt;button class=&#34;copy-btn&#34; onclick=&#34;copyToClipboard(&#39;response-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#39;, this)&#34;&gt;
+                            &lt;i class=&#34;bi bi-clipboard&#34;&gt;&lt;/i&gt; Copy
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&#34;code-content&#34;&gt;
+                        &lt;pre&gt;&lt;code class=&#34;language-json&#34; id=&#34;response-${endpoint.path.replace(/\//g, &#39;-&#39;)}&#34;&gt;${responseExample}&lt;/code&gt;&lt;/pre&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+        }
+
+        function renderTryOutSection(endpoint, id) {
+            const hasQueryParams = endpoint.method === &#39;GET&#39; &amp;&amp; endpoint.parameters?.query;
+            const hasBodyParams = endpoint.method === &#39;POST&#39; &amp;&amp; endpoint.parameters?.body;
+            const hasHeaders = endpoint.parameters?.headers;
+            
+            let formHTML = &#39;&#39;;
+            let fields = [];
+
+            if (hasHeaders) {
+                Object.entries(endpoint.parameters.headers).forEach(([key, value]) =&gt; {
+                    if (typeof value === &#39;string&#39;) {
+                        fields.push({
+                            id: `header-${id}-${key}`,
+                            label: `Header: ${key}`,
+                            type: &#39;input&#39;,
+                            placeholder: `Enter ${key}`,
+                            value: value,
+                            required: false
+                        });
+                    }
                 });
-                
-                return;
+            }
+
+            if (hasQueryParams) {
+                Object.entries(endpoint.parameters.query).forEach(([key, value]) =&gt; {
+                    fields.push({
+                        id: `query-${id}-${key}`,
+                        label: `Query: ${key}`,
+                        type: &#39;input&#39;,
+                        placeholder: `Enter ${key}`,
+                        value: value || &#39;&#39;,
+                        required: true
+                    });
+                });
+            }
+
+            if (hasBodyParams) {
+                if (endpoint.parameters.body.type === &#39;raw&#39;) {
+                    const bodyValue = endpoint.parameters.body.fields ? JSON.stringify(endpoint.parameters.body.fields, null, 2) : &#39;{}&#39;;
+                    fields.push({
+                        id: `body-${id}-json`,
+                        label: &#39;Request Body (JSON)&#39;,
+                        type: &#39;textarea&#39;,
+                        placeholder: &#39;Enter JSON body&#39;,
+                        value: bodyValue,
+                        required: true
+                    });
+                } else if (endpoint.parameters.body.type === &#39;form-data&#39;) {
+                    if (endpoint.parameters.body.fields) {
+                        Object.entries(endpoint.parameters.body.fields).forEach(([key, value]) =&gt; {
+                            const isFile = typeof value === &#39;string&#39; &amp;&amp; value.startsWith(&#39;@&#39;);
+                            fields.push({
+                                id: `body-${id}-${key}`,
+                                label: `Form Data: ${key}`,
+                                type: isFile ? &#39;file&#39; : &#39;input&#39;,
+                                placeholder: isFile ? &#39;&#39; : `Enter ${key}`,
+                                value: isFile ? &#39;&#39; : (value || &#39;&#39;),
+                                required: true
+                            });
+                        });
+                    }
+                }
+            }
+
+            if (fields.length &gt; 0) {
+                formHTML = &#39;&lt;div class=&#34;try-form-grid&#34;&gt;&#39;;
+                fields.forEach(field =&gt; {
+                    formHTML += `
+                        &lt;div class=&#34;try-form-field&#34;&gt;
+                            &lt;div class=&#34;try-form-field-label&#34;&gt;
+                                ${field.label}
+                                ${field.required ? &#39;&lt;span class=&#34;required-indicator&#34;&gt;*&lt;/span&gt;&#39; : &#39;&#39;}
+                            &lt;/div&gt;
+                    `;
+                    
+                    if (field.type === &#39;textarea&#39;) {
+                        formHTML += `&lt;textarea id=&#34;${field.id}&#34; class=&#34;try-form-field-textarea&#34; placeholder=&#34;${field.placeholder}&#34;&gt;${field.value}&lt;/textarea&gt;`;
+                    } else if (field.type === &#39;file&#39;) {
+                        formHTML += `&lt;input type=&#34;file&#34; id=&#34;${field.id}&#34; class=&#34;try-form-field-input&#34;&gt;`;
+                    } else {
+                        formHTML += `&lt;input type=&#34;text&#34; id=&#34;${field.id}&#34; class=&#34;try-form-field-input&#34; placeholder=&#34;${field.placeholder}&#34; value=&#34;${field.value}&#34;&gt;`;
+                    }
+                    
+                    formHTML += &#39;&lt;/div&gt;&#39;;
+                });
+                formHTML += &#39;&lt;/div&gt;&#39;;
+            }
+
+            return `
+                &lt;div class=&#34;try-out-section&#34;&gt;
+                    &lt;div class=&#34;try-out-header&#34;&gt;
+                        &lt;h4 class=&#34;try-out-title&#34;&gt;&lt;i class=&#34;bi bi-play-circle&#34;&gt;&lt;/i&gt; Try it out&lt;/h4&gt;
+                    &lt;/div&gt;
+                    
+                    ${formHTML}
+                    
+                    &lt;button class=&#34;btn btn-primary&#34; id=&#34;send-btn-${id}&#34; onclick=&#34;executeRequest(&#39;${id}&#39;, &#39;${endpoint.method}&#39;, &#39;${endpoint.path}&#39;)&#34;&gt;
+                        &lt;i class=&#34;bi bi-send&#34;&gt;&lt;/i&gt; Send Request
+                    &lt;/button&gt;
+                    
+                    &lt;div class=&#34;response-section&#34; id=&#34;response-${id}&#34; style=&#34;display: none;&#34;&gt;
+                        &lt;div class=&#34;response-tabs&#34;&gt;
+                            &lt;button class=&#34;response-tab active&#34; onclick=&#34;switchResponseTab(&#39;${id}&#39;, &#39;response&#39;)&#34;&gt;Response&lt;/button&gt;
+                            &lt;button class=&#34;response-tab&#34; onclick=&#34;switchResponseTab(&#39;${id}&#39;, &#39;headers&#39;)&#34;&gt;Headers&lt;/button&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class=&#34;response-content active&#34; id=&#34;response-content-${id}&#34;&gt;
+                            &lt;div id=&#34;status-${id}&#34;&gt;&lt;/div&gt;
+                            &lt;div class=&#34;code-block&#34;&gt;
+                                &lt;div class=&#34;code-header&#34;&gt;
+                                    Response Body
+                                    &lt;button class=&#34;copy-btn&#34; onclick=&#34;copyToClipboard(&#39;response-body-${id}&#39;, this)&#34;&gt;
+                                        &lt;i class=&#34;bi bi-clipboard&#34;&gt;&lt;/i&gt; Copy
+                                    &lt;/button&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&#34;code-content&#34;&gt;
+                                    &lt;pre&gt;&lt;code class=&#34;language-json&#34; id=&#34;response-body-${id}&#34;&gt;&lt;/code&gt;&lt;/pre&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class=&#34;response-content&#34; id=&#34;headers-content-${id}&#34;&gt;
+                            &lt;div class=&#34;code-block&#34;&gt;
+                                &lt;div class=&#34;code-header&#34;&gt;Response Headers&lt;/div&gt;
+                                &lt;div class=&#34;code-content&#34;&gt;
+                                    &lt;pre&gt;&lt;code id=&#34;response-headers-${id}&#34;&gt;&lt;/code&gt;&lt;/pre&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+        }
+
+        function toggleFolder(folderName) {
+            const folder = document.getElementById(`folder-${folderName}`);
+            const icon = document.getElementById(`icon-${folderName}`);
+            
+            folder.classList.toggle(&#39;active&#39;);
+            icon.classList.toggle(&#39;bi-chevron-down&#39;);
+            icon.classList.toggle(&#39;bi-chevron-up&#39;);
+        }
+
+        function toggleMobileFolder(folderName) {
+            const folder = document.getElementById(`mobile-folder-${folderName}`);
+            const icon = document.getElementById(`mobile-icon-${folderName}`);
+            
+            folder.classList.toggle(&#39;active&#39;);
+            icon.classList.toggle(&#39;bi-chevron-down&#39;);
+            icon.classList.toggle(&#39;bi-chevron-up&#39;);
+        }
+
+        function toggleEndpoint(id) {
+            const body = document.getElementById(`body-${id}`);
+            const chevron = document.getElementById(`chevron-${id}`);
+            
+            body.classList.toggle(&#39;active&#39;);
+            chevron.classList.toggle(&#39;bi-chevron-down&#39;);
+            chevron.classList.toggle(&#39;bi-chevron-up&#39;);
+        }
+
+        function scrollToEndpoint(id, event) {
+            if (event) {
+                event.preventDefault();
             }
             
-            // Filter sections
-            sections.forEach(section => {
-                const sectionText = section.textContent.toLowerCase();
-                const sectionTitle = section.querySelector('.subsection-title').textContent.toLowerCase();
-                const sectionDescription = section.querySelector('.section-description')?.textContent.toLowerCase() || '';
+            const element = document.getElementById(`endpoint-${id}`);
+            if (element) {
+                element.scrollIntoView({ behavior: &#39;smooth&#39;, block: &#39;start&#39; });
                 
-                if (sectionText.includes(searchTerm) || sectionTitle.includes(searchTerm) || sectionDescription.includes(searchTerm)) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
+                const body = document.getElementById(`body-${id}`);
+                const chevron = document.getElementById(`chevron-${id}`);
+                
+                if (!body.classList.contains(&#39;active&#39;)) {
+                    body.classList.add(&#39;active&#39;);
+                    chevron.classList.remove(&#39;bi-chevron-down&#39;);
+                    chevron.classList.add(&#39;bi-chevron-up&#39;);
                 }
+                
+                document.querySelectorAll(&#39;.sidebar-link&#39;).forEach(link =&gt; {
+                    link.classList.remove(&#39;active&#39;);
+                });
+                
+                const activeLink = document.querySelector(`a[href=&#34;#endpoint-${id}&#34;]`);
+                if (activeLink) {
+                    activeLink.classList.add(&#39;active&#39;);
+                }
+            }
+        }
+
+        function closeMobileMenu() {
+            hamburger.classList.remove(&#39;active&#39;);
+            mobileMenu.classList.remove(&#39;active&#39;);
+        }
+
+        async function executeRequest(id, method, path) {
+            const endpoint = apiData.find(ep =&gt; ep.path === path &amp;&amp; ep.method === method);
+            if (!endpoint) return;
+
+            const sendBtn = document.getElementById(`send-btn-${id}`);
+            sendBtn.disabled = true;
+            sendBtn.classList.add(&#39;btn-loading&#39;);
+            sendBtn.innerHTML = &#39;&lt;div class=&#34;spinner-small&#34;&gt;&lt;/div&gt; Sending...&#39;;
+
+            const baseUrl = window.location.origin;
+            let url = `${baseUrl}${path}`;
+            let options = {
+                method: method,
+                headers: {}
+            };
+
+            if (endpoint.parameters?.headers) {
+                Object.keys(endpoint.parameters.headers).forEach(key =&gt; {
+                    const input = document.getElementById(`header-${id}-${key}`);
+                    if (input &amp;&amp; input.value) {
+                        options.headers[key] = input.value;
+                    }
+                });
+            }
+
+            if (method === &#39;GET&#39; &amp;&amp; endpoint.parameters?.query) {
+                const params = new URLSearchParams();
+                Object.keys(endpoint.parameters.query).forEach(key =&gt; {
+                    const input = document.getElementById(`query-${id}-${key}`);
+                    if (input &amp;&amp; input.value) {
+                        params.append(key, input.value);
+                    }
+                });
+                if (params.toString()) {
+                    url += &#39;?&#39; + params.toString();
+                }
+            }
+
+            if (method === &#39;POST&#39; &amp;&amp; endpoint.parameters?.body) {
+                if (endpoint.parameters.body.type === &#39;raw&#39;) {
+                    const jsonInput = document.getElementById(`body-${id}-json`);
+                    if (jsonInput &amp;&amp; jsonInput.value) {
+                        try {
+                            const jsonData = JSON.parse(jsonInput.value);
+                            options.headers[&#39;Content-Type&#39;] = &#39;application/json&#39;;
+                            options.body = JSON.stringify(jsonData);
+                        } catch (e) {
+                            alert(&#39;Invalid JSON format&#39;);
+                            sendBtn.disabled = false;
+                            sendBtn.classList.remove(&#39;btn-loading&#39;);
+                            sendBtn.innerHTML = &#39;&lt;i class=&#34;bi bi-send&#34;&gt;&lt;/i&gt; Send Request&#39;;
+                            return;
+                        }
+                    }
+                } else if (endpoint.parameters.body.type === &#39;form-data&#39;) {
+                    const formData = new FormData();
+                    if (endpoint.parameters.body.fields) {
+                        Object.keys(endpoint.parameters.body.fields).forEach(key =&gt; {
+                            const input = document.getElementById(`body-${id}-${key}`);
+                            if (input) {
+                                if (input.type === &#39;file&#39; &amp;&amp; input.files[0]) {
+                                    formData.append(key, input.files[0]);
+                                } else if (input.value) {
+                                    formData.append(key, input.value);
+                                }
+                            }
+                        });
+                    }
+                    options.body = formData;
+                }
+            }
+
+            try {
+                const response = await fetch(url, options);
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+
+                const statusElement = document.getElementById(`status-${id}`);
+                statusElement.innerHTML = `
+                    &lt;div class=&#34;status-indicator ${response.ok ? &#39;status-success&#39; : &#39;status-error&#39;}&#34;&gt;
+                        &lt;i class=&#34;bi bi-${response.ok ? &#39;check-circle&#39; : &#39;x-circle&#39;}&#34;&gt;&lt;/i&gt;
+                        ${response.status} ${response.statusText}
+                    &lt;/div&gt;
+                `;
+
+                                const responseBodyElement = document.getElementById(`response-body-${id}`);
+                responseBodyElement.textContent = typeof responseData === &#39;string&#39; ? responseData : JSON.stringify(responseData, null, 2);
+
+                const responseHeadersElement = document.getElementById(`response-headers-${id}`);
+                const headersText = Array.from(response.headers.entries())
+                    .map(([key, value]) =&gt; `${key}: ${value}`)
+                    .join(&#39;\n&#39;);
+                responseHeadersElement.textContent = headersText;
+
+                document.getElementById(`response-${id}`).style.display = &#39;block&#39;;
+                
+                Prism.highlightAll();
+                
+            } catch (error) {
+                const statusElement = document.getElementById(`status-${id}`);
+                statusElement.innerHTML = `
+                    &lt;div class=&#34;status-indicator status-error&#34;&gt;
+                        &lt;i class=&#34;bi bi-x-circle&#34;&gt;&lt;/i&gt;
+                        Error: ${error.message}
+                    &lt;/div&gt;
+                `;
+                
+                const responseBodyElement = document.getElementById(`response-body-${id}`);
+                responseBodyElement.textContent = JSON.stringify({ error: error.message }, null, 2);
+                
+                document.getElementById(`response-${id}`).style.display = &#39;block&#39;;
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.classList.remove(&#39;btn-loading&#39;);
+                sendBtn.innerHTML = &#39;&lt;i class=&#34;bi bi-send&#34;&gt;&lt;/i&gt; Send Request&#39;;
+            }
+        }
+
+        function switchResponseTab(id, tab) {
+            document.querySelectorAll(`#response-${id} .response-tab`).forEach(btn =&gt; {
+                btn.classList.remove(&#39;active&#39;);
+            });
+            document.querySelectorAll(`#response-${id} .response-content`).forEach(content =&gt; {
+                content.classList.remove(&#39;active&#39;);
             });
             
-            // Filter nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                const linkText = item.querySelector('.nav-link span').textContent.toLowerCase();
+            event.target.classList.add(&#39;active&#39;);
+            document.getElementById(`${tab}-content-${id}`).classList.add(&#39;active&#39;);
+        }
+
+        function copyToClipboard(elementId, buttonElement) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() =&gt; {
+                const originalHTML = buttonElement.innerHTML;
+                buttonElement.innerHTML = &#39;&lt;i class=&#34;bi bi-check&#34;&gt;&lt;/i&gt; Copied!&#39;;
+                buttonElement.classList.add(&#39;copied&#39;);
                 
-                if (linkText.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+                setTimeout(() =&gt; {
+                    buttonElement.innerHTML = originalHTML;
+                    buttonElement.classList.remove(&#39;copied&#39;);
+                }, 2000);
+            }).catch(err =&gt; {
+                console.error(&#39;Failed to copy text: &#39;, err);
             });
-        });
-        
-        // Theme toggle (currently dark mode only as per requirements)
-        const themeToggle = document.getElementById('themeToggle');
-        
-        themeToggle.addEventListener('click', () => {
-            // Since dark mode is required by default, this just shows a message
-            alert('Dark mode is the default and only theme for this documentation.');
-        });
-        
-        // Initialize with GPT-4 section active
-        updateActiveNavLink('#gpt4');
-        
-        // Window resize handler
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 1024) {
-                sidebar.classList.remove('open');
-            }
-        });
+        }
+
+        loadApiData();
     </script>
-</body>
+  </body>
 </html>

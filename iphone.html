@@ -8,7 +8,7 @@
     </title>
     <style>
       *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',sans-serif;background:#000;color:#fff;overflow:hidden}
+    body{font-family:&#39;Segoe UI&#39;,sans-serif;background:#000;color:#fff;overflow:hidden}
     /* ====== BACKGROUND NEBULA + CAHAYA ====== */
     .nebula-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(128,0,255,.4),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(0,255,255,.3),transparent 60%),radial-gradient(ellipse at center,#0f0c29,#302b63,#24243e);background-size:200% 200%;animation:nebula 20s infinite alternate;z-index:-2}
     @keyframes nebula{0%{background-position:0% 50%}100%{background-position:100% 50%}}
@@ -39,9 +39,6 @@
     .result-card{text-align:center;background:rgba(255,255,255,.05);backdrop-filter:blur(12px);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,.1);box-shadow:0 0 40px rgba(128,0,255,.4)}
     img{max-width:90%;border-radius:15px;box-shadow:0 0 30px rgba(128,0,255,.6)}
     .back{margin-top:20px;background:transparent;border:2px solid #fff;color:#fff}
-    
-    /* ====== ERROR MESSAGE ====== */
-    .error-message{color:#ff6b6b;margin-top:15px;padding:10px;background:rgba(255,0,0,0.1);border-radius:8px;border:1px solid #ff6b6b;}
     </style>
   </head>
   <body>
@@ -78,7 +75,6 @@
         <button onclick="buatGambar()">
           Buat Gambar
         </button>
-        <div id="errorMessage" class="error-message hidden"></div>
       </div>
     </div>
     <!-- ========== LOADING ========== -->
@@ -109,153 +105,42 @@
       </div>
     </div>
     <script>
-      const home = document.getElementById('homePage');
-    const load = document.getElementById('loadingPage');
-    const result = document.getElementById('resultPage');
-    const hasilImg = document.getElementById('hasilImg');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const errorMessage = document.getElementById('errorMessage');
+      const home = document.getElementById(&#39;homePage&#39;);
+    const load = document.getElementById(&#39;loadingPage&#39;);
+    const result = document.getElementById(&#39;resultPage&#39;);
+    const hasilImg = document.getElementById(&#39;hasilImg&#39;);
+    const downloadBtn = document.getElementById(&#39;downloadBtn&#39;);
 
     function tampilkan(el){
-      [home,load,result].forEach(p=>p.classList.add('hidden'));
-      el.classList.remove('hidden');
-      errorMessage.classList.add('hidden');
-      errorMessage.textContent = '';
+      [home,load,result].forEach(p=&gt;p.classList.add(&#39;hidden&#39;));
+      el.classList.remove(&#39;hidden&#39;);
     }
 
-    function showError(message) {
-      errorMessage.textContent = message;
-      errorMessage.classList.remove('hidden');
-      tampilkan(home);
-    }
-
-    async function buatGambar(){
-      const time = document.getElementById('time').value.trim();
-      const battery = document.getElementById('battery').value.trim();
-      const carrier = document.getElementById('carrier').value.trim();
-      const message = document.getElementById('message').value.trim();
-      
-      if(!time||!battery||!carrier||!message){
-        showError('Lengkapi semua field!');
-        return;
-      }
-
-      // Validasi format waktu
-      if(!/^\d{1,2}:\d{2}$/.test(time)){
-        showError('Format waktu salah! Gunakan format HH:MM (contoh: 18:00)');
-        return;
-      }
+    function buatGambar(){
+      const time = document.getElementById(&#39;time&#39;).value.trim();
+      const battery = document.getElementById(&#39;battery&#39;).value.trim();
+      const carrier = document.getElementById(&#39;carrier&#39;).value.trim();
+      const message = document.getElementById(&#39;message&#39;).value.trim();
+      if(!time||!battery||!carrier||!message)return alert(&#39;Lengkapi semua field!&#39;);
 
       tampilkan(load);
+      const msg = encodeURIComponent(message);
+      const url = `https://brat.siputzx.my.id/iphone-quoted?time=${encodeURIComponent(time)}&amp;batteryPercentage=${battery}&amp;carrierName=${encodeURIComponent(carrier)}&amp;messageText=${msg}&amp;emojiStyle=apple`;
       
-      // Coba beberapa format API yang mungkin
-      const apiVersions = [
-        // Versi 1: API dengan parameter query (GET)
-        `https://iphonequotechatdlii.vercel.app/api/create?time=${encodeURIComponent(time)}&batteryPercentage=${battery}&carrierName=${encodeURIComponent(carrier)}&messageText=${encodeURIComponent(message)}&emojiStyle=apple`,
-        
-        // Versi 2: API endpoint yang berbeda
-        `https://iphonequotechatdlii.vercel.app/generate?time=${encodeURIComponent(time)}&battery=${battery}&carrier=${encodeURIComponent(carrier)}&message=${encodeURIComponent(message)}&emoji=apple`,
-        
-        // Versi 3: Path-based API
-        `https://iphonequotechatdlii.vercel.app/iphone-quote/${encodeURIComponent(time)}/${battery}/${encodeURIComponent(carrier)}/${encodeURIComponent(message)}/apple`
-      ];
-
-      let imageGenerated = false;
-
-      // Coba setiap versi API sampai berhasil
-      for (let i = 0; i < apiVersions.length; i++) {
-        const apiUrl = apiVersions[i];
-        console.log(`Mencoba API: ${apiUrl}`);
-        
-        try {
-          // Coba dengan method GET dulu (lebih umum untuk API gambar)
-          const response = await fetch(apiUrl, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-              'Accept': 'image/jpeg,image/png,image/*,*/*',
-            }
-          });
-
-          if (response.ok) {
-            // Jika response adalah gambar langsung
-            const blob = await response.blob();
-            const imageUrl = URL.createObjectURL(blob);
-            hasilImg.src = imageUrl;
-            downloadBtn.href = imageUrl;
-            imageGenerated = true;
-            tampilkan(result);
-            break;
-          }
-        } catch (error) {
-          console.log(`API versi ${i + 1} gagal:`, error.message);
-          continue;
-        }
-      }
-
-      // Jika tidak ada yang berhasil, coba method POST
-      if (!imageGenerated) {
-        try {
-          const apiUrl = 'https://iphonequotechatdlii.vercel.app/api/create';
-          const requestData = {
-            time: time,
-            batteryPercentage: battery,
-            carrierName: carrier,
-            messageText: message,
-            emojiStyle: 'apple'
-          };
-
-          const response = await fetch(apiUrl, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData)
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.url) {
-              hasilImg.src = data.url;
-              downloadBtn.href = data.url;
-              tampilkan(result);
-            } else if (data && data.imageUrl) {
-              hasilImg.src = data.imageUrl;
-              downloadBtn.href = data.imageUrl;
-              tampilkan(result);
-            } else {
-              showError('API tidak mengembalikan URL gambar yang valid');
-            }
-          } else {
-            showError(`Server error: ${response.status}`);
-          }
-        } catch (error) {
-          console.error('Error POST:', error);
-          showError(`Gagal terhubung ke server: ${error.message}`);
-        }
-      }
+      hasilImg.src = url;
+      hasilImg.onload = () =&gt; {
+        downloadBtn.href = url;
+        tampilkan(result);
+      };
+      hasilImg.onerror = () =&gt; {
+        alert(&#39;Gagal memuat gambar, coba lagi.&#39;);
+        tampilkan(home);
+      };
     }
 
     function kembali(){
-      // Hapus blob URL jika ada untuk mencegah memory leak
-      if (hasilImg.src && hasilImg.src.startsWith('blob:')) {
-        URL.revokeObjectURL(hasilImg.src);
-      }
       tampilkan(home);
     }
-
-    // Event listener untuk input validation
-    document.addEventListener('DOMContentLoaded', function() {
-      const inputs = document.querySelectorAll('input');
-      inputs.forEach(input => {
-        input.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            buatGambar();
-          }
-        });
-      });
-    });
     </script>
   </body>
 </html>

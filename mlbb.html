@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ML Lobby Generator</title>
+    <!-- FONT JAM DIGITAL 7-SEGMENT -->
+    <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet" />
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            background: #020617;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: white;
+        }
+        
+        .app {
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        /* TOP BRAND */
+        .top-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        
+        .logo-wrap {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 12px;
+        }
+        
+        .logo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #7c3aed;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+        
+        .menu-trigger {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            margin-top: 6px;
+            width: 38px;
+            height: 26px;
+            background: #020617;
+            border: 1.5px solid #ff2d2d;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 6px;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 0 8px rgba(255,45,45,.4),
+                        inset 0 0 6px rgba(255,45,45,.25);
+        }
+        
+        .menu-trigger span {
+            width: 100%;
+            height: 2px;
+            background: #ff2d2d;
+            border-radius: 2px;
+            box-shadow: 0 0 4px rgba(255,45,45,.7);
+        }
+        
+        .menu-trigger:active {
+            transform: translateX(-50%) scale(.95);
+            box-shadow: 0 0 4px rgba(255,45,45,.6),
+                        inset 0 0 10px rgba(255,45,45,.4);
+        }
+        
+        /* VIDEO BOX */
+        .video-box {
+            margin-left: 15px;
+            flex: 1;
+            height: 100px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            border: 5px solid #1f2937;
+            background: #020617;
+        }
+        
+        .video-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(2,6,23,.5), rgba(2,6,23,.15));
+        }
+        
+        /* JAM DIGITAL */
+        .clock {
+            position: absolute;
+            left: 12px;
+            bottom: 10px;
+            font-family: 'Digital-7 Mono', monospace;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #ff2d2d;
+            background: rgba(0,0,0,.45);
+            padding: 4px 6px;
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(255,45,45,.6);
+            z-index: 5;
+        }
+        
+        /* DIVIDER */
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1f2937, transparent);
+            width: calc(100% - 100px);
+            margin-left: 110px;
+            margin-top: -8px;
+            margin-bottom: 6px;
+        }
+        
+        /* TITLE */
+        .title {
+            text-align: left;
+            margin-top: -12px;
+            margin-bottom: 12px;
+            margin-left: 135px;
+        }
+        
+        .title h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .title p {
+            margin: 4px 0 0;
+            margin-left: 40px;
+            font-size: 12px;
+            opacity: .7;
+        }
+        
+        /* FORM */
+        .card {
+            background: #020617;
+            border-radius: 18px;
+            padding: 14px;
+        }
+        
+        .field {
+            margin-bottom: 12px;
+        }
+        
+        label {
+            font-size: 12px;
+            opacity: .7;
+            display: block;
+            margin-bottom: 6px;
+        }
+        
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            background: #020617;
+            color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9, #5b21b6);
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* RESULT */
+        .result-box {
+            margin-top: 16px;
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 9/16;
+            margin-left: auto;
+            margin-right: auto;
+            background: #020617;
+            border-radius: 18px;
+            padding: 8px;
+            border: 1.2px solid #1f2937;
+            box-shadow: 0 12px 30px rgba(0,0,0,.45),
+                        inset 0 0 12px rgba(124,58,237,.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            font-size: 13px;
+        }
+        
+        #placeholder {
+            text-align: center;
+        }
+        
+        .preview {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        
+        .avatar-wrapper {
+            position: absolute;
+            top: 23%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 34%;
+            aspect-ratio: 1/1;
+            z-index: 3;
+        }
+        
+        #avatarPhoto {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        
+        .username {
+            position: absolute;
+            top: 40.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5vw;
+            max-font-size: 12px;
+            min-font-size: 9px;
+            font-weight: 400;
+            color: #fff;
+            text-shadow: 0 0 6px rgba(0,0,0,.7);
+            z-index: 6;
+        }
+        
+        #lobby {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 4;
+        }
+        
+        /* LOADING OVERLAY */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            z-index: 10;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .loading-overlay video {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        /* HEADER PANEL */
+        .header-panel {
+            padding: 16px;
+            border-radius: 22px;
+            margin-bottom: 18px;
+            background: linear-gradient(#020617,#020617) padding-box,
+                        linear-gradient(135deg,#7c3aed,#ff2d2d) border-box;
+            border: 1.5px solid transparent;
+            box-shadow: 0 0 35px rgba(124,58,237,.25),
+                        inset 0 0 25px rgba(0,0,0,.65);
+        }
+        
+        /* GENERATOR BOX */
+        .generator-box {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 20px;
+            background: linear-gradient(180deg,#020617,#020617) padding-box,
+                        linear-gradient(135deg,#7c3aed,#ff2d2d) border-box;
+            border: 1.5px solid transparent;
+            box-shadow: 0 0 25px rgba(124,58,237,.25),
+                        inset 0 0 18px rgba(0,0,0,.6);
+        }
+        
+        .generator-header {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #a78bfa;
+            margin-bottom: 12px;
+        }
+        
+        /* POPUP */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        .popup-overlay.active {
+            display: flex;
+        }
+        
+        .popup-box {
+            width: 280px;
+            max-width: 90vw;
+            margin: 0 auto;
+            background: #020617;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .popup-title {
+            margin: 0 0 8px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+        
+        .popup-warning {
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: .75;
+            margin-bottom: 14px;
+            font-weight: 400;
+        }
+        
+        .popup-section {
+            margin: 12px 0;
+        }
+        
+        .popup-subtitle {
+            font-size: 12px;
+            letter-spacing: .6px;
+            margin-bottom: 10px;
+            color: #ff2d2d;
+            font-weight: 600;
+        }
+        
+        .popup-btn {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 13px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .popup-btn.telegram {
+            background: linear-gradient(135deg,#229ED9,#1d8ecf);
+        }
+        
+        .popup-btn.tiktok {
+            background: linear-gradient(135deg,#000,#222);
+        }
+        
+        .popup-btn.whatsapp {
+            background: linear-gradient(135deg,#25D366,#1EBE57);
+        }
+        
+        .popup-btn.github {
+    background: linear-gradient(135deg, #24292e, #000000);
+}
+
+/* Instagram */
+.popup-btn.instagram {
+    background: linear-gradient(
+        135deg,
+        #f58529,
+        #dd2a7b,
+        #8134af,
+        #515bd4
+    );
+}
+        
+        .popup-close {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: #1f2937;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .note {
+            text-align: center;
+            font-size: 11px;
+            opacity: .5;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header-panel">
+            <div class="top-brand">
+                <div class="logo-wrap">
+                    <div class="logo">
+    <img src="mlbb.jpg" alt="Logo">
+</div>
+
+                    <div class="menu-trigger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="video-box">
+                    <video autoplay muted loop playsinline>
+                        <source src="https://i.imgur.com/5bswJdl.mp4" type="video/mp4" />
+                    </video>
+                    <div class="clock" id="clock">00:00:00</div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="title">
+                <h2>ML Lobby Generator</h2>
+                <p>Fan-made / Parody</p>
+            </div>
+            <div class="divider"></div>
+        </div>
+        
+        <!-- GENERATOR FORM -->
+        <div class="generator-box">
+            <div class="generator-header">GENERATOR PANEL</div>
+            <div class="card">
+                <div class="field">
+                    <label>Upload Avatar</label>
+                    <input type="file" id="upload" accept="image/*" />
+                </div>
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" id="usernameInput" maxlength="8" placeholder="Max 8 karakter" />
+                </div>
+                <button id="generateBtn">Generate</button>
+                
+                <!-- RESULT AREA -->
+                <div class="result-box" id="resultBox">
+                    <span id="placeholder">Hasil akan muncul di sini</span>
+                    
+                    <!-- LOADING ANIMATION -->
+                    <div class="loading-overlay" id="loading">
+                        <video autoplay muted loop playsinline>
+                            <source src="https://i.imgur.com/NRDIp63.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+                    
+                    <!-- PREVIEW -->
+                    <div class="preview" id="preview">
+                        <div class="avatar-wrapper">
+                            <img id="avatarPhoto" src="" alt="Avatar" />
+                        </div>
+                        <div class="username" id="usernameText"></div>
+                        <img id="lobby" src="https://i.imgur.com/pulwpaY.png" alt="Lobby Background" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- POPUP INFO -->
+        <div class="popup-overlay" id="popup">
+            <div class="popup-box">
+                <h3 class="popup-title">INFORMASI !!</h3>
+                <p class="popup-warning">
+                    Website ini <b>GRATIS 100%</b> dan <b>DILARANG DIJUAL BELIKAN</b>.
+                    Tools ini dibuat hanya untuk <b>Digeratiskan|By JHON PRODUCTION</b>.
+                </p>
+                <div class="popup-section">
+                    <p class="popup-subtitle">IKUTI AKUN SOSMED KAMI</p>
+                    <a href="https://t.me/MIKUMIKI" target="_blank" class="popup-btn telegram">Telegram</a>
+                    <a href="https://github.com/CpmJhon21" target="_blank" class="popup-btn github">GitHub</a>
+                    <a href="https://www.instagram.com/cpm_jhon" target="_blank" class="popup-btn instagram">Instagram</a>
+                    <a href="https://www.tiktok.com/@cpm_jhon21" target="_blank" class="popup-btn tiktok">TikTok</a>
+                    <a href="https://whatsapp.com/channel/0029VaLiUSS5q08hPj5mcH0m" target="_blank" class="popup-btn whatsapp">WhatsApp Channel</a>
+                </div>
+                <div class="note">© JHON PRODUCTION</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== JAM REAL TIME =====
+        const clock = document.getElementById("clock");
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            clock.textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // ===== ELEMENTS =====
+        const upload = document.getElementById("upload");
+        const avatarPhoto = document.getElementById("avatarPhoto");
+        const generateBtn = document.getElementById("generateBtn");
+        const preview = document.getElementById("preview");
+        const usernameInput = document.getElementById("usernameInput");
+        const usernameText = document.getElementById("usernameText");
+        const placeholder = document.getElementById("placeholder");
+        const loading = document.getElementById("loading");
+        const trigger = document.querySelector(".menu-trigger");
+        const popup = document.getElementById("popup");
+        const resultBox = document.getElementById("resultBox");
+        
+        let avatarReady = false;
+        
+        // ===== UPLOAD AVATAR =====
+        upload.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const img = new Image();
+            const reader = new FileReader();
+            reader.onload = () => img.src = reader.result;
+            
+            img.onload = () => {
+                const size = Math.min(img.width, img.height);
+                const x = (img.width - size) / 2;
+                const y = (img.height - size) / 2;
+                
+                const canvas = document.createElement("canvas");
+                canvas.width = size;
+                canvas.height = size;
+                
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, x, y, size, size, 0, 0, size, size);
+                
+                avatarPhoto.src = canvas.toDataURL("image/png");
+                avatarReady = true;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // ===== GENERATE BUTTON =====
+        generateBtn.addEventListener("click", () => {
+            const username = usernameInput.value.trim();
+            if (!avatarReady || !username) {
+                alert("Upload foto dan isi username dulu!");
+                return;
+            }
+            
+            // Scroll ke hasil
+            resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+            
+            // Tampilkan loading
+            setTimeout(() => {
+                loading.style.display = "flex";
+                preview.style.display = "none";
+                placeholder.style.display = "none";
+                
+                // Simulasi loading 6 detik
+                setTimeout(() => {
+                    usernameText.textContent = username;
+                    loading.style.display = "none";
+                    preview.style.display = "block";
+                }, 6000);
+            }, 200);
+        });
+        
+        // ===== POPUP MENU =====
+        trigger.addEventListener("click", () => {
+            popup.classList.add("active");
+        });
+        
+        popup.addEventListener("click", (e) => {
+            if (e.target === popup) {
+                popup.classList.remove("active");
+            }
+        });
+    </script>
+</body>
+</html>
