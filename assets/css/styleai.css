@@ -1,0 +1,282 @@
+/* =========================================
+   1. APP VARIABLES (2025 MOBILE STANDARD)
+   ========================================= */
+:root {
+    --bg-app: #000000;
+    --bg-surface: #121212;
+    --bg-glass: rgba(20, 20, 20, 0.85);
+    
+    /* Vivid Accents */
+    --primary: #5E6AD2;   /* Soft Indigo */
+    --accent: #B0FB5D;    /* Lime Punch */
+    --error: #FF4B4B;
+    
+    --text-main: #FFFFFF;
+    --text-muted: #888888;
+    
+    --radius-xl: 32px;
+    --radius-md: 16px;
+    --radius-sm: 8px;
+    
+    --font-main: 'Plus Jakarta Sans', sans-serif;
+    --font-code: 'JetBrains Mono', monospace;
+
+    /* Safe Area for Notch/Home Bar */
+    --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    height: 100dvh; /* Dynamic Height for Mobile */
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- BACKGROUND GRADIENT MESH --- */
+.ambient-glow {
+    position: absolute; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(94, 106, 210, 0.15) 0%, transparent 70%);
+    top: -100px; left: 50%; transform: translateX(-50%);
+    z-index: 0; pointer-events: none;
+}
+
+/* =========================================
+   2. APP HEADER (TOP BAR)
+   ========================================= */
+.app-header {
+    height: 60px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    background: transparent;
+}
+
+.brand-pill {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-family: var(--font-code);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    backdrop-filter: blur(10px);
+}
+.dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+
+.status-badge {
+    font-size: 0.7rem; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+}
+
+/* =========================================
+   3. MAIN VIEWFINDER (IMAGE AREA)
+   ========================================= */
+.viewfinder {
+    flex: 1;
+    margin: 10px 16px;
+    border-radius: var(--radius-xl);
+    background: #080808;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+}
+
+/* Image Display */
+#resultImage {
+    width: 100%; height: 100%; object-fit: contain;
+    opacity: 0; transition: opacity 0.6s ease;
+    z-index: 2;
+    display: none; /* Hidden initially */
+}
+#resultImage.loaded { opacity: 1; display: block; }
+
+/* Empty State - FIXED CENTERING */
+.empty-state {
+    position: absolute; 
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 1;
+    padding: 20px;
+}
+.empty-icon {
+    font-size: 2rem; margin-bottom: 12px; opacity: 0.2;
+}
+.empty-text {
+    font-size: 0.9rem; color: var(--text-muted); 
+    max-width: 250px; 
+    margin: 0 auto;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Loading Spinner */
+.mobile-loader {
+    display: none; width: 40px; height: 40px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s infinite linear;
+    z-index: 3;
+}
+
+/* Grid Overlay Decoration */
+.grid-deco {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+/* DOWNLOAD BUTTON STYLE (NEW) */
+.download-fab {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    display: none; /* Hidden by default */
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+.download-fab svg { width: 20px; height: 20px; fill: currentColor; }
+.download-fab:active { transform: scale(0.9); background: rgba(255,255,255,0.1); }
+.download-fab.visible { display: flex; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* =========================================
+   4. BOTTOM DOCK (CONTROLS)
+   ========================================= */
+.bottom-dock {
+    background: var(--bg-surface);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 20px 20px calc(20px + var(--safe-bottom));
+    z-index: 20;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+/* Handle bar for visual cue */
+.drag-handle {
+    width: 40px; height: 4px; background: rgba(255,255,255,0.2);
+    border-radius: 10px; margin: -8px auto 10px;
+}
+
+/* Horizontal Tags (Scrollable) */
+.tag-scroll-area {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    -ms-overflow-style: none; scrollbar-width: none;
+}
+.tag-scroll-area::-webkit-scrollbar { display: none; }
+
+.tag-chip {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 8px 16px;
+    margin-right: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.tag-chip:active { transform: scale(0.95); }
+.tag-chip.active-tag {
+    background: var(--text-main); color: #000; border-color: #fff;
+}
+
+/* Input Group */
+.input-group {
+    display: flex; gap: 12px; align-items: flex-end;
+}
+
+.text-field-container {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px;
+    transition: border-color 0.3s;
+}
+.text-field-container:focus-within { border-color: var(--primary); }
+
+textarea {
+    width: 100%; height: 50px;
+    background: transparent; border: none; outline: none;
+    padding: 14px;
+    color: var(--text-main);
+    font-family: var(--font-main); font-size: 1rem;
+    resize: none;
+}
+textarea::placeholder { color: #555; }
+
+/* The Big Button */
+.btn-fab {
+    width: 54px; height: 54px;
+    border-radius: 18px;
+    background: var(--primary);
+    border: none;
+    color: #fff;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    flex-shrink: 0;
+}
+.btn-fab:active { transform: scale(0.9); }
+.btn-fab svg { width: 24px; height: 24px; fill: currentColor; }
+.btn-fab:disabled { background: #333; box-shadow: none; opacity: 0.5; }
+
+/* =========================================
+   5. STATUS OVERLAY
+   ========================================= */
+#statusMessage {
+    position: absolute;
+    top: 70px;
+    left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #fff;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 50;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+#statusMessage.visible { opacity: 1; }
+
+/* Animations */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }

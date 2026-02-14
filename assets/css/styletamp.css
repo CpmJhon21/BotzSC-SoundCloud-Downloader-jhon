@@ -1,0 +1,203 @@
+:root {
+    --bg-body: #F2F4F8;
+    --bg-card: #FFFFFF;
+    --primary: #111111;
+    --text-main: #1F2937;
+    --text-muted: #9CA3AF;
+    --accent: #F59E0B;
+    --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+    --shadow-card: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 100px;
+}
+
+/* --- Top Bar & Profile Ring (Google Colors) --- */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--bg-body);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.app-name { font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; color: var(--primary); }
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    /* Gradient 4 Warna: Merah, Kuning, Hijau, Biru */
+    background: conic-gradient(
+        #EA4335 0% 25%, 
+        #FBBC05 25% 50%, 
+        #34A853 50% 75%, 
+        #4285F4 75% 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5px; /* Ketebalan Ring Warna */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--bg-body); /* Celah putih antara ring dan foto */
+    object-fit: cover;
+    background: white;
+}
+
+/* --- Layout Components --- */
+.tab-view { display: none; padding: 0 20px; animation: fadeIn 0.3s ease; }
+.tab-view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Hero Card */
+.hero-card {
+    background: var(--bg-card);
+    border-radius: 30px;
+    padding: 40px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.icon-glow {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 2rem; color: var(--accent);
+    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+}
+.hero-card h2 { font-size: 1.5rem; margin-bottom: 10px; color: var(--primary); }
+.hero-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+/* Email Box */
+.email-action-area {
+    background: var(--bg-card); padding: 20px;
+    border-radius: 20px; box-shadow: var(--shadow-card);
+}
+.email-action-area label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.email-display {
+    display: flex; background: #F3F4F6; padding: 8px 8px 8px 16px;
+    border-radius: 12px; align-items: center; justify-content: space-between; margin-bottom: 15px;
+}
+.email-display span { font-family: monospace; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 80%; color: var(--primary); }
+.copy-btn {
+    background: white; border: none; width: 36px; height: 36px;
+    border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    cursor: pointer; color: var(--primary);
+}
+.status-indicator { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+.dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+
+/* --- NEW MODERN MESSAGE LIST (UPDATED) --- */
+.section-header { margin-bottom: 20px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+.section-header h2 { font-size: 1.4rem; color: var(--primary); }
+.badge { background: #ef4444; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+
+.message-list { display: flex; flex-direction: column; gap: 12px; }
+
+.message-card {
+    background: var(--bg-card);
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    display: flex;
+    gap: 16px; /* Jarak antara avatar dan teks */
+    align-items: flex-start;
+    transition: transform 0.1s;
+    position: relative;
+    overflow: hidden;
+}
+.message-card:active { transform: scale(0.98); background: #f9fafb; }
+
+/* Garis Indikator Unread */
+.message-card.unread::before {
+    content: ''; position: absolute; left: 0; top: 15%; bottom: 15%;
+    width: 4px; background: var(--accent); border-radius: 0 4px 4px 0;
+}
+
+/* Avatar Inisial (Huruf) */
+.msg-avatar {
+    width: 48px; height: 48px;
+    background: #EEF2FF; color: #4F46E5;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.3rem; flex-shrink: 0;
+}
+
+/* Layout Teks Pesan */
+.msg-content { flex: 1; min-width: 0; }
+.msg-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+.msg-from { font-weight: 700; font-size: 0.95rem; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%; }
+.msg-time { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+.msg-subject { font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msg-snippet { font-size: 0.85rem; color: var(--text-muted); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Read State */
+.message-card.read .msg-from { font-weight: 500; color: #6B7280; }
+.message-card.read .msg-avatar { background: #F3F4F6; color: #9CA3AF; }
+.message-card.read { box-shadow: none; border: 1px solid #F3F4F6; background: #FAFAFA; }
+
+/* Empty State */
+.empty-placeholder { text-align: center; padding: 60px 0; color: #d1d5db; }
+.empty-placeholder i { font-size: 3.5rem; margin-bottom: 15px; display: block; opacity: 0.5; }
+
+/* Docs & Bottom Nav */
+.doc-card { background: var(--bg-card); padding: 24px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); }
+.doc-card ul { padding-left: 20px; color: #4b5563; font-size: 0.9rem; line-height: 1.6; }
+.developer-card { border: 1px solid rgba(0,0,0,0.05); text-align: center; }
+.dev-name { font-weight: 700; font-size: 1.2rem; color: var(--primary); }
+.btn-whatsapp { display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: white; text-decoration: none; padding: 12px 24px; border-radius: 50px; margin-top: 15px; font-weight: 600; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
+
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: white; padding: 12px 24px 24px; 
+    display: flex; justify-content: space-between; align-items: flex-end;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+    border-radius: 24px 24px 0 0; z-index: 100;
+}
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; color: #9CA3AF; font-size: 0.7rem; gap: 6px; cursor: pointer; transition: color 0.2s; }
+.nav-item i { font-size: 1.4rem; }
+.nav-item.active { color: var(--primary); font-weight: 600; }
+.nav-fab-wrapper { flex: 1; display: flex; justify-content: center; position: relative; }
+.nav-fab {
+    width: 60px; height: 60px; background: var(--primary);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.8rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transform: translateY(-30px); cursor: pointer;
+}
+.icon-wrapper { position: relative; }
+.nav-dot { position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid white; }
+
+/* Modal Styles */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 30px 24px; max-height: 85vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.modal.show .modal-content { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.close-btn { background: #F3F4F6; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
+.modal-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #F3F4F6; }
+.meta-avatar { width: 44px; height: 44px; background: #EEF2FF; color: #4F46E5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+.meta-info { display: flex; flex-direction: column; }
+.meta-from { font-weight: 600; font-size: 0.95rem; }
+.meta-time { font-size: 0.75rem; color: var(--text-muted); }
+.modal-body { font-size: 1rem; line-height: 1.7; color: #374151; white-space: pre-wrap; word-wrap: break-word; }
+
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #1f2937; color: white; padding: 12px 24px; border-radius: 50px; font-size: 0.85rem; z-index: 200; transition: transform 0.4s; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
