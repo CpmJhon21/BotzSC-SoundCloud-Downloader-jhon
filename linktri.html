@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linktree Builder Premium</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styletri.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-tree"></i> Linktree Builder <span class="premium-badge">PREMIUM</span></h1>
+            <p class="subtitle">Buat halaman linktree profesional dengan GUI premium. Tanpa kode, langsung deploy!</p>
+        </header>
+
+        <!-- Main App Container -->
+        <main class="app-container">
+            <!-- Sidebar Form -->
+            <div class="sidebar">
+                <section class="form-section">
+                    <h2><i class="fas fa-cog"></i> Konfigurasi Profil</h2>
+                    
+                    <!-- Banner Text -->
+                    <div class="form-group">
+                        <label for="bannerText"><i class="fas fa-flag"></i> Banner Text</label>
+                        <input type="text" id="bannerText" placeholder="ML Lobby Generator" autocomplete="off">
+                        <small class="input-hint">Teks yang muncul di bagian atas halaman</small>
+                    </div>
+
+                    <!-- Sub Banner -->
+                    <div class="form-group">
+                        <label for="subBanner"><i class="fas fa-tag"></i> Sub Banner</label>
+                        <input type="text" id="subBanner" placeholder="Fan-made / Parody" autocomplete="off">
+                        <small class="input-hint">Teks kecil di bawah banner utama</small>
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="form-group">
+                        <label for="img"><i class="fas fa-image"></i> Foto Profil (URL)</label>
+                        <input type="text" id="img" placeholder="https://example.com/foto.jpg" autocomplete="off">
+                        <small class="input-hint">Kosongkan jika tidak ingin menampilkan foto</small>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="nama"><i class="fas fa-user"></i> Nama</label>
+                        <input type="text" id="nama" placeholder="Nama atau Brand Anda" autocomplete="off">
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="form-group">
+                        <label for="deskripsi"><i class="fas fa-file-alt"></i> Deskripsi / Bio</label>
+                        <textarea id="deskripsi" placeholder="Deskripsi singkat tentang Anda..." rows="3" autocomplete="off"></textarea>
+                    </div>
+
+                    <!-- Ticker / Waktu (Versi Sederhana) -->
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Ticker / Waktu</label>
+                        
+                        <div class="simple-ticker-options">
+                            <label class="simple-ticker-option">
+                                <input type="radio" name="tickerType" value="static" checked>
+                                <div class="ticker-option-content">
+                                    <i class="fas fa-font"></i>
+                                    <span>Static Text</span>
+                                </div>
+                            </label>
+                            
+                            <label class="simple-ticker-option">
+                                <input type="radio" name="tickerType" value="digital">
+                                <div class="ticker-option-content">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Jam Digital</span>
+                                </div>
+                            </label>
+                            
+                            <label class="simple-ticker-option">
+                                <input type="radio" name="tickerType" value="none">
+                                <div class="ticker-option-content">
+                                    <i class="fas fa-times"></i>
+                                    <span>Tidak Ada</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Static Ticker Input -->
+                        <div id="static-ticker-container" class="ticker-input-container active">
+                            <input type="text" id="tickerText" placeholder="2 | : 13 : 22" autocomplete="off">
+                            <small class="input-hint">Format bebas, contoh: 2 | : 13 : 22</small>
+                        </div>
+                        
+                        <!-- Digital Clock Configuration -->
+                        <div id="digital-ticker-container" class="ticker-input-container">
+                            <div class="timezone-select">
+                                <label>Zona Waktu:</label>
+                                <select id="timezone">
+                                    <option value="local">Local Time (Browser)</option>
+                                    <option value="Asia/Jakarta">WIB (Jakarta)</option>
+                                    <option value="Asia/Makassar">WITA (Makassar)</option>
+                                    <option value="Asia/Jayapura">WIT (Jayapura)</option>
+                                    <option value="UTC">UTC</option>
+                                    <option value="America/New_York">EST (New York)</option>
+                                    <option value="Europe/London">GMT (London)</option>
+                                    <option value="Asia/Tokyo">JST (Tokyo)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="showSeconds" checked>
+                                    <span class="checkbox-custom"></span>
+                                    <span>Tampilkan Detik</span>
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="showDate">
+                                    <span class="checkbox-custom"></span>
+                                    <span>Tampilkan Tanggal</span>
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="militaryTime">
+                                    <span class="checkbox-custom"></span>
+                                    <span>24 Jam Format</span>
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="blinkSeparator" checked>
+                                    <span class="checkbox-custom"></span>
+                                    <span>Kedipkan Titik Dua</span>
+                                </label>
+                            </div>
+                            
+                            <div id="digitalClockPreview" class="clock-preview"></div>
+                        </div>
+                        
+                        <!-- Analog Clock Configuration -->
+                        <div id="analog-ticker-container" class="ticker-input-container">
+                            <div class="timezone-select">
+                                <label>Zona Waktu:</label>
+                                <select id="analogTimezone">
+                                    <option value="local">Local Time (Browser)</option>
+                                    <option value="Asia/Jakarta">WIB (Jakarta)</option>
+                                    <option value="Asia/Makassar">WITA (Makassar)</option>
+                                    <option value="Asia/Jayapura">WIT (Jayapura)</option>
+                                    <option value="UTC">UTC</option>
+                                </select>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="showAnalogSeconds" checked>
+                                    <span class="checkbox-custom"></span>
+                                    <span>Tampilkan Jarum Detik</span>
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="showAnalogNumbers" checked>
+                                    <span class="checkbox-custom"></span>
+                                    <span>Tampilkan Angka</span>
+                                </label>
+                                
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="smoothAnalog" checked>
+                                    <span class="checkbox-custom"></span>
+                                    <span>Animasi Smooth</span>
+                                </label>
+                            </div>
+                            
+                            <div id="analogClockPreview" class="clock-preview">
+                                <div class="analog-clock">
+                                    <div class="clock-face">
+                                        <div class="hand hour-hand"></div>
+                                        <div class="hand minute-hand"></div>
+                                        <div class="hand second-hand"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Important Notice Box -->
+                    <div class="form-group">
+                        <label><i class="fas fa-exclamation-triangle"></i> Informasi Penting</label>
+                        <div class="dynamic-container" id="notice-container">
+                            <!-- Dynamic content will be added here -->
+                        </div>
+                        <button type="button" id="add-notice" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Tambah Informasi
+                        </button>
+                        <small class="input-hint">Informasi penting dalam box (contoh: Website GRATIS 100%)</small>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="form-group">
+                        <label><i class="fas fa-hashtag"></i> Media Sosial</label>
+                        <div class="dynamic-container" id="medsos-container">
+                            <!-- Dynamic content will be added here -->
+                        </div>
+                        <button type="button" id="add-medsos" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Tambah Media Sosial
+                        </button>
+                    </div>
+
+                    <!-- Custom Links -->
+                    <div class="form-group">
+                        <label><i class="fas fa-link"></i> Custom Links</label>
+                        <div class="dynamic-container" id="links-container">
+                            <!-- Dynamic content will be added here -->
+                        </div>
+                        <button type="button" id="add-link" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Tambah Link
+                        </button>
+                    </div>
+
+                    <!-- Footer Text -->
+                    <div class="form-group">
+                        <label for="footer"><i class="fas fa-copyright"></i> Footer Text</label>
+                        <input type="text" id="footer" placeholder="© 2024 Your Brand" autocomplete="off">
+                    </div>
+
+                    <!-- Template Selector -->
+                    <div class="form-group">
+                        <label><i class="fas fa-palette"></i> Template Style</label>
+                        <div class="template-selector" id="template-selector">
+                            <div class="template-option active" data-template="1">
+                                <div class="template-preview pixel"></div>
+                                <span>Pixel Modern</span>
+                            </div>
+                            <div class="template-option" data-template="2">
+                                <div class="template-preview minimal"></div>
+                                <span>Minimal Clean</span>
+                            </div>
+                            <div class="template-option" data-template="3">
+                                <div class="template-preview neon"></div>
+                                <span>Cyber Neon</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="template" value="1">
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button id="preview-btn" class="btn-primary">
+                            <i class="fas fa-eye"></i> Preview & Generate HTML
+                        </button>
+                        <button id="reset-btn" class="btn-secondary">
+                            <i class="fas fa-redo"></i> Reset Form
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Instructions -->
+                <aside class="instructions">
+                    <h3><i class="fas fa-lightbulb"></i> Cara Menggunakan:</h3>
+                    <ol>
+                        <li>Isi semua field di atas</li>
+                        <li>Klik "Preview & Generate HTML"</li>
+                        <li>Salin atau download HTML</li>
+                        <li>Upload ke Vercel/Netlify sebagai static site</li>
+                    </ol>
+                </aside>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h2><i class="fas fa-desktop"></i> Live Preview</h2>
+                    <div class="preview-actions">
+                        <button id="copy-btn" class="btn-success" disabled>
+                            <i class="fas fa-copy"></i> Copy HTML
+                        </button>
+                        <button id="download-btn" class="btn-success" disabled>
+                            <i class="fas fa-download"></i> Download HTML
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Container -->
+                <div class="preview-container">
+                    <div class="iframe-container">
+                        <div class="iframe-placeholder" id="iframe-placeholder">
+                            <i class="fas fa-tree"></i>
+                            <p>Preview akan muncul di sini setelah mengisi form</p>
+                        </div>
+                        <iframe id="preview-frame" title="Live Preview" srcdoc=""></iframe>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="output-section">
+                        <h3><i class="fas fa-code"></i> Generated HTML</h3>
+                        <div class="code-container">
+                            <pre id="html-output">// HTML akan muncul di sini...</pre>
+                            <div class="copy-overlay" id="copy-overlay">
+                                <i class="fas fa-check"></i> Copied!
+                            </div>
+                        </div>
+                        
+                        <!-- Deploy Info -->
+                        <div class="deploy-info">
+                            <h4><i class="fas fa-rocket"></i> Cara Deploy:</h4>
+                            <p>Salin kode HTML di atas, buat file <code>index.html</code>, upload ke:</p>
+                            <div class="deploy-buttons">
+                                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="deploy-btn vercel">Vercel</a>
+                                <a href="https://netlify.com" target="_blank" rel="noopener noreferrer" class="deploy-btn netlify">Netlify</a>
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="deploy-btn github">GitHub Pages</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Linktree Builder Premium &copy; 2024 - Dibuat dengan <i class="fas fa-heart"></i> menggunakan Vanilla JS</p>
+            <p class="footer-note">No Backend | No Database | 100% Client Side</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

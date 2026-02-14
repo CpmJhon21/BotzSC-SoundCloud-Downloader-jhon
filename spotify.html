@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Downloader - Premium Quality</title>
+    <link rel="stylesheet" href="assets/css/stylespotify.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        
+        <div class="downloader-card">
+            
+            <div class="header">
+                <i class="fab fa-spotify logo-spin"></i>
+                <h2>Spotify <span>Downloader</span></h2>
+                <p>High-quality MP3 streaming & download</p>
+            </div>
+
+            <div id="view-input" class="fade-in">
+                <div class="input-box">
+                    <i class="fas fa-link"></i>
+                    <input type="text" id="spotifyUrl" placeholder="Paste Spotify track link...">
+                </div>
+                <button id="searchBtn" class="action-btn">
+                    <i class="fas fa-bolt"></i> Download Music
+                </button>
+            </div>
+
+            <div id="view-loading" class="hidden">
+                <div class="loader-container">
+                    <div class="spotify-pulse"></div>
+                    <h3>Processing...</h3>
+                    <p>Fetching your track data</p>
+                </div>
+            </div>
+
+            <div id="view-result" class="hidden">
+                <div class="track-card">
+                    <img id="albumArt" src="" alt="Album Art" class="track-img">
+                    
+                    <div class="track-details">
+                        <h3 id="trackTitle">Loading...</h3>
+                        <p id="artistName">Loading...</p>
+                    </div>
+
+                    <div class="meta-tags">
+                        <span class="tag"><i class="fas fa-music"></i> <span id="durationTxt">MP3</span></span>
+                        <span class="tag green-tag"><i class="fas fa-star"></i> <span id="sizeTxt">High Q</span></span>
+                    </div>
+
+                    <button id="finalDownloadBtn" class="download-confirm-btn" style="width:100%; border:none; cursor:pointer;">
+                        <i class="fas fa-download"></i> Download MP3
+                    </button>
+                    
+                    <div class="reset-area">
+                        <button id="resetBtn">Download another</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="icon-circle"><i class="fas fa-bolt"></i></div>
+                <span>Super Fast</span>
+            </div>
+            <div class="feature-item">
+                <div class="icon-circle"><i class="fas fa-shield-alt"></i></div>
+                <span>Secure</span>
+            </div>
+            <div class="feature-item">
+                <div class="icon-circle"><i class="fas fa-star"></i></div>
+                <span>High Quality</span>
+            </div>
+            <div class="feature-item">
+                <div class="icon-circle"><i class="fas fa-mobile-alt"></i></div>
+                <span>Responsive</span>
+            </div>
+        </div>
+
+        <div class="documentation-section">
+            <h3><i class="fas fa-book-open"></i> How to Use</h3>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <p>Open Spotify App & Copy Link</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <p>Paste Link in the box above</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <p>Click Download & Save MP3</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            SANN404 FORUM
+        </div>
+
+    </div>
+
+    <script src="assets/js/scriptspotify.js"></script>
+</body>
+</html>

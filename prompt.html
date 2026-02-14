@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JHON API | Website Untuk Mengubah Foto/gambar ke Prompt</title>
+    <link rel="stylesheet" href="assets/css/styleprompt.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand-logo">
+                <div class="logo-icon"><i class="ri-eye-2-line"></i></div>
+                <span>IMAGE2PROMPT<span class="highlight">.AI</span></span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#generator">Generator</a></li>
+                <li><a href="#footer">Credit</a></li>
+            </ul>
+
+            <button class="menu-btn" id="menuToggle">
+                <i class="ri-more-2-fill"></i>
+            </button>
+        </div>
+    </nav>
+
+    <aside class="sidebar-dropdown" id="sidebarMenu">
+        <div class="sidebar-header">
+            <span>Menu</span>
+            <i class="ri-close-line" id="closeSidebar"></i>
+        </div>
+        <ul class="sidebar-list">
+            <li><a href="#home"><i class="ri-home-line"></i> Beranda</a></li>
+            <li><a href="#generator"><i class="ri-cpu-line"></i> AI Generator</a></li>
+            <li><a href="https://github.com/CpmJhon21" target="_blank"><i class="ri-github-line"></i> Github JHON API</a></li>
+        </ul>
+    </aside>
+
+    <header id="home" class="hero">
+        <div class="hero-bg-wrapper">
+            <img src="https://cdn.odzre.my.id/0jw.jpg" alt="AI Matrix" class="hero-img">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="badge-pill">
+                <span class="dot"></span> Powered by JHON API
+            </div>
+            <h1>Visual to Text <br> <span class="text-gradient">Intelligence.</span></h1>
+            <p>Konversi gambar apapun menjadi prompt presisi tinggi untuk Midjourney, Stable Diffusion, & Flux.</p>
+            <a href="#generator" class="btn-primary-lg">Mulai Sekarang <i class="ri-arrow-down-line"></i></a>
+        </div>
+    </header>
+
+    <section id="generator" class="main-app">
+        <div class="container">
+            
+            <div class="glass-card">
+                <div class="card-head">
+                    <h2><i class="ri-magic-line"></i> Studio Generator</h2>
+                    <p>Upload foto untuk diekstrak menjadi teks prompt.</p>
+                </div>
+
+                <div class="grid-layout">
+                    <div class="col-input">
+                        <div class="upload-zone" id="dropArea">
+                            <input type="file" id="imageInput" accept="image/*" hidden>
+                            <div class="upload-content">
+                                <div class="icon-circle">
+                                    <i class="ri-upload-cloud-fill"></i>
+                                </div>
+                                <h3>Upload Foto</h3>
+                                <p>Klik atau Drag file ke sini</p>
+                            </div>
+                            <img id="previewImage" class="img-preview" src="" alt="">
+                            <button id="removeImgBtn" class="remove-btn"><i class="ri-close-line"></i></button>
+                        </div>
+
+                        <div class="settings-row">
+                            <div class="form-group">
+                                <label>Bahasa Output</label>
+                                <div class="select-box">
+                                    <i class="ri-translate select-icon"></i>
+                                    <select id="language">
+                                        <option value="en">English (Best)</option>
+                                        <option value="id">Indonesia</option>
+                                        <option value="ja">Japanese</option>
+                                        <option value="zh">Chinese</option>
+                                    </select>
+                                    <i class="ri-arrow-down-s-line arrow"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Model</label>
+                                <div class="select-box">
+                                    <i class="ri-robot-line select-icon"></i>
+                                    <select id="model">
+                                        <option value="general">General</option>
+                                        <option value="midjourney">Midjourney v6</option>
+                                        <option value="dalle">DALL-E 3</option>
+                                        <option value="flux">Flux.1 Pro</option>
+                                    </select>
+                                    <i class="ri-arrow-down-s-line arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="generateBtn" class="btn-generate" disabled>
+                            Generate Prompt <i class="ri-sparkling-2-fill"></i>
+                        </button>
+                    </div>
+
+                    <div class="col-result" id="resultPanel">
+                        <div class="empty-state" id="emptyState">
+                            <i class="ri-code-s-slash-line"></i>
+                            <p>Hasil prompt akan muncul di sini</p>
+                        </div>
+
+                        <div class="loading-state" id="loading">
+                            <div class="spinner-modern"></div>
+                            <p>Menganalisis Komposisi Visual...</p>
+                        </div>
+
+                        <div class="result-content" id="resultContent">
+                            <div class="result-header">
+                                <span class="label-tech">GENERATED PROMPT</span>
+                                <div class="actions">
+                                    <button class="action-btn" id="copyBtn" title="Salin Teks">
+                                        <i class="ri-file-copy-line"></i> Salin
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea id="promptResult" class="prompt-box" readonly spellcheck="false"></textarea>
+                            <div class="result-footer">
+                                <small>Model: <span id="modelTag">General</span></small>
+                                <small>Chars: <span id="charCount">0</span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>JHON API FORUM</h2>
+                <p>Developing the future of AI tools.</p>
+            </div>
+            <div class="footer-credits">
+                <p>&copy; 2026 JHON API Project. All Rights Reserved.</p>
+                <div class="socials">
+                    <a href="#"><i class="ri-github-fill"></i></a>
+                    <a href="#"><i class="ri-telegram-fill"></i></a>
+                    <a href="#"><i class="ri-global-line"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/scriptprompt.js"></script>
+</body>
+</html>

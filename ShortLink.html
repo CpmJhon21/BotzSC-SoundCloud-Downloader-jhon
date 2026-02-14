@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JHONLink - ShortLink Moderen dan mudah di gunakan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* TEMA JHON API SaaS */
+            --bg-main: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #555555;
+            --brand-blue: #2F72FD;
+            --brand-blue-hover: #1e5dd6;
+            --badge-bg: #f3f4f6;
+            --border-light: #e5e7eb;
+            --radius-btn: 100px;
+            --radius-card: 24px;
+            --font-family: 'Inter', sans-serif;
+            --star-color: #FFB300;
+            --input-bg: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NAVBAR MENGAMBANG & BLUR --- */
+        .navbar {
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .navbar-inner {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #000;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .menu-btn {
+            font-size: 1.4rem;
+            color: #000;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* --- SIDEBAR MENU --- */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 1001;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        
+        .sidebar-menu {
+            position: fixed; top: 0; right: -300px;
+            width: 280px; height: 100%; background: #fff;
+            z-index: 1002; padding: 30px;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .sidebar-active .sidebar-overlay { opacity: 1; visibility: visible; }
+        .sidebar-active .sidebar-menu { right: 0; }
+
+        .close-sidebar { align-self: flex-end; font-size: 1.5rem; cursor: pointer; color: #555; margin-bottom: 20px; }
+        .sidebar-link { font-size: 1.1rem; font-weight: 600; color: var(--text-main); text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 12px; }
+        .sidebar-link:hover { color: var(--brand-blue); }
+
+        /* --- MAIN WRAPPER --- */
+        .main-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* --- NEW: HERO VISUAL (BANNER IMAGE) --- */
+        .hero-visual-wrapper {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image-container {
+            width: 100%;
+            max-width: 320px; /* Ukuran pas untuk ilustrasi HP */
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(47, 114, 253, 0.15); /* Shadow biru halus */
+            background: #fff;
+            line-height: 0; /* Menghilangkan gap bawah image */
+        }
+
+        .hero-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* --- HERO TEXT --- */
+        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: #000; }
+        .hero-desc { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .badges-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 35px; }
+        .badge { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border-light); padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .badge i { color: #22c55e; font-size: 1.1rem; }
+
+        /* --- FORM STYLING --- */
+        .form-card {
+            background: #fff;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-light);
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--text-main);
+            transition: 0.2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--brand-blue);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(47, 114, 253, 0.1);
+        }
+
+        .btn-saas {
+            background-color: var(--brand-blue);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: var(--radius-btn);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 12px rgba(47, 114, 253, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-saas:hover { background-color: var(--brand-blue-hover); transform: translateY(-2px); }
+        .btn-saas:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* --- RESULT BOX --- */
+        #result-box {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            animation: slideUp 0.4s ease;
+        }
+
+        .result-group { display: flex; gap: 10px; margin-top: 10px; }
+        .result-input { background: #fff !important; font-weight: 700; color: #15803d !important; border-color: #86efac !important; }
+        .btn-copy {
+            background: #15803d; color: white; border: none; padding: 0 20px;
+            border-radius: 12px; font-weight: 600; cursor: pointer;
+        }
+
+        /* --- SECTIONS --- */
+        .section-heading { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; color: #000; text-align: center; margin-top: 40px; }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 60px; text-align: left; }
+        .review-card { background: #F9FAFB; padding: 24px; border-radius: 20px; border: 1px solid var(--border-light); }
+        .stars { color: var(--star-color); margin-bottom: 12px; font-size: 0.9rem; }
+        .review-text { font-size: 0.95rem; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; font-weight: 500; }
+        .reviewer-name { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+        /* --- FOOTER --- */
+        .mega-footer { background-color: #f9fafb; border-top: 1px solid var(--border-light); padding: 60px 20px 30px; margin-top: auto; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; text-align: left; }
+        .footer-brand h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 250px; }
+        .footer-col h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 20px; color: #000; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: var(--brand-blue); }
+        
+        .footer-bottom {
+            max-width: 1000px; margin: 40px auto 0; padding-top: 30px; border-top: 1px solid #e5e7eb;
+            display: flex; justify-content: space-between; align-items: center; color: #9ca3af; font-size: 0.85rem;
+        }
+
+        /* Utilities */
+        .error-msg { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 12px; margin-bottom: 1rem; display: none; font-size: 0.9rem; text-align: center; border: 1px solid #fecaca; }
+        .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s infinite linear; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .review-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .footer-brand p { margin: 0 auto; }
+            .hero-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="logo">JHONLink</a>
+            <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></div>
+        <a href="#" class="sidebar-link"><i class="fas fa-home"></i> Beranda</a>
+        <a href="#penjelasan" class="sidebar-link"><i class="fas fa-info-circle"></i> Fitur</a>
+        <a href="#testimoni" class="sidebar-link"><i class="fas fa-star"></i> Testimoni</a>
+    </div>
+
+    <div class="main-wrapper">
+        
+        <div class="hero-visual-wrapper">
+            <div class="hero-image-container">
+                <img src="https://cdn.odzre.my.id/2ow.jpg" 
+                     alt="Simulasi Shortlink di HP" 
+                     class="hero-img">
+            </div>
+        </div>
+
+        <h1 class="hero-title">Buat Tautan Pendek<br>Lebih Profesional</h1>
+        <p class="hero-desc">
+            Persingkat URL panjang Anda menjadi tautan yang ringkas, mudah diingat, dan siap dibagikan. Gratis tanpa syarat!
+        </p>
+
+        <div class="badges-container">
+            <div class="badge"><i class="fas fa-check-circle"></i> Gratis Selamanya</div>
+            <div class="badge"><i class="fas fa-check-circle"></i> Tanpa Daftar Akun</div>
+            <div class="badge"><i class="fas fa-bolt"></i> Proses Kilat</div>
+        </div>
+
+        <div class="form-card">
+            <div id="errorMsg" class="error-msg"></div>
+
+            <form id="shortenForm">
+                <div class="form-group">
+                    <label>URL Panjang Tujuan</label>
+                    <input type="text" id="urlInput" placeholder="https://example.com/link-sangat-panjang" required autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label>Pilih Provider</label>
+                    <select id="providerSelect">
+                        <option value="isgd">Is.gd (Otomatis & Stabil)</option>
+                        <option value="tinyurl">TinyURL (Bisa Custom Nama)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="aliasGroup" style="display: none;">
+                    <label>Custom Nama (Opsional)</label>
+                    <input type="text" id="aliasInput" placeholder="contoh: diskon-spesial" maxlength="30">
+                </div>
+
+                <button type="submit" class="btn-saas" id="submitBtn">
+                    <span id="btnText">Shorten URL</span>
+                    <span class="spinner" id="loadingSpinner" style="display: none;"></span>
+                </button>
+            </form>
+
+            <div id="result-box">
+                <label style="color: #166534;">Berhasil Dibuat!</label>
+                <div class="result-group">
+                    <input type="text" class="result-input" id="resultUrl" readonly>
+                    <button class="btn-copy" onclick="copyResult()">Salin</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="testimoni"></div>
+        <h2 class="section-heading">Apa Kata Mereka?</h2>
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="review-text">"Website shortlink paling bersih dan cepat yang pernah saya pakai. Gak ada iklan samasekali!"</p>
+                <p class="reviewer-name">Rina Marlina - Content Creator</p>
+            </div>
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="review-text">"Fitur custom nama di TinyURL-nya sangat membantu branding toko online saya."</p>
+                <p class="reviewer-name">Dimas Anggara - Seller</p>
+            </div>
+        </div>
+
+        <div id="penjelasan" style="padding-top: 20px;">
+             <h2 class="section-heading">Mengapa JHONLink?</h2>
+             <p class="hero-desc">Kami menyediakan layanan pemendek URL yang fokus pada kecepatan dan kemudahan pengguna.</p>
+             <img src="https://cdn.odzre.my.id/x1o.jpg" style="width: 100%; border-radius: 20px; margin-top: 20px;" alt="Analytics">
+        </div>
+    </div>
+
+    <footer class="mega-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>JHONLink</h3>
+                <p>Platform utilitas digital sederhana dan bertenaga untuk kebutuhan produktivitas harian Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Produk</h4>
+                <ul>
+                    <li><a href="#">Short Link</a></li>
+                    <li><a href="#">QR Generator</a></li>
+                    <li><a href="#">Analytics</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Perusahaan</h4>
+                <ul>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Syarat Layanan</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi</h4>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Email Kami</a></li>
+                    <li><a href="#">Telegram</a></li>
+                </ul>
+            </div>
+        </div>
+       <div class="footer-bottom">
+            <div>&copy; 2025 JHON API Inc. Hak Cipta Dilindungi.</div>
+            <div class="social-icons">
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-github"></i>
+            </div>
+    </footer>
+
+    <script>
+        // UI Interaction Script (Hanya untuk Sidebar)
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebarMenu');
+        const overlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-active');
+        }
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // --- SCRIPT LOGIKA BISNIS ASLI ---
+        const form = document.getElementById('shortenForm');
+        const providerSelect = document.getElementById('providerSelect');
+        const aliasGroup = document.getElementById('aliasGroup');
+        const errorMsg = document.getElementById('errorMsg');
+        const resultBox = document.getElementById('result-box');
+        const resultUrl = document.getElementById('resultUrl');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('loadingSpinner');
+
+        // Toggle Custom Alias hanya untuk TinyURL
+        providerSelect.addEventListener('change', () => {
+            aliasGroup.style.display = providerSelect.value === 'tinyurl' ? 'block' : 'none';
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Reset State
+            errorMsg.style.display = 'none';
+            resultBox.style.display = 'none';
+            submitBtn.disabled = true;
+            btnText.textContent = 'Memproses...';
+            spinner.style.display = 'inline-block';
+
+            const payload = {
+                url: document.getElementById('urlInput').value,
+                provider: providerSelect.value,
+                alias: document.getElementById('aliasInput').value
+            };
+
+            try {
+                const req = await fetch('/api/shorten', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const res = await req.json();
+
+                if (res.status) {
+                    resultUrl.value = res.result;
+                    resultBox.style.display = 'block';
+                } else {
+                    throw new Error(res.error || 'Gagal terhubung ke server.');
+                }
+
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Shorten URL';
+                spinner.style.display = 'none';
+            }
+        });
+
+        function copyResult() {
+            resultUrl.select();
+            resultUrl.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(resultUrl.value);
+            alert('Link berhasil disalin!');
+        }
+    </script>
+</body>
+</html>
