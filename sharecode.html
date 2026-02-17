@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Menonaktifkan terjemahan otomatis Google -->
+  <meta name="google" content="notranslate">
+  <meta http-equiv="Content-Language" content="en">
   <title>CodeSnap · Code Screenshot Generator</title>
   
   <!-- Fonts -->
@@ -776,7 +779,7 @@
       
       <!-- Preview Section -->
       <div>
-        <div class="section-title">Preview</div>
+        <div class="section-title" id="previewTitle">Preview</div>
         
         <div id="captureTarget" class="preview-card">
           <div id="previewPadding" class="preview-content" style="padding: 32px;">
@@ -809,7 +812,7 @@
         <div class="editor-header">
           <div class="editor-label">
             <span class="material-icons">edit</span>
-            Editor
+            <span id="editorLabel">Editor</span>
           </div>
           <div class="editor-actions">
             <button id="copyCodeBtn" class="copy-btn">
@@ -835,11 +838,11 @@
       
       <!-- Styling Panel -->
       <div class="styling-panel">
-        <div class="styling-title">Styling</div>
+        <div class="styling-title" id="stylingTitle">Styling</div>
         
         <!-- Background Selector -->
         <div class="control-group">
-          <div class="control-label">Background</div>
+          <div class="control-label" id="backgroundLabel">Background</div>
           <div class="background-selector no-scrollbar" id="bgControls">
             <div class="bg-option bg-option-default active" data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" data-style="linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899)"></div>
             <div class="bg-option bg-option-emerald" data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500" data-style="linear-gradient(to top right, #10b981, #06b6d4)"></div>
@@ -858,7 +861,7 @@
         <!-- Padding Slider -->
         <div class="control-group">
           <div class="slider-container">
-            <span class="control-label">Padding</span>
+            <span class="control-label" id="paddingLabel">Padding</span>
             <span id="paddingValue" class="slider-value">32px</span>
           </div>
           <input type="range" id="paddingSlider" min="16" max="128" value="32" step="1">
@@ -867,7 +870,7 @@
         <!-- Corner Radius Slider -->
         <div class="control-group">
           <div class="slider-container">
-            <span class="control-label">Corner Radius</span>
+            <span class="control-label" id="radiusLabel">Corner Radius</span>
             <span id="radiusValue" class="slider-value">12px</span>
           </div>
           <input type="range" id="radiusSlider" min="0" max="32" value="12" step="1">
@@ -876,7 +879,7 @@
         <!-- Toggles -->
         <div class="toggles-grid">
           <div class="toggle-item">
-            <span class="toggle-label">Shadow</span>
+            <span class="toggle-label" id="shadowLabel">Shadow</span>
             <label class="toggle-switch">
               <input type="checkbox" id="shadowToggle" checked>
               <span class="toggle-slider"></span>
@@ -884,7 +887,7 @@
           </div>
           
           <div class="toggle-item">
-            <span class="toggle-label">Dark Window</span>
+            <span class="toggle-label" id="darkWindowLabel">Dark Window</span>
             <label class="toggle-switch">
               <input type="checkbox" id="darkWindowToggle" checked>
               <span class="toggle-slider"></span>
@@ -896,11 +899,11 @@
       <!-- Footer -->
       <footer class="footer">
         <div class="footer-links">
-          <a href="#">Privacy Policy</a>
+          <a href="#" id="privacyLink">Privacy Policy</a>
           <span>•</span>
-          <a href="#">Terms & Conditions</a>
+          <a href="#" id="termsLink">Terms & Conditions</a>
         </div>
-        <div class="copyright">© 2026 CodeSnap. All rights reserved.</div>
+        <div class="copyright" id="copyrightText">© 2026 CodeSnap. All rights reserved.</div>
       </footer>
     </div>
   </main>
@@ -910,11 +913,11 @@
     <div class="bottom-bar-content">
       <button id="copyImageBtn" class="btn btn-secondary">
         <span class="material-icons">content_copy</span>
-        Copy Image
+        <span id="copyImageText">Copy Image</span>
       </button>
       <button id="exportBtn" class="btn btn-primary">
         <span class="material-icons">download</span>
-        Export PNG
+        <span id="exportText">Export PNG</span>
       </button>
     </div>
   </div>
@@ -930,7 +933,8 @@
       padding: 32,
       radius: 12,
       hasShadow: true,
-      isDarkWindow: true
+      isDarkWindow: true,
+      currentLang: 'en' // 'en' atau 'id'
     };
     
     // DOM Elements
@@ -959,11 +963,81 @@
     const langEN = document.querySelector('.lang-en');
     const langID = document.querySelector('.lang-id');
     
+    // Elements untuk bilingual
+    const previewTitle = document.getElementById('previewTitle');
+    const editorLabel = document.getElementById('editorLabel');
+    const stylingTitle = document.getElementById('stylingTitle');
+    const backgroundLabel = document.getElementById('backgroundLabel');
+    const paddingLabel = document.getElementById('paddingLabel');
+    const radiusLabel = document.getElementById('radiusLabel');
+    const shadowLabel = document.getElementById('shadowLabel');
+    const darkWindowLabel = document.getElementById('darkWindowLabel');
+    const privacyLink = document.getElementById('privacyLink');
+    const termsLink = document.getElementById('termsLink');
+    const copyrightText = document.getElementById('copyrightText');
+    const copyImageText = document.getElementById('copyImageText');
+    const exportText = document.getElementById('exportText');
+    
+    // Translations
+    const translations = {
+      en: {
+        previewTitle: 'Preview',
+        editorLabel: 'Editor',
+        stylingTitle: 'Styling',
+        backgroundLabel: 'Background',
+        paddingLabel: 'Padding',
+        radiusLabel: 'Corner Radius',
+        shadowLabel: 'Shadow',
+        darkWindowLabel: 'Dark Window',
+        privacyLink: 'Privacy Policy',
+        termsLink: 'Terms & Conditions',
+        copyrightText: '© 2026 CodeSnap. All rights reserved.',
+        copyImageText: 'Copy Image',
+        exportText: 'Export PNG',
+        toastCopied: 'Code copied to clipboard!',
+        toastCopyFailed: 'Failed to copy code',
+        toastExported: 'PNG exported successfully!',
+        toastExportFailed: 'Export failed',
+        toastImageCopied: 'Image copied to clipboard!',
+        toastCopyFailed: 'Copy failed',
+        toastLightTheme: 'Light theme activated',
+        toastDarkTheme: 'Dark theme activated',
+        toastLangEN: 'Language set to English',
+        toastLangID: 'Bahasa diatur ke Indonesia'
+      },
+      id: {
+        previewTitle: 'Pratinjau',
+        editorLabel: 'Editor',
+        stylingTitle: 'Gaya',
+        backgroundLabel: 'Latar Belakang',
+        paddingLabel: 'Jarak',
+        radiusLabel: 'Sudut',
+        shadowLabel: 'Bayangan',
+        darkWindowLabel: 'Jendela Gelap',
+        privacyLink: 'Kebijakan Privasi',
+        termsLink: 'Syarat & Ketentuan',
+        copyrightText: '© 2026 CodeSnap. Hak cipta dilindungi.',
+        copyImageText: 'Salin Gambar',
+        exportText: 'Ekspor PNG',
+        toastCopied: 'Kode disalin!',
+        toastCopyFailed: 'Gagal menyalin kode',
+        toastExported: 'PNG berhasil diekspor!',
+        toastExportFailed: 'Ekspor gagal',
+        toastImageCopied: 'Gambar disalin!',
+        toastCopyFailed: 'Gagal menyalin',
+        toastLightTheme: 'Tema terang diaktifkan',
+        toastDarkTheme: 'Tema gelap diaktifkan',
+        toastLangEN: 'Bahasa Inggris diaktifkan',
+        toastLangID: 'Bahasa Indonesia diaktifkan'
+      }
+    };
+    
     // Set initial values
     editor.value = state.code;
     updatePreview();
     updateStats();
     updateFilename();
+    updateLanguage('en'); // Set English as default
     
     // Set initial shadow
     if (state.hasShadow) {
@@ -1009,7 +1083,7 @@
       updateWindowTheme();
     });
     
-    // Background options - FIXED
+    // Background options
     bgOptions.forEach(option => {
       option.addEventListener('click', function(e) {
         // Remove active class from all
@@ -1032,7 +1106,7 @@
       });
     });
     
-    // Custom color picker - FIXED
+    // Custom color picker
     customColorPicker.addEventListener('input', (e) => {
       const color = e.target.value;
       
@@ -1046,9 +1120,9 @@
     // Copy code
     copyCodeBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(state.code).then(() => {
-        showToast('Code copied to clipboard!');
+        showToast(translations[state.currentLang].toastCopied);
       }).catch(() => {
-        showToast('Failed to copy code', 'error');
+        showToast(translations[state.currentLang].toastCopyFailed, 'error');
       });
     });
     
@@ -1056,7 +1130,7 @@
     exportBtn.addEventListener('click', async () => {
       exportBtn.disabled = true;
       const originalText = exportBtn.innerHTML;
-      exportBtn.innerHTML = '<span class="material-icons" style="font-size: 16px; animation: spin 1s infinite;">refresh</span> Exporting...';
+      exportBtn.innerHTML = '<span class="material-icons" style="font-size: 16px; animation: spin 1s infinite;">refresh</span> ' + translations[state.currentLang].exportText + '...';
       
       try {
         const canvas = await html2canvas(document.getElementById('captureTarget'), {
@@ -1072,14 +1146,14 @@
         link.href = canvas.toDataURL('image/png');
         link.click();
         
-        showToast('PNG exported successfully!');
+        showToast(translations[state.currentLang].toastExported);
       } catch (err) {
         console.error(err);
-        showToast('Export failed', 'error');
+        showToast(translations[state.currentLang].toastExportFailed, 'error');
       } finally {
         setTimeout(() => {
           exportBtn.disabled = false;
-          exportBtn.innerHTML = originalText;
+          exportBtn.innerHTML = '<span class="material-icons">download</span> <span>' + translations[state.currentLang].exportText + '</span>';
         }, 500);
       }
     });
@@ -1088,7 +1162,7 @@
     copyImageBtn.addEventListener('click', async () => {
       copyImageBtn.disabled = true;
       const originalText = copyImageBtn.innerHTML;
-      copyImageBtn.innerHTML = '<span class="material-icons" style="font-size: 16px; animation: spin 1s infinite;">refresh</span> Copying...';
+      copyImageBtn.innerHTML = '<span class="material-icons" style="font-size: 16px; animation: spin 1s infinite;">refresh</span> ' + translations[state.currentLang].copyImageText + '...';
       
       try {
         const canvas = await html2canvas(document.getElementById('captureTarget'), {
@@ -1107,47 +1181,75 @@
         
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
         
-        showToast('Image copied to clipboard!');
+        showToast(translations[state.currentLang].toastImageCopied);
       } catch (err) {
         console.error(err);
-        showToast('Copy failed', 'error');
+        showToast(translations[state.currentLang].toastCopyFailed, 'error');
       } finally {
         setTimeout(() => {
           copyImageBtn.disabled = false;
-          copyImageBtn.innerHTML = originalText;
+          copyImageBtn.innerHTML = '<span class="material-icons">content_copy</span> <span>' + translations[state.currentLang].copyImageText + '</span>';
         }, 500);
       }
     });
     
-    // Theme toggle - FIXED
+    // Theme toggle
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('light-theme');
       
       if (document.body.classList.contains('light-theme')) {
         themeIcon.textContent = 'light_mode';
-        showToast('Light theme activated', 'info');
+        showToast(translations[state.currentLang].toastLightTheme, 'info');
       } else {
         themeIcon.textContent = 'dark_mode';
-        showToast('Dark theme activated', 'info');
+        showToast(translations[state.currentLang].toastDarkTheme, 'info');
       }
     });
     
-    // Language switcher - FIXED (tidak mengubah ukuran)
+    // Language switcher
     langEN.addEventListener('click', () => {
-      langEN.classList.add('active');
-      langEN.classList.remove('inactive');
-      langID.classList.remove('active');
-      langID.classList.add('inactive');
-      showToast('Language set to English', 'info');
+      updateLanguage('en');
     });
     
     langID.addEventListener('click', () => {
-      langID.classList.add('active');
-      langID.classList.remove('inactive');
-      langEN.classList.remove('active');
-      langEN.classList.add('inactive');
-      showToast('Bahasa diatur ke Indonesia', 'info');
+      updateLanguage('id');
     });
+    
+    // Function to update language
+    function updateLanguage(lang) {
+      state.currentLang = lang;
+      
+      // Update active class
+      if (lang === 'en') {
+        langEN.classList.add('active');
+        langEN.classList.remove('inactive');
+        langID.classList.remove('active');
+        langID.classList.add('inactive');
+      } else {
+        langID.classList.add('active');
+        langID.classList.remove('inactive');
+        langEN.classList.remove('active');
+        langEN.classList.add('inactive');
+      }
+      
+      // Update all text elements
+      previewTitle.textContent = translations[lang].previewTitle;
+      editorLabel.textContent = translations[lang].editorLabel;
+      stylingTitle.textContent = translations[lang].stylingTitle;
+      backgroundLabel.textContent = translations[lang].backgroundLabel;
+      paddingLabel.textContent = translations[lang].paddingLabel;
+      radiusLabel.textContent = translations[lang].radiusLabel;
+      shadowLabel.textContent = translations[lang].shadowLabel;
+      darkWindowLabel.textContent = translations[lang].darkWindowLabel;
+      privacyLink.textContent = translations[lang].privacyLink;
+      termsLink.textContent = translations[lang].termsLink;
+      copyrightText.textContent = translations[lang].copyrightText;
+      copyImageText.textContent = translations[lang].copyImageText;
+      exportText.textContent = translations[lang].exportText;
+      
+      // Show toast
+      showToast(translations[lang].toastLangID || translations[lang].toastLangEN, 'info');
+    }
     
     // Helper functions
     function updatePreview() {
