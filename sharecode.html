@@ -13,7 +13,6 @@
   
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -24,27 +23,6 @@
   
   <!-- html2canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: '#135bec',
-            'primary-dark': '#0f4bc4',
-            'background-light': '#e0e7ff',
-            'background-dark': '#101622',
-            'surface-dark': '#1c2333',
-          },
-          fontFamily: {
-            display: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-        }
-      }
-    }
-  </script>
   
   <style>
     /* Custom styles */
@@ -80,13 +58,18 @@
       to { transform: translateY(0); opacity: 1; }
     }
     @keyframes fadeOut {
-      to { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 0; }
     }
     
     /* Toggle switch */
+    .toggle-checkbox {
+      right: 0;
+      transition: all 0.2s;
+    }
     .toggle-checkbox:checked {
       right: 0;
       border-color: #135bec;
+      background-color: #135bec;
     }
     .toggle-checkbox:checked + .toggle-label {
       background-color: rgba(19, 91, 236, 0.5);
@@ -103,16 +86,28 @@
     /* Range input styling */
     input[type=range] {
       -webkit-appearance: none;
+      width: 100%;
       height: 6px;
       background: #374151;
       border-radius: 9999px;
+      outline: none;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       background: #135bec;
-      border-radius: 9999px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      margin-top: -6px;
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: #135bec;
+      border-radius: 50%;
       cursor: pointer;
       border: 2px solid white;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -120,7 +115,8 @@
     
     /* Background button active state */
     .bg-btn.active {
-      ring: 2px solid white;
+      outline: 2px solid white;
+      outline-offset: 2px;
       opacity: 1;
     }
     
@@ -129,9 +125,12 @@
       .glass-panel {
         padding: 1rem;
       }
-      #bg-controls {
-        padding: 0.5rem 0;
-      }
+    }
+
+    /* Custom color preview */
+    .color-preview-active {
+      border-style: solid;
+      border-color: white;
     }
   </style>
 </head>
@@ -177,12 +176,12 @@
       </div>
       
       <!-- Capture Target -->
-      <div id="captureTarget" class="relative w-full rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+      <div id="captureTarget" class="relative w-full rounded-xl overflow-visible">
         <!-- Padding Wrapper -->
         <div id="preview-padding-wrapper" class="relative w-full flex items-center justify-center p-8 transition-all duration-300">
           <!-- Background -->
-          <div id="preview-bg" class="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500 -z-10">
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPgo8cmVjdCB3aWR0aD0iNTYiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmZmZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0yOCA2NkwwIDUwTDAgMTZMMjggMEw1NiAxNkw1NiA1MEwyOCA2NkwyOCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIj48L3BhdGg+CjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-10 mix-blend-overlay"></div>
+          <div id="preview-bg" class="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500 -z-10 rounded-xl">
+            <div class="absolute inset-0 opacity-10 mix-blend-overlay" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMjggNjZMMCA1MEwwIDE2TDI4IDBMNTYgMTZMNTYgNTBMMjggNjZMMjggMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+');"></div>
           </div>
           
           <!-- Code Window -->
@@ -199,7 +198,7 @@
             
             <!-- Code Content -->
             <div class="p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-gray-300">
-              <pre><code id="code-content" class="language-javascript hljs">const generate = () => {
+              <pre class="m-0"><code id="code-content" class="language-javascript hljs">const generate = () => {
   const design = "Awesome";
   return render(design);
 }</code></pre>
@@ -250,12 +249,12 @@
         <div>
           <label class="text-xs text-gray-500 dark:text-gray-400 mb-2 block">Background</label>
           <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 snap-x" id="bg-controls" style="-webkit-overflow-scrolling: touch;">
-            <button data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 ring-2 ring-white ring-offset-2 ring-offset-background-dark snap-start transition-all hover:scale-110 active:scale-95"></button>
-            <button data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tr from-emerald-400 to-cyan-500 ring-2 ring-transparent ring-offset-2 ring-offset-background-dark snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
-            <button data-bg="bg-gradient-to-r from-slate-900 to-slate-700" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-r from-slate-900 to-slate-700 ring-2 ring-transparent ring-offset-2 ring-offset-background-dark snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
-            <button data-bg="bg-gradient-to-bl from-orange-400 to-rose-400" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-bl from-orange-400 to-rose-400 ring-2 ring-transparent ring-offset-2 ring-offset-background-dark snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
-            <button data-bg="bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600 ring-2 ring-transparent ring-offset-2 ring-offset-background-dark snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
-            <button data-bg="bg-[#1c1917]" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-[#1c1917] border border-white/10 ring-2 ring-transparent ring-offset-2 ring-offset-background-dark snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 outline-2 outline-white outline-offset-2 opacity-100 snap-start transition-all hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tr from-emerald-400 to-cyan-500 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-gradient-to-r from-slate-900 to-slate-700" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-r from-slate-900 to-slate-700 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-gradient-to-bl from-orange-400 to-rose-400" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-bl from-orange-400 to-rose-400 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
+            <button data-bg="bg-[#1c1917]" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-[#1c1917] border border-white/10 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95"></button>
             
             <!-- Custom Color Picker -->
             <div class="relative w-10 h-10 flex-shrink-0 snap-start group">
@@ -273,7 +272,7 @@
             <span class="text-gray-400">Padding</span>
             <span id="paddingVal" class="text-gray-500 font-mono">32px</span>
           </div>
-          <input id="paddingInput" class="w-full" type="range" min="16" max="128" value="32">
+          <input id="paddingInput" class="w-full" type="range" min="16" max="128" value="32" step="1">
         </div>
         
         <!-- Corner Radius Slider -->
@@ -282,7 +281,7 @@
             <span class="text-gray-400">Corner Radius</span>
             <span id="radiusVal" class="text-gray-500 font-mono">12px</span>
           </div>
-          <input id="radiusInput" class="w-full" type="range" min="0" max="32" value="12">
+          <input id="radiusInput" class="w-full" type="range" min="0" max="32" value="12" step="1">
         </div>
         
         <!-- Toggles -->
@@ -291,7 +290,7 @@
           <label class="flex items-center justify-between p-3 rounded-lg bg-black/30 border border-white/5 cursor-pointer hover:bg-black/40 transition">
             <span class="text-xs text-gray-300">Shadow</span>
             <div class="relative inline-block w-8 h-4">
-              <input id="shadowToggle" type="checkbox" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 border-gray-600 appearance-none cursor-pointer checked:right-0 checked:border-primary" checked>
+              <input id="shadowToggle" type="checkbox" class="toggle-checkbox absolute right-4 block w-4 h-4 rounded-full bg-white border-4 border-gray-600 appearance-none cursor-pointer checked:right-0 checked:border-primary checked:bg-primary" checked>
               <label class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 cursor-pointer"></label>
             </div>
           </label>
@@ -300,7 +299,7 @@
           <label class="flex items-center justify-between p-3 rounded-lg bg-black/30 border border-white/5 cursor-pointer hover:bg-black/40 transition">
             <span class="text-xs text-gray-300">Dark Window</span>
             <div class="relative inline-block w-8 h-4">
-              <input id="darkWindowToggle" type="checkbox" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 border-gray-600 appearance-none cursor-pointer checked:right-0 checked:border-primary" checked>
+              <input id="darkWindowToggle" type="checkbox" class="toggle-checkbox absolute right-4 block w-4 h-4 rounded-full bg-white border-4 border-gray-600 appearance-none cursor-pointer checked:right-0 checked:border-primary checked:bg-primary" checked>
               <label class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-600 cursor-pointer"></label>
             </div>
           </label>
@@ -391,12 +390,18 @@
   updatePreview();
   updateStats();
   updateFilename();
+  updateWindowTheme();
   
   // Set initial styles
   previewPaddingWrapper.style.padding = state.padding + 'px';
   codeWindow.style.borderRadius = state.radius + 'px';
   paddingVal.textContent = state.padding + 'px';
   radiusVal.textContent = state.radius + 'px';
+  
+  // Set initial shadow
+  if (state.hasShadow) {
+    codeWindow.classList.add('shadow-2xl');
+  }
   
   // Event Listeners
   editor.addEventListener('input', (e) => {
@@ -412,13 +417,13 @@
   });
   
   paddingInput.addEventListener('input', (e) => {
-    state.padding = e.target.value;
+    state.padding = parseInt(e.target.value);
     paddingVal.textContent = state.padding + 'px';
     previewPaddingWrapper.style.padding = state.padding + 'px';
   });
   
   radiusInput.addEventListener('input', (e) => {
-    state.radius = e.target.value;
+    state.radius = parseInt(e.target.value);
     radiusVal.textContent = state.radius + 'px';
     codeWindow.style.borderRadius = state.radius + 'px';
   });
@@ -442,18 +447,18 @@
     btn.addEventListener('click', () => {
       // Remove active class from all
       bgButtons.forEach(b => {
-        b.classList.remove('ring-2', 'ring-white', 'opacity-100');
-        b.classList.add('ring-transparent', 'opacity-70');
+        b.style.outline = '2px solid transparent';
+        b.style.opacity = '0.7';
       });
       
       // Add active class to clicked
-      btn.classList.remove('ring-transparent', 'opacity-70');
-      btn.classList.add('ring-2', 'ring-white', 'opacity-100');
+      btn.style.outline = '2px solid white';
+      btn.style.opacity = '1';
       
       // Apply background
       const bgClass = btn.dataset.bg;
       state.currentBg = bgClass;
-      previewBg.className = 'absolute inset-0 transition-all duration-500 ' + bgClass;
+      previewBg.className = 'absolute inset-0 transition-all duration-500 rounded-xl ' + bgClass;
       previewBg.style.background = ''; // Clear custom color
       
       // Reset custom picker
@@ -465,8 +470,8 @@
   
   // Set first button active
   if (bgButtons.length > 0) {
-    bgButtons[0].classList.remove('ring-transparent', 'opacity-70');
-    bgButtons[0].classList.add('ring-2', 'ring-white', 'opacity-100');
+    bgButtons[0].style.outline = '2px solid white';
+    bgButtons[0].style.opacity = '1';
   }
   
   // Custom color picker
@@ -480,12 +485,12 @@
     
     // Remove active from all bg buttons
     bgButtons.forEach(b => {
-      b.classList.remove('ring-2', 'ring-white', 'opacity-100');
-      b.classList.add('ring-transparent', 'opacity-70');
+      b.style.outline = '2px solid transparent';
+      b.style.opacity = '0.7';
     });
     
     // Apply custom color
-    previewBg.className = 'absolute inset-0 transition-all duration-500';
+    previewBg.className = 'absolute inset-0 transition-all duration-500 rounded-xl';
     previewBg.style.background = color;
   });
   
@@ -506,38 +511,68 @@
   copyCodeBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(state.code).then(() => {
       showToast('Code copied to clipboard!');
+    }).catch(() => {
+      showToast('Failed to copy code', 'error');
     });
   });
   
-  // Generate canvas for export
+  // Generate canvas for export - FIXED VERSION
   async function generateCanvas() {
     const original = document.getElementById('captureTarget');
+    
+    // Create a deep clone
     const clone = original.cloneNode(true);
     
-    // Setup clone
+    // Set clone styles
     clone.style.position = 'absolute';
     clone.style.left = '-9999px';
     clone.style.top = '0';
-    clone.style.width = '1024px';
+    clone.style.width = '800px'; // Fixed width for consistency
     clone.style.height = 'auto';
     clone.style.overflow = 'visible';
-    clone.classList.remove('shadow-2xl');
+    clone.style.backgroundColor = 'transparent';
+    clone.style.zIndex = '-1000';
+    
+    // Ensure all nested elements maintain their styles
+    const cloneCodeWindow = clone.querySelector('#code-window');
+    if (cloneCodeWindow) {
+      cloneCodeWindow.style.borderRadius = state.radius + 'px';
+    }
+    
+    const clonePaddingWrapper = clone.querySelector('#preview-padding-wrapper');
+    if (clonePaddingWrapper) {
+      clonePaddingWrapper.style.padding = state.padding + 'px';
+    }
     
     document.body.appendChild(clone);
     
-    // Wait for rendering
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Wait for fonts and styles to render
+    await new Promise(resolve => setTimeout(resolve, 200));
     
     try {
+      // Use html2canvas with specific options
       const canvas = await html2canvas(clone, {
         scale: 2,
         backgroundColor: null,
         logging: false,
-        allowTaint: false,
-        useCORS: true
+        allowTaint: true,
+        useCORS: true,
+        windowWidth: 800,
+        onclone: (clonedDoc) => {
+          // Ensure the cloned element has proper styles
+          const clonedTarget = clonedDoc.getElementById('captureTarget');
+          if (clonedTarget) {
+            clonedTarget.style.overflow = 'visible';
+          }
+        }
       });
+      
       return canvas;
+    } catch (error) {
+      console.error('Canvas generation error:', error);
+      throw error;
     } finally {
+      // Clean up
       document.body.removeChild(clone);
     }
   }
@@ -564,18 +599,27 @@
     setTimeout(() => toast.remove(), 3000);
   }
   
-  // Copy image
+  // Copy image to clipboard
   copyImageBtn.addEventListener('click', async () => {
     if (copyImageBtn.disabled) return;
     
     copyImageBtn.disabled = true;
     const originalText = copyImageBtn.innerHTML;
-    copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Copying...';
+    copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Copying...';
     
     try {
       const canvas = await generateCanvas();
-      const blob = await new Promise(resolve => canvas.toBlob(resolve));
       
+      // Convert canvas to blob
+      const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, 'image/png', 1);
+      });
+      
+      if (!blob) {
+        throw new Error('Failed to create blob');
+      }
+      
+      // Copy to clipboard
       await navigator.clipboard.write([
         new ClipboardItem({
           'image/png': blob
@@ -584,8 +628,8 @@
       
       showToast('Image copied to clipboard!');
     } catch (err) {
-      console.error(err);
-      showToast('Failed to copy image', 'error');
+      console.error('Copy error:', err);
+      showToast('Failed to copy image. Try Export PNG instead.', 'error');
     } finally {
       setTimeout(() => {
         copyImageBtn.disabled = false;
@@ -594,16 +638,18 @@
     }
   });
   
-  // Export PNG
+  // Export PNG - FIXED VERSION
   exportBtn.addEventListener('click', async () => {
     if (exportBtn.disabled) return;
     
     exportBtn.disabled = true;
     const originalText = exportBtn.innerHTML;
-    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
+    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
     
     try {
       const canvas = await generateCanvas();
+      
+      // Create download link
       const link = document.createElement('a');
       link.download = `codesnap-${Date.now()}.png`;
       link.href = canvas.toDataURL('image/png');
@@ -611,8 +657,8 @@
       
       showToast('PNG exported successfully!');
     } catch (err) {
-      console.error(err);
-      showToast('Export failed', 'error');
+      console.error('Export error:', err);
+      showToast('Export failed. Please try again.', 'error');
     } finally {
       setTimeout(() => {
         exportBtn.disabled = false;
