@@ -1,31 +1,25 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CodeSnap · Code Screenshot Generator</title>
   
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
   <!-- Highlight.js -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" id="hljs-theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   
   <!-- html2canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <style>
-    /* ===== RESET & BASE ===== */
+    /* Reset */
     * {
       margin: 0;
       padding: 0;
@@ -34,78 +28,499 @@
     
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #101622;
-      color: #f3f4f6;
+      background: #101622;
+      color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      transition: background-color 0.3s, color 0.3s;
     }
     
-    /* Light mode variables */
-    body:not(.dark) {
-      background-color: #e0e7ff;
-      color: #111827;
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: rgba(16, 22, 34, 0.8);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     
-    /* ===== UTILITY CLASSES ===== */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
-    /* ===== GLASS PANEL ===== */
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #135bec;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon span {
+      color: white;
+      font-size: 20px;
+    }
+    
+    .logo-text {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .language-switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .language-switch .active {
+      color: #135bec;
+    }
+    
+    .language-switch .inactive {
+      color: #6b7280;
+      cursor: pointer;
+    }
+    
+    .language-switch .inactive:hover {
+      color: #9ca3af;
+    }
+    
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+    }
+    
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      padding-bottom: 100px;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    /* Section Title */
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+    
+    /* Preview Card */
+    .preview-card {
+      background: transparent;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    
+    .preview-content {
+      padding: 32px;
+      position: relative;
+    }
+    
+    .preview-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
+    }
+    
+    .preview-bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMjggNjZMMCA1MEwwIDE2TDI4IDBMNTYgMTZMNTYgNTBMMjggNjZMMjggMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+');
+      opacity: 0.1;
+      mix-blend-mode: overlay;
+    }
+    
+    .window {
+      position: relative;
+      z-index: 10;
+      background: rgba(17, 24, 39, 0.9);
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+    }
+    
+    .window-bar {
+      height: 32px;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+    }
+    
+    .window-dots {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .window-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+    
+    .window-filename {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #6b7280;
+    }
+    
+    .window-code {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #d1d5db;
+      overflow-x: auto;
+    }
+    
+    .window-code pre {
+      margin: 0;
+    }
+    
+    .window-code code {
+      background: transparent !important;
+      padding: 0 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+    }
+    
+    /* Glass Panel */
     .glass-panel {
       background: rgba(28, 35, 51, 0.7);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
     }
     
-    body:not(.dark) .glass-panel {
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Editor */
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
     
-    /* ===== TOAST ANIMATION ===== */
-    .toast {
-      animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.2s forwards;
-      z-index: 9999;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes fadeOut {
-      to { opacity: 0; }
+    .editor-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #9ca3af;
+      font-size: 12px;
+      font-weight: 600;
     }
     
-    /* ===== TOGGLE SWITCH ===== */
+    .editor-label span {
+      font-size: 14px;
+    }
+    
+    .editor-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .copy-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    
+    .copy-btn:hover {
+      color: #135bec;
+    }
+    
+    .language-select {
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #d1d5db;
+      font-size: 12px;
+      padding: 6px 24px 6px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+    }
+    
+    .language-select option {
+      background: #1f2937;
+      color: #fff;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: rgba(0,0,0,0.3);
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #d1d5db;
+      resize: none;
+      outline: none;
+    }
+    
+    textarea:focus {
+      ring: 2px solid #135bec;
+    }
+    
+    .editor-stats {
+      text-align: right;
+      margin-top: 8px;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #6b7280;
+    }
+    
+    /* Styling Panel */
+    .styling-panel {
+      background: rgba(28, 35, 51, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .styling-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    
+    .control-group {
+      margin-bottom: 20px;
+    }
+    
+    .control-label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .background-selector {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    
+    .bg-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .bg-option:hover {
+      transform: scale(1.1);
+    }
+    
+    .bg-option.active {
+      border-color: white;
+      opacity: 1;
+    }
+    
+    .bg-option-default {
+      background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
+    }
+    
+    .bg-option-emerald {
+      background: linear-gradient(to top right, #10b981, #06b6d4);
+    }
+    
+    .bg-option-slate {
+      background: linear-gradient(to right, #0f172a, #334155);
+    }
+    
+    .bg-option-orange {
+      background: linear-gradient(to bottom left, #f97316, #f43f5e);
+    }
+    
+    .bg-option-purple {
+      background: linear-gradient(to top left, #111827, #581c87, #7c3aed);
+    }
+    
+    .bg-option-dark {
+      background: #1c1917;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .custom-color {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px dashed #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+    
+    .custom-color input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Slider */
+    .slider-container {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .slider-value {
+      font-family: 'JetBrains Mono', monospace;
+      color: #6b7280;
+    }
+    
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: #374151;
+      border-radius: 9999px;
+      appearance: none;
+    }
+    
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: #135bec;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      margin-top: -6px;
+    }
+    
+    /* Toggles */
+    .toggles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    
+    .toggle-item {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    
+    .toggle-item:hover {
+      background: rgba(0,0,0,0.4);
+    }
+    
+    .toggle-label {
+      font-size: 12px;
+      color: #d1d5db;
+    }
+    
     .toggle-switch {
       position: relative;
-      display: inline-block;
       width: 32px;
       height: 16px;
     }
+    
     .toggle-switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+    
     .toggle-slider {
       position: absolute;
-      cursor: pointer;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       background-color: #4b5563;
-      transition: 0.2s;
       border-radius: 34px;
+      cursor: pointer;
     }
+    
     .toggle-slider:before {
       position: absolute;
       content: "";
@@ -114,172 +529,199 @@
       left: 2px;
       bottom: 2px;
       background-color: white;
-      transition: 0.2s;
       border-radius: 50%;
+      transition: 0.2s;
     }
+    
     input:checked + .toggle-slider {
       background-color: #135bec;
     }
+    
     input:checked + .toggle-slider:before {
       transform: translateX(16px);
     }
     
-    /* ===== SYNTAX HIGHLIGHT ===== */
-    pre code.hljs {
-      background: transparent !important;
-      padding: 0 !important;
-      font-family: 'JetBrains Mono', monospace !important;
-      font-size: inherit !important;
-      line-height: inherit !important;
+    /* Bottom Bar */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      background: rgba(16, 22, 34, 0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      z-index: 50;
     }
     
-    /* Light mode syntax */
-    body:not(.dark) #code-content {
-      color: #1e293b !important;
+    .bottom-bar-content {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
     }
     
-    /* ===== RANGE INPUT ===== */
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 6px;
-      background: #374151;
-      border-radius: 9999px;
-      outline: none;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      background: #135bec;
-      border-radius: 50%;
+    .btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
       cursor: pointer;
-      border: 2px solid white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      margin-top: -6px;
-    }
-    input[type=range]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      background: #135bec;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid white;
-    }
-    
-    /* ===== BACKGROUND BUTTON ===== */
-    .bg-btn {
       transition: all 0.2s;
-      cursor: pointer;
-    }
-    .bg-btn.active {
-      outline: 2px solid white;
-      outline-offset: 2px;
-      opacity: 1;
     }
     
-    /* ===== PREVIEW CONTAINER ===== */
-    #captureTarget {
-      aspect-ratio: 4/3;
-      width: 100%;
-      position: relative;
-      border-radius: 0.75rem;
-      overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    .btn:active {
+      transform: scale(0.95);
     }
     
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    
+    .btn-primary {
+      background: #135bec;
+      color: white;
+      box-shadow: 0 4px 12px rgba(19, 91, 236, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background: #0f4bc4;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    
+    .footer-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: #135bec;
+    }
+    
+    .copyright {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+    
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      pointer-events: none;
+    }
+    
+    .toast {
+      background: #1c2333;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.2s forwards;
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+    
+    /* Hide scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Responsive */
     @media (max-width: 640px) {
-      #captureTarget {
-        aspect-ratio: 3/4;
+      .preview-content {
+        padding: 24px;
       }
-    }
-    
-    /* ===== CODE WINDOW ===== */
-    #code-window {
-      transition: border-radius 0.3s, background-color 0.3s, box-shadow 0.3s;
-    }
-    
-    /* ===== CUSTOM SCROLLBAR ===== */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #4b5563;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #6b7280;
     }
   </style>
 </head>
-<body class="dark">
-  <!-- Gradient Background -->
-  <div class="fixed inset-0 pointer-events-none opacity-30 z-0">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent"></div>
-  </div>
-  
+<body>
   <!-- Header -->
-  <header class="w-full px-4 sm:px-6 py-3 flex justify-between items-center z-20 relative bg-background-dark/80 backdrop-blur-md border-b border-gray-800/50">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
-        <span class="material-icons text-xl">code</span>
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <span class="material-icons">code</span>
       </div>
-      <h1 class="text-lg font-bold tracking-tight">CodeSnap</h1>
+      <span class="logo-text">CodeSnap</span>
     </div>
     
-    <div class="flex items-center gap-3">
-      <!-- Language Switcher -->
-      <div class="flex items-center gap-2 text-sm font-medium">
-        <button id="langEN" class="text-primary font-semibold">EN</button>
-        <span class="text-gray-400">|</span>
-        <button id="langID" class="text-gray-500 hover:text-gray-300">ID</button>
+    <div class="header-right">
+      <div class="language-switch">
+        <span class="active">EN</span>
+        <span>|</span>
+        <span class="inactive">ID</span>
       </div>
       
-      <!-- Theme Toggle -->
-      <button id="themeToggle" class="p-2 rounded-full hover:bg-white/10 transition-colors">
-        <span id="themeIcon" class="material-icons text-gray-300">dark_mode</span>
+      <button class="theme-toggle" id="themeToggle">
+        <span class="material-icons">dark_mode</span>
       </button>
     </div>
   </header>
   
   <!-- Main Content -->
-  <main class="flex-1 overflow-y-auto no-scrollbar pb-32 z-10 relative">
-    <div class="p-3 sm:p-4 flex flex-col gap-5 max-w-lg mx-auto w-full">
+  <main class="main-content no-scrollbar">
+    <div class="container">
       
       <!-- Preview Section -->
-      <section class="w-full">
-        <div class="flex justify-between items-center mb-2 px-1">
-          <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Preview</h2>
-        </div>
+      <div>
+        <div class="section-title">Preview</div>
         
-        <!-- Capture Target -->
-        <div id="captureTarget">
-          <!-- Padding Wrapper -->
-          <div id="preview-padding-wrapper" class="absolute inset-0 flex items-center justify-center p-8 transition-all duration-300">
-            <!-- Background -->
-            <div id="preview-bg" class="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 transition-all duration-500">
-              <div class="absolute inset-0 opacity-10 mix-blend-overlay" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMjggNjZMMCA1MEwwIDE2TDI4IDBMNTYgMTZMNTYgNTBMMjggNjZMMjggMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+');"></div>
-            </div>
+        <div id="captureTarget" class="preview-card">
+          <div id="previewPadding" class="preview-content" style="padding: 32px;">
+            <div id="previewBg" class="preview-bg"></div>
+            <div class="preview-bg-pattern"></div>
             
-            <!-- Code Window -->
-            <div id="code-window" class="w-full bg-gray-900/90 backdrop-blur-sm rounded-lg shadow-2xl flex flex-col border border-white/10 overflow-hidden">
-              <!-- Title Bar -->
-              <div class="h-8 flex items-center px-4 border-b border-white/5 bg-white/5">
-                <div class="flex gap-2">
-                  <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                  <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                  <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+            <div id="codeWindow" class="window" style="border-radius: 12px;">
+              <div class="window-bar">
+                <div class="window-dots">
+                  <div class="window-dot dot-red"></div>
+                  <div class="window-dot dot-yellow"></div>
+                  <div class="window-dot dot-green"></div>
                 </div>
-                <div id="filename-display" class="flex-1 text-center text-[10px] text-gray-500 font-mono">snippet.js</div>
+                <div id="filenameDisplay" class="window-filename">snippet.js</div>
               </div>
               
-              <!-- Code Content -->
-              <div class="p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-gray-300">
-                <pre class="m-0"><code id="code-content" class="language-javascript hljs">const generate = () => {
+              <div class="window-code">
+                <pre><code id="codeContent" class="language-javascript">const generate = () => {
   const design = "Awesome";
   return render(design);
 }</code></pre>
@@ -287,520 +729,343 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
       
       <!-- Editor Section -->
-      <section class="flex flex-col gap-5">
-        <!-- Editor Panel -->
-        <div class="glass-panel rounded-xl p-4 shadow-lg">
-          <div class="flex justify-between items-center mb-3">
-            <label class="text-xs font-semibold text-gray-400 flex items-center gap-1">
-              <span class="material-icons text-sm">edit</span>
-              Editor
-            </label>
-            <div class="flex items-center gap-2">
-              <button id="copyCodeBtn" class="text-xs text-gray-400 hover:text-primary transition flex items-center gap-1 p-1" title="Copy code">
-                <span class="material-icons text-sm">content_copy</span>
-              </button>
-              <select id="languageSelect" class="bg-black/30 border-0 text-xs rounded text-gray-300 py-1.5 pl-3 pr-7 focus:ring-1 focus:ring-primary/50 cursor-pointer appearance-none">
-                <option value="javascript" selected class="bg-gray-800 text-gray-200">JavaScript</option>
-                <option value="html" class="bg-gray-800 text-gray-200">HTML</option>
-                <option value="css" class="bg-gray-800 text-gray-200">CSS</option>
-                <option value="python" class="bg-gray-800 text-gray-200">Python</option>
-                <option value="json" class="bg-gray-800 text-gray-200">JSON</option>
-                <option value="typescript" class="bg-gray-800 text-gray-200">TypeScript</option>
-                <option value="jsx" class="bg-gray-800 text-gray-200">JSX</option>
-              </select>
-            </div>
+      <div class="glass-panel">
+        <div class="editor-header">
+          <div class="editor-label">
+            <span class="material-icons">edit</span>
+            Editor
           </div>
-          
-          <textarea id="editor" class="w-full h-28 sm:h-32 bg-black/40 border-0 rounded-lg text-sm font-mono text-gray-200 placeholder-gray-600 focus:ring-2 focus:ring-primary/50 resize-none p-3 leading-relaxed no-scrollbar" spellcheck="false" placeholder="Tulis kode Anda di sini...">const generate = () => {
-  const design = "Awesome";
-  return render(design);
-}</textarea>
-          
-          <div class="flex justify-end mt-2">
-            <span id="editorStats" class="text-[10px] text-gray-500 font-mono">3 lines, 82 chars</span>
+          <div class="editor-actions">
+            <button id="copyCodeBtn" class="copy-btn">
+              <span class="material-icons" style="font-size: 14px;">content_copy</span>
+            </button>
+            <select id="languageSelect" class="language-select">
+              <option value="javascript">JavaScript</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="python">Python</option>
+              <option value="json">JSON</option>
+            </select>
           </div>
         </div>
         
-        <!-- Styling Panel -->
-        <div class="glass-panel rounded-xl p-5 shadow-lg space-y-5">
-          <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Styling</h3>
-          
-          <!-- Background Selector -->
-          <div>
-            <label class="text-xs text-gray-400 mb-2 block">Background</label>
-            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 snap-x" id="bg-controls">
-              <!-- Gradient 1 -->
-              <button data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 outline-2 outline-white outline-offset-2 opacity-100 snap-start transition-all hover:scale-110 active:scale-95" title="Sunset"></button>
-              
-              <!-- Gradient 2 -->
-              <button data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tr from-emerald-400 to-cyan-500 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95" title="Ocean"></button>
-              
-              <!-- Gradient 3 -->
-              <button data-bg="bg-gradient-to-r from-slate-900 to-slate-700" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-r from-slate-900 to-slate-700 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95" title="Dark"></button>
-              
-              <!-- Gradient 4 -->
-              <button data-bg="bg-gradient-to-bl from-orange-400 to-rose-400" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-bl from-orange-400 to-rose-400 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95" title="Sunrise"></button>
-              
-              <!-- Gradient 5 -->
-              <button data-bg="bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95" title="Purple Night"></button>
-              
-              <!-- Solid Dark -->
-              <button data-bg="bg-[#1c1917]" class="bg-btn w-10 h-10 rounded-full flex-shrink-0 bg-[#1c1917] border border-white/10 outline-2 outline-transparent outline-offset-2 snap-start opacity-70 hover:opacity-100 hover:scale-110 active:scale-95" title="Charcoal"></button>
-              
-              <!-- Custom Color Picker -->
-              <div class="relative w-10 h-10 flex-shrink-0 snap-start group">
-                <input type="color" id="customColorPicker" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" value="#3b82f6" title="Custom color">
-                <div id="customColorPreview" class="w-full h-full rounded-full border-2 border-dashed border-gray-600 flex items-center justify-center text-gray-400 group-hover:border-primary group-hover:text-primary transition bg-transparent">
-                  <span class="material-icons text-lg">add</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Padding Slider -->
-          <div>
-            <div class="flex justify-between text-xs mb-2">
-              <span class="text-gray-400">Padding</span>
-              <span id="paddingVal" class="text-gray-500 font-mono">32px</span>
-            </div>
-            <input id="paddingInput" class="w-full" type="range" min="16" max="128" value="32" step="1">
-          </div>
-          
-          <!-- Corner Radius Slider -->
-          <div>
-            <div class="flex justify-between text-xs mb-2">
-              <span class="text-gray-400">Corner Radius</span>
-              <span id="radiusVal" class="text-gray-500 font-mono">12px</span>
-            </div>
-            <input id="radiusInput" class="w-full" type="range" min="0" max="32" value="12" step="1">
-          </div>
-          
-          <!-- Toggles -->
-          <div class="grid grid-cols-2 gap-3 pt-2">
-            <!-- Shadow Toggle -->
-            <label class="flex items-center justify-between p-3 rounded-lg bg-black/30 border border-white/5 cursor-pointer hover:bg-black/40 transition">
-              <span class="text-xs text-gray-300">Shadow</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="shadowToggle" checked>
-                <span class="toggle-slider"></span>
-              </div>
-            </label>
-            
-            <!-- Dark Window Toggle -->
-            <label class="flex items-center justify-between p-3 rounded-lg bg-black/30 border border-white/5 cursor-pointer hover:bg-black/40 transition">
-              <span class="text-xs text-gray-300">Dark Window</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="darkWindowToggle" checked>
-                <span class="toggle-slider"></span>
-              </div>
-            </label>
-          </div>
-        </div>
-      </section>
+        <textarea id="editor" spellcheck="false">const generate = () => {
+  const design = "Awesome";
+  return render(design);
+}</textarea>
+        
+        <div id="editorStats" class="editor-stats">3 lines, 82 chars</div>
+      </div>
       
-      <!-- Footer Links -->
-      <footer class="py-6 text-center text-xs text-gray-500">
-        <div class="flex justify-center gap-4">
-          <a href="#" class="hover:text-primary transition">Privacy Policy</a>
-          <span>•</span>
-          <a href="#" class="hover:text-primary transition">Terms & Conditions</a>
+      <!-- Styling Panel -->
+      <div class="styling-panel">
+        <div class="styling-title">Styling</div>
+        
+        <!-- Background Selector -->
+        <div class="control-group">
+          <div class="control-label">Background</div>
+          <div class="background-selector no-scrollbar" id="bgControls">
+            <div class="bg-option bg-option-default active" data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
+            <div class="bg-option bg-option-emerald" data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500"></div>
+            <div class="bg-option bg-option-slate" data-bg="bg-gradient-to-r from-slate-900 to-slate-700"></div>
+            <div class="bg-option bg-option-orange" data-bg="bg-gradient-to-bl from-orange-400 to-rose-400"></div>
+            <div class="bg-option bg-option-purple" data-bg="bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600"></div>
+            <div class="bg-option bg-option-dark" data-bg="bg-[#1c1917]"></div>
+            
+            <div class="custom-color">
+              <input type="color" id="customColorPicker" value="#3b82f6">
+              <span class="material-icons">add</span>
+            </div>
+          </div>
         </div>
-        <p class="mt-2 text-[10px] opacity-70">© 2026 CodeSnap. All rights reserved.</p>
+        
+        <!-- Padding Slider -->
+        <div class="control-group">
+          <div class="slider-container">
+            <span class="control-label">Padding</span>
+            <span id="paddingValue" class="slider-value">32px</span>
+          </div>
+          <input type="range" id="paddingSlider" min="16" max="128" value="32">
+        </div>
+        
+        <!-- Corner Radius Slider -->
+        <div class="control-group">
+          <div class="slider-container">
+            <span class="control-label">Corner Radius</span>
+            <span id="radiusValue" class="slider-value">12px</span>
+          </div>
+          <input type="range" id="radiusSlider" min="0" max="32" value="12">
+        </div>
+        
+        <!-- Toggles -->
+        <div class="toggles-grid">
+          <div class="toggle-item">
+            <span class="toggle-label">Shadow</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="shadowToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-item">
+            <span class="toggle-label">Dark Window</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="darkWindowToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <span>•</span>
+          <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="copyright">© 2026 CodeSnap. All rights reserved.</div>
       </footer>
     </div>
   </main>
   
-  <!-- Bottom Action Bar -->
-  <div class="fixed bottom-0 left-0 right-0 p-4 bg-background-dark/90 backdrop-blur-xl border-t border-white/10 z-50">
-    <div class="max-w-lg mx-auto flex gap-3">
-      <button id="copyImageBtn" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/10 text-white font-medium hover:bg-white/20 transition-all active:scale-95 text-sm">
-        <span class="material-icons text-lg">content_copy</span>
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button id="copyImageBtn" class="btn btn-secondary">
+        <span class="material-icons">content_copy</span>
         Copy Image
       </button>
-      <button id="exportBtn" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-white font-medium shadow-lg shadow-primary/30 hover:bg-primary-dark transition-all active:scale-95 text-sm">
-        <span class="material-icons text-lg">download</span>
+      <button id="exportBtn" class="btn btn-primary">
+        <span class="material-icons">download</span>
         Export PNG
       </button>
     </div>
   </div>
   
   <!-- Toast Container -->
-  <div id="toast-container" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toastContainer" class="toast-container"></div>
   
   <script>
-    (function() {
-      // ========== STATE MANAGEMENT ==========
-      const state = {
-        code: `const generate = () => {\n  const design = "Awesome";\n  return render(design);\n}`,
-        language: 'javascript',
-        padding: 32,
-        radius: 12,
-        hasShadow: true,
-        isDarkWindow: true,
-        currentBg: 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500'
-      };
-      
-      // ========== DOM ELEMENTS ==========
-      const elements = {
-        editor: document.getElementById('editor'),
-        codeContent: document.getElementById('code-content'),
-        filenameDisplay: document.getElementById('filename-display'),
-        languageSelect: document.getElementById('languageSelect'),
-        editorStats: document.getElementById('editorStats'),
-        paddingInput: document.getElementById('paddingInput'),
-        paddingVal: document.getElementById('paddingVal'),
-        radiusInput: document.getElementById('radiusInput'),
-        radiusVal: document.getElementById('radiusVal'),
-        previewPaddingWrapper: document.getElementById('preview-padding-wrapper'),
-        codeWindow: document.getElementById('code-window'),
-        previewBg: document.getElementById('preview-bg'),
-        shadowToggle: document.getElementById('shadowToggle'),
-        darkWindowToggle: document.getElementById('darkWindowToggle'),
-        themeToggle: document.getElementById('themeToggle'),
-        themeIcon: document.getElementById('themeIcon'),
-        copyCodeBtn: document.getElementById('copyCodeBtn'),
-        copyImageBtn: document.getElementById('copyImageBtn'),
-        exportBtn: document.getElementById('exportBtn'),
-        toastContainer: document.getElementById('toast-container'),
-        customColorPicker: document.getElementById('customColorPicker'),
-        customColorPreview: document.getElementById('customColorPreview'),
-        bgButtons: document.querySelectorAll('.bg-btn'),
-        langEN: document.getElementById('langEN'),
-        langID: document.getElementById('langID')
-      };
-      
-      // ========== INITIALIZATION ==========
-      function init() {
-        // Set initial values
-        elements.editor.value = state.code;
-        updatePreview();
-        updateStats();
-        updateFilename();
-        updateWindowTheme();
+    // Initialize
+    const state = {
+      code: `const generate = () => {\n  const design = "Awesome";\n  return render(design);\n}`,
+      language: 'javascript',
+      padding: 32,
+      radius: 12,
+      hasShadow: true,
+      isDarkWindow: true
+    };
+    
+    // DOM Elements
+    const editor = document.getElementById('editor');
+    const codeContent = document.getElementById('codeContent');
+    const filenameDisplay = document.getElementById('filenameDisplay');
+    const languageSelect = document.getElementById('languageSelect');
+    const editorStats = document.getElementById('editorStats');
+    const paddingSlider = document.getElementById('paddingSlider');
+    const paddingValue = document.getElementById('paddingValue');
+    const radiusSlider = document.getElementById('radiusSlider');
+    const radiusValue = document.getElementById('radiusValue');
+    const previewPadding = document.getElementById('previewPadding');
+    const codeWindow = document.getElementById('codeWindow');
+    const previewBg = document.getElementById('previewBg');
+    const shadowToggle = document.getElementById('shadowToggle');
+    const darkWindowToggle = document.getElementById('darkWindowToggle');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const copyImageBtn = document.getElementById('copyImageBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const toastContainer = document.getElementById('toastContainer');
+    const customColorPicker = document.getElementById('customColorPicker');
+    const bgOptions = document.querySelectorAll('.bg-option');
+    
+    // Set initial values
+    editor.value = state.code;
+    updatePreview();
+    updateStats();
+    updateFilename();
+    
+    // Event Listeners
+    editor.addEventListener('input', (e) => {
+      state.code = e.target.value;
+      updatePreview();
+      updateStats();
+    });
+    
+    languageSelect.addEventListener('change', (e) => {
+      state.language = e.target.value;
+      updateFilename();
+      updatePreview();
+    });
+    
+    paddingSlider.addEventListener('input', (e) => {
+      state.padding = parseInt(e.target.value);
+      paddingValue.textContent = state.padding + 'px';
+      previewPadding.style.padding = state.padding + 'px';
+    });
+    
+    radiusSlider.addEventListener('input', (e) => {
+      state.radius = parseInt(e.target.value);
+      radiusValue.textContent = state.radius + 'px';
+      codeWindow.style.borderRadius = state.radius + 'px';
+    });
+    
+    shadowToggle.addEventListener('change', (e) => {
+      state.hasShadow = e.target.checked;
+      if (state.hasShadow) {
+        codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+      } else {
+        codeWindow.style.boxShadow = 'none';
+      }
+    });
+    
+    darkWindowToggle.addEventListener('change', (e) => {
+      state.isDarkWindow = e.target.checked;
+      if (state.isDarkWindow) {
+        codeWindow.style.background = 'rgba(17, 24, 39, 0.9)';
+        codeWindow.style.border = '1px solid rgba(255,255,255,0.1)';
+        codeContent.style.color = '#d1d5db';
+      } else {
+        codeWindow.style.background = 'rgba(255, 255, 255, 0.9)';
+        codeWindow.style.border = '1px solid rgba(0,0,0,0.1)';
+        codeContent.style.color = '#1f2937';
+      }
+    });
+    
+    // Background options
+    bgOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        bgOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
         
-        // Set initial styles
-        elements.previewPaddingWrapper.style.padding = state.padding + 'px';
-        elements.codeWindow.style.borderRadius = state.radius + 'px';
-        elements.paddingVal.textContent = state.padding + 'px';
-        elements.radiusVal.textContent = state.radius + 'px';
-        
-        if (state.hasShadow) {
-          elements.codeWindow.classList.add('shadow-2xl');
+        const bgClass = option.dataset.bg;
+        if (bgClass) {
+          previewBg.className = 'preview-bg ' + bgClass;
         }
-        
-        // Set first background button active
-        if (elements.bgButtons.length > 0) {
-          elements.bgButtons[0].style.outline = '2px solid white';
-          elements.bgButtons[0].style.opacity = '1';
-        }
-        
-        // Load theme from localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-          document.body.classList.remove('dark');
-          elements.themeIcon.textContent = 'light_mode';
-        }
-        
-        // Setup event listeners
-        setupEventListeners();
-      }
+      });
+    });
+    
+    // Custom color picker
+    customColorPicker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      bgOptions.forEach(opt => opt.classList.remove('active'));
+      previewBg.className = 'preview-bg';
+      previewBg.style.background = color;
+    });
+    
+    // Copy code
+    copyCodeBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(state.code).then(() => {
+        showToast('Code copied!');
+      });
+    });
+    
+    // Export PNG
+    exportBtn.addEventListener('click', async () => {
+      exportBtn.disabled = true;
+      const originalText = exportBtn.innerHTML;
+      exportBtn.innerHTML = '<span class="material-icons" style="font-size: 16px;">hourglass_empty</span> Exporting...';
       
-      // ========== EVENT LISTENERS ==========
-      function setupEventListeners() {
-        // Editor input
-        elements.editor.addEventListener('input', (e) => {
-          state.code = e.target.value;
-          updatePreview();
-          updateStats();
+      try {
+        const canvas = await html2canvas(document.getElementById('captureTarget'), {
+          scale: 2,
+          backgroundColor: null,
+          logging: false
         });
         
-        // Language change
-        elements.languageSelect.addEventListener('change', (e) => {
-          state.language = e.target.value;
-          updateFilename();
-          updatePreview();
-        });
+        const link = document.createElement('a');
+        link.download = `codesnap-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
         
-        // Padding slider
-        elements.paddingInput.addEventListener('input', (e) => {
-          state.padding = parseInt(e.target.value);
-          elements.paddingVal.textContent = state.padding + 'px';
-          elements.previewPaddingWrapper.style.padding = state.padding + 'px';
-        });
-        
-        // Radius slider
-        elements.radiusInput.addEventListener('input', (e) => {
-          state.radius = parseInt(e.target.value);
-          elements.radiusVal.textContent = state.radius + 'px';
-          elements.codeWindow.style.borderRadius = state.radius + 'px';
-        });
-        
-        // Shadow toggle
-        elements.shadowToggle.addEventListener('change', (e) => {
-          state.hasShadow = e.target.checked;
-          if (state.hasShadow) {
-            elements.codeWindow.classList.add('shadow-2xl');
-          } else {
-            elements.codeWindow.classList.remove('shadow-2xl');
-          }
-        });
-        
-        // Dark window toggle
-        elements.darkWindowToggle.addEventListener('change', (e) => {
-          state.isDarkWindow = e.target.checked;
-          updateWindowTheme();
-        });
-        
-        // Background buttons
-        elements.bgButtons.forEach(btn => {
-          btn.addEventListener('click', () => {
-            // Remove active from all
-            elements.bgButtons.forEach(b => {
-              b.style.outline = '2px solid transparent';
-              b.style.opacity = '0.7';
-            });
-            
-            // Add active to clicked
-            btn.style.outline = '2px solid white';
-            btn.style.opacity = '1';
-            
-            // Apply background
-            const bgClass = btn.dataset.bg;
-            state.currentBg = bgClass;
-            elements.previewBg.className = 'absolute inset-0 transition-all duration-500 ' + bgClass;
-            elements.previewBg.style.background = ''; // Clear custom color
-            
-            // Reset custom picker
-            elements.customColorPreview.style.background = '';
-            elements.customColorPreview.style.borderStyle = 'dashed';
-            elements.customColorPreview.innerHTML = '<span class="material-icons text-lg">add</span>';
-          });
-        });
-        
-        // Custom color picker
-        elements.customColorPicker.addEventListener('input', (e) => {
-          const color = e.target.value;
-          
-          // Update preview
-          elements.customColorPreview.style.background = color;
-          elements.customColorPreview.style.borderStyle = 'solid';
-          elements.customColorPreview.innerHTML = '';
-          
-          // Remove active from all bg buttons
-          elements.bgButtons.forEach(b => {
-            b.style.outline = '2px solid transparent';
-            b.style.opacity = '0.7';
-          });
-          
-          // Apply custom color
-          elements.previewBg.className = 'absolute inset-0 transition-all duration-500';
-          elements.previewBg.style.background = color;
-        });
-        
-        // Theme toggle
-        elements.themeToggle.addEventListener('click', () => {
-          document.body.classList.toggle('dark');
-          const isDark = document.body.classList.contains('dark');
-          elements.themeIcon.textContent = isDark ? 'dark_mode' : 'light_mode';
-          localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-        
-        // Copy code button
-        elements.copyCodeBtn.addEventListener('click', () => {
-          navigator.clipboard.writeText(state.code).then(() => {
-            showToast('Code copied to clipboard!');
-          }).catch(() => {
-            showToast('Failed to copy code', 'error');
-          });
-        });
-        
-        // Export PNG button - FIXED VERSION
-        elements.exportBtn.addEventListener('click', async () => {
-          if (elements.exportBtn.disabled) return;
-          
-          elements.exportBtn.disabled = true;
-          const originalText = elements.exportBtn.innerHTML;
-          elements.exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
-          
-          try {
-            // Capture the element directly
-            const canvas = await html2canvas(document.getElementById('captureTarget'), {
-              scale: 2,
-              backgroundColor: null,
-              logging: false,
-              allowTaint: false,
-              useCORS: true,
-              windowWidth: 800,
-              onclone: (clonedDoc) => {
-                // Ensure the cloned element maintains aspect ratio
-                const clonedTarget = clonedDoc.getElementById('captureTarget');
-                if (clonedTarget) {
-                  clonedTarget.style.aspectRatio = window.innerWidth <= 640 ? '3/4' : '4/3';
-                }
-              }
-            });
-            
-            // Download as PNG
-            const link = document.createElement('a');
-            link.download = `codesnap-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
-            showToast('PNG exported successfully!');
-          } catch (err) {
-            console.error('Export error:', err);
-            showToast('Export failed. Please try again.', 'error');
-          } finally {
-            setTimeout(() => {
-              elements.exportBtn.disabled = false;
-              elements.exportBtn.innerHTML = originalText;
-            }, 500);
-          }
-        });
-        
-        // Copy Image button
-        elements.copyImageBtn.addEventListener('click', async () => {
-          if (elements.copyImageBtn.disabled) return;
-          
-          elements.copyImageBtn.disabled = true;
-          const originalText = elements.copyImageBtn.innerHTML;
-          elements.copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Copying...';
-          
-          try {
-            const canvas = await html2canvas(document.getElementById('captureTarget'), {
-              scale: 2,
-              backgroundColor: null,
-              logging: false
-            });
-            
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
-            
-            await navigator.clipboard.write([
-              new ClipboardItem({ 'image/png': blob })
-            ]);
-            
-            showToast('Image copied to clipboard!');
-          } catch (err) {
-            console.error('Copy error:', err);
-            showToast('Failed to copy image', 'error');
-          } finally {
-            setTimeout(() => {
-              elements.copyImageBtn.disabled = false;
-              elements.copyImageBtn.innerHTML = originalText;
-            }, 500);
-          }
-        });
-        
-        // Language switcher (just UI)
-        elements.langEN.addEventListener('click', () => {
-          elements.langEN.classList.add('text-primary', 'font-semibold');
-          elements.langEN.classList.remove('text-gray-500');
-          elements.langID.classList.remove('text-primary', 'font-semibold');
-          elements.langID.classList.add('text-gray-500');
-          showToast('Language set to English', 'info');
-        });
-        
-        elements.langID.addEventListener('click', () => {
-          elements.langID.classList.add('text-primary', 'font-semibold');
-          elements.langID.classList.remove('text-gray-500');
-          elements.langEN.classList.remove('text-primary', 'font-semibold');
-          elements.langEN.classList.add('text-gray-500');
-          showToast('Bahasa diatur ke Indonesia', 'info');
-        });
-      }
-      
-      // ========== HELPER FUNCTIONS ==========
-      
-      // Update code preview with syntax highlighting
-      function updatePreview() {
-        if (window.hljs) {
-          try {
-            const highlighted = hljs.highlight(state.code, { 
-              language: state.language,
-              ignoreIllegals: true 
-            }).value;
-            elements.codeContent.innerHTML = highlighted;
-          } catch (e) {
-            // Fallback to plain text
-            elements.codeContent.innerHTML = escapeHtml(state.code);
-          }
-        } else {
-          elements.codeContent.innerHTML = escapeHtml(state.code);
-        }
-        elements.codeContent.className = `hljs language-${state.language}`;
-      }
-      
-      // Escape HTML special characters
-      function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      }
-      
-      // Update editor stats (lines and characters)
-      function updateStats() {
-        const lines = state.code.split('\n').length;
-        const chars = state.code.length;
-        elements.editorStats.textContent = `${lines} lines, ${chars} chars`;
-      }
-      
-      // Update filename based on language
-      function updateFilename() {
-        const extensions = {
-          javascript: 'js',
-          html: 'html',
-          css: 'css',
-          python: 'py',
-          json: 'json',
-          typescript: 'ts',
-          jsx: 'jsx'
-        };
-        elements.filenameDisplay.textContent = `snippet.${extensions[state.language] || 'txt'}`;
-      }
-      
-      // Update window theme (dark/light mode for code window)
-      function updateWindowTheme() {
-        if (state.isDarkWindow) {
-          elements.codeWindow.classList.add('bg-gray-900/90', 'border-white/10');
-          elements.codeWindow.classList.remove('bg-white/90', 'border-gray-200');
-        } else {
-          elements.codeWindow.classList.remove('bg-gray-900/90', 'border-white/10');
-          elements.codeWindow.classList.add('bg-white/90', 'border-gray-200');
-        }
-      }
-      
-      // Show toast notification
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = 'glass-panel text-white px-4 py-3 rounded-lg shadow-xl flex items-center gap-2 text-sm border border-white/10 toast';
-        
-        let icon = 'check_circle';
-        let color = 'text-green-400';
-        
-        if (type === 'error') {
-          icon = 'error';
-          color = 'text-red-400';
-        } else if (type === 'info') {
-          icon = 'info';
-          color = 'text-blue-400';
-        }
-        
-        toast.innerHTML = `<span class="material-icons ${color} text-sm">${icon}</span> ${message}`;
-        elements.toastContainer.appendChild(toast);
-        
+        showToast('PNG exported!');
+      } catch (err) {
+        showToast('Export failed', 'error');
+      } finally {
         setTimeout(() => {
-          if (toast.parentNode) {
-            toast.remove();
-          }
-        }, 3000);
+          exportBtn.disabled = false;
+          exportBtn.innerHTML = originalText;
+        }, 500);
       }
+    });
+    
+    // Copy Image
+    copyImageBtn.addEventListener('click', async () => {
+      copyImageBtn.disabled = true;
+      const originalText = copyImageBtn.innerHTML;
+      copyImageBtn.innerHTML = '<span class="material-icons" style="font-size: 16px;">hourglass_empty</span> Copying...';
       
-      // Start the app
-      init();
-    })();
+      try {
+        const canvas = await html2canvas(document.getElementById('captureTarget'), {
+          scale: 2,
+          backgroundColor: null,
+          logging: false
+        });
+        
+        const blob = await new Promise(resolve => canvas.toBlob(resolve));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        
+        showToast('Image copied!');
+      } catch (err) {
+        showToast('Copy failed', 'error');
+      } finally {
+        setTimeout(() => {
+          copyImageBtn.disabled = false;
+          copyImageBtn.innerHTML = originalText;
+        }, 500);
+      }
+    });
+    
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      // Simple theme toggle for demo
+      showToast('Theme toggle (demo)', 'info');
+    });
+    
+    // Helper functions
+    function updatePreview() {
+      if (window.hljs) {
+        try {
+          const highlighted = hljs.highlight(state.code, { language: state.language }).value;
+          codeContent.innerHTML = highlighted;
+        } catch (e) {
+          codeContent.innerHTML = escapeHtml(state.code);
+        }
+      }
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    function updateStats() {
+      const lines = state.code.split('\n').length;
+      const chars = state.code.length;
+      editorStats.textContent = `${lines} lines, ${chars} chars`;
+    }
+    
+    function updateFilename() {
+      const extensions = { javascript: 'js', html: 'html', css: 'css', python: 'py', json: 'json' };
+      filenameDisplay.textContent = `snippet.${extensions[state.language] || 'txt'}`;
+    }
+    
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      
+      const icon = type === 'success' ? 'check_circle' : 'error';
+      const color = type === 'success' ? '#22c55e' : '#ef4444';
+      
+      toast.innerHTML = `<span class="material-icons" style="color: ${color};">${icon}</span> ${message}`;
+      toastContainer.appendChild(toast);
+      
+      setTimeout(() => toast.remove(), 3000);
+    }
   </script>
 </body>
 </html>
