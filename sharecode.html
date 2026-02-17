@@ -11,6 +11,9 @@
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <!-- Highlight.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -33,6 +36,50 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.3s;
+    }
+    
+    /* Light mode */
+    body.light-mode {
+      background: #f3f4f6;
+      color: #111827;
+    }
+    
+    body.light-mode .glass-panel {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .window {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .window-code code {
+      color: #1f2937;
+    }
+    
+    body.light-mode .language-select {
+      background: rgba(0, 0, 0, 0.05);
+      color: #1f2937;
+    }
+    
+    body.light-mode textarea {
+      background: rgba(0, 0, 0, 0.05);
+      color: #1f2937;
+    }
+    
+    body.light-mode .editor-stats {
+      color: #6b7280;
+    }
+    
+    body.light-mode .btn-secondary {
+      background: #e5e7eb;
+      color: #1f2937;
+    }
+    
+    body.light-mode .btn-secondary:hover {
+      background: #d1d5db;
     }
     
     /* Header */
@@ -44,6 +91,13 @@
       background: rgba(16, 22, 34, 0.8);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 20;
+    }
+    
+    body.light-mode .header {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
     
     .logo {
@@ -116,6 +170,10 @@
       background: rgba(255,255,255,0.1);
     }
     
+    body.light-mode .theme-toggle:hover {
+      background: rgba(0,0,0,0.05);
+    }
+    
     /* Main Content */
     .main-content {
       flex: 1;
@@ -149,42 +207,49 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      aspect-ratio: 4/3;
+      position: relative;
+    }
+    
+    @media (max-width: 640px) {
+      .preview-card {
+        aspect-ratio: 3/4;
+      }
     }
     
     .preview-content {
-      padding: 32px;
-      position: relative;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: padding 0.3s;
     }
     
     .preview-bg {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
+      transition: all 0.5s;
     }
     
     .preview-bg-pattern {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMjggNjZMMCA1MEwwIDE2TDI4IDBMNTYgMTZMNTYgNTBMMjggNjZMMjggMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+');
       opacity: 0.1;
       mix-blend-mode: overlay;
     }
     
     .window {
-      position: relative;
-      z-index: 10;
+      width: 100%;
       background: rgba(17, 24, 39, 0.9);
       backdrop-filter: blur(4px);
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      transition: all 0.3s;
     }
     
     .window-bar {
@@ -324,7 +389,7 @@
     }
     
     textarea:focus {
-      ring: 2px solid #135bec;
+      outline: 2px solid #135bec;
     }
     
     .editor-stats {
@@ -387,30 +452,31 @@
     
     .bg-option.active {
       border-color: white;
-      opacity: 1;
+      outline: 2px solid white;
+      outline-offset: 2px;
     }
     
-    .bg-option-default {
+    .bg-default {
       background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
     }
     
-    .bg-option-emerald {
+    .bg-emerald {
       background: linear-gradient(to top right, #10b981, #06b6d4);
     }
     
-    .bg-option-slate {
+    .bg-slate {
       background: linear-gradient(to right, #0f172a, #334155);
     }
     
-    .bg-option-orange {
+    .bg-orange {
       background: linear-gradient(to bottom left, #f97316, #f43f5e);
     }
     
-    .bg-option-purple {
+    .bg-purple {
       background: linear-gradient(to top left, #111827, #581c87, #7c3aed);
     }
     
-    .bg-option-dark {
+    .bg-dark {
       background: #1c1917;
       border: 1px solid rgba(255,255,255,0.1);
     }
@@ -519,6 +585,7 @@
       background-color: #4b5563;
       border-radius: 34px;
       cursor: pointer;
+      transition: 0.2s;
     }
     
     .toggle-slider:before {
@@ -552,6 +619,11 @@
       backdrop-filter: blur(12px);
       border-top: 1px solid rgba(255,255,255,0.1);
       z-index: 50;
+    }
+    
+    body.light-mode .bottom-bar {
+      background: rgba(255, 255, 255, 0.9);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
     
     .bottom-bar-content {
@@ -665,13 +737,6 @@
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-    
-    /* Responsive */
-    @media (max-width: 640px) {
-      .preview-content {
-        padding: 24px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -685,14 +750,14 @@
     </div>
     
     <div class="header-right">
-      <div class="language-switch">
-        <span class="active">EN</span>
+      <div class="language-switch" id="languageSwitch">
+        <span class="active" data-lang="en">EN</span>
         <span>|</span>
-        <span class="inactive">ID</span>
+        <span class="inactive" data-lang="id">ID</span>
       </div>
       
       <button class="theme-toggle" id="themeToggle">
-        <span class="material-icons">dark_mode</span>
+        <span class="material-icons" id="themeIcon">dark_mode</span>
       </button>
     </div>
   </header>
@@ -703,11 +768,11 @@
       
       <!-- Preview Section -->
       <div>
-        <div class="section-title">Preview</div>
+        <div class="section-title" id="previewTitle">Preview</div>
         
         <div id="captureTarget" class="preview-card">
           <div id="previewPadding" class="preview-content" style="padding: 32px;">
-            <div id="previewBg" class="preview-bg"></div>
+            <div id="previewBg" class="preview-bg bg-default"></div>
             <div class="preview-bg-pattern"></div>
             
             <div id="codeWindow" class="window" style="border-radius: 12px;">
@@ -734,12 +799,12 @@
       <!-- Editor Section -->
       <div class="glass-panel">
         <div class="editor-header">
-          <div class="editor-label">
+          <div class="editor-label" id="editorLabel">
             <span class="material-icons">edit</span>
-            Editor
+            <span id="editorText">Editor</span>
           </div>
           <div class="editor-actions">
-            <button id="copyCodeBtn" class="copy-btn">
+            <button id="copyCodeBtn" class="copy-btn" title="Copy code">
               <span class="material-icons" style="font-size: 14px;">content_copy</span>
             </button>
             <select id="languageSelect" class="language-select">
@@ -762,18 +827,18 @@
       
       <!-- Styling Panel -->
       <div class="styling-panel">
-        <div class="styling-title">Styling</div>
+        <div class="styling-title" id="stylingTitle">Styling</div>
         
         <!-- Background Selector -->
         <div class="control-group">
-          <div class="control-label">Background</div>
+          <div class="control-label" id="backgroundLabel">Background</div>
           <div class="background-selector no-scrollbar" id="bgControls">
-            <div class="bg-option bg-option-default active" data-bg="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
-            <div class="bg-option bg-option-emerald" data-bg="bg-gradient-to-tr from-emerald-400 to-cyan-500"></div>
-            <div class="bg-option bg-option-slate" data-bg="bg-gradient-to-r from-slate-900 to-slate-700"></div>
-            <div class="bg-option bg-option-orange" data-bg="bg-gradient-to-bl from-orange-400 to-rose-400"></div>
-            <div class="bg-option bg-option-purple" data-bg="bg-gradient-to-tl from-gray-900 via-purple-900 to-violet-600"></div>
-            <div class="bg-option bg-option-dark" data-bg="bg-[#1c1917]"></div>
+            <div class="bg-option bg-default active" data-bg="bg-default" title="Sunset"></div>
+            <div class="bg-option bg-emerald" data-bg="bg-emerald" title="Ocean"></div>
+            <div class="bg-option bg-slate" data-bg="bg-slate" title="Dark"></div>
+            <div class="bg-option bg-orange" data-bg="bg-orange" title="Sunrise"></div>
+            <div class="bg-option bg-purple" data-bg="bg-purple" title="Purple Night"></div>
+            <div class="bg-option bg-dark" data-bg="bg-dark" title="Charcoal"></div>
             
             <div class="custom-color">
               <input type="color" id="customColorPicker" value="#3b82f6">
@@ -785,7 +850,7 @@
         <!-- Padding Slider -->
         <div class="control-group">
           <div class="slider-container">
-            <span class="control-label">Padding</span>
+            <span class="control-label" id="paddingLabel">Padding</span>
             <span id="paddingValue" class="slider-value">32px</span>
           </div>
           <input type="range" id="paddingSlider" min="16" max="128" value="32">
@@ -794,7 +859,7 @@
         <!-- Corner Radius Slider -->
         <div class="control-group">
           <div class="slider-container">
-            <span class="control-label">Corner Radius</span>
+            <span class="control-label" id="radiusLabel">Corner Radius</span>
             <span id="radiusValue" class="slider-value">12px</span>
           </div>
           <input type="range" id="radiusSlider" min="0" max="32" value="12">
@@ -803,7 +868,7 @@
         <!-- Toggles -->
         <div class="toggles-grid">
           <div class="toggle-item">
-            <span class="toggle-label">Shadow</span>
+            <span class="toggle-label" id="shadowLabel">Shadow</span>
             <label class="toggle-switch">
               <input type="checkbox" id="shadowToggle" checked>
               <span class="toggle-slider"></span>
@@ -811,7 +876,7 @@
           </div>
           
           <div class="toggle-item">
-            <span class="toggle-label">Dark Window</span>
+            <span class="toggle-label" id="darkWindowLabel">Dark Window</span>
             <label class="toggle-switch">
               <input type="checkbox" id="darkWindowToggle" checked>
               <span class="toggle-slider"></span>
@@ -823,11 +888,11 @@
       <!-- Footer -->
       <footer class="footer">
         <div class="footer-links">
-          <a href="#">Privacy Policy</a>
+          <a href="#" id="privacyLink">Privacy Policy</a>
           <span>•</span>
-          <a href="#">Terms & Conditions</a>
+          <a href="#" id="termsLink">Terms & Conditions</a>
         </div>
-        <div class="copyright">© 2026 CodeSnap. All rights reserved.</div>
+        <div class="copyright" id="copyright">© 2026 CodeSnap. All rights reserved.</div>
       </footer>
     </div>
   </main>
@@ -837,11 +902,11 @@
     <div class="bottom-bar-content">
       <button id="copyImageBtn" class="btn btn-secondary">
         <span class="material-icons">content_copy</span>
-        Copy Image
+        <span id="copyImageText">Copy Image</span>
       </button>
       <button id="exportBtn" class="btn btn-primary">
         <span class="material-icons">download</span>
-        Export PNG
+        <span id="exportText">Export PNG</span>
       </button>
     </div>
   </div>
@@ -857,7 +922,8 @@
       padding: 32,
       radius: 12,
       hasShadow: true,
-      isDarkWindow: true
+      isDarkWindow: true,
+      currentLang: 'en'
     };
     
     // DOM Elements
@@ -881,6 +947,44 @@
     const toastContainer = document.getElementById('toastContainer');
     const customColorPicker = document.getElementById('customColorPicker');
     const bgOptions = document.querySelectorAll('.bg-option');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const langEN = document.querySelector('[data-lang="en"]');
+    const langID = document.querySelector('[data-lang="id"]');
+    
+    // Translation object
+    const translations = {
+      en: {
+        preview: 'Preview',
+        editor: 'Editor',
+        styling: 'Styling',
+        background: 'Background',
+        padding: 'Padding',
+        radius: 'Corner Radius',
+        shadow: 'Shadow',
+        darkWindow: 'Dark Window',
+        copyImage: 'Copy Image',
+        export: 'Export PNG',
+        privacy: 'Privacy Policy',
+        terms: 'Terms & Conditions',
+        copyright: '© 2026 CodeSnap. All rights reserved.'
+      },
+      id: {
+        preview: 'Pratinjau',
+        editor: 'Editor',
+        styling: 'Gaya',
+        background: 'Latar Belakang',
+        padding: 'Jarak',
+        radius: 'Sudut',
+        shadow: 'Bayangan',
+        darkWindow: 'Jendela Gelap',
+        copyImage: 'Salin Gambar',
+        export: 'Ekspor PNG',
+        privacy: 'Kebijakan Privasi',
+        terms: 'Syarat & Ketentuan',
+        copyright: '© 2026 CodeSnap. Hak cipta dilindungi.'
+      }
+    };
     
     // Set initial values
     editor.value = state.code;
@@ -888,7 +992,45 @@
     updateStats();
     updateFilename();
     
-    // Event Listeners
+    // Set initial window styles
+    codeWindow.style.borderRadius = state.radius + 'px';
+    if (state.hasShadow) {
+      codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+    }
+    
+    // ========== BACKGROUND SELECTOR ==========
+    bgOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove active class from all
+        bgOptions.forEach(opt => opt.classList.remove('active'));
+        
+        // Add active class to clicked
+        this.classList.add('active');
+        
+        // Get background class
+        const bgClass = this.dataset.bg;
+        
+        // Reset custom color
+        previewBg.style.background = '';
+        
+        // Apply gradient class
+        previewBg.className = 'preview-bg ' + bgClass;
+      });
+    });
+    
+    // Custom color picker
+    customColorPicker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      
+      // Remove active from all bg options
+      bgOptions.forEach(opt => opt.classList.remove('active'));
+      
+      // Apply custom color
+      previewBg.className = 'preview-bg';
+      previewBg.style.background = color;
+    });
+    
+    // ========== EDITOR ==========
     editor.addEventListener('input', (e) => {
       state.code = e.target.value;
       updatePreview();
@@ -901,6 +1043,7 @@
       updatePreview();
     });
     
+    // ========== SLIDERS ==========
     paddingSlider.addEventListener('input', (e) => {
       state.padding = parseInt(e.target.value);
       paddingValue.textContent = state.padding + 'px';
@@ -913,6 +1056,7 @@
       codeWindow.style.borderRadius = state.radius + 'px';
     });
     
+    // ========== TOGGLES ==========
     shadowToggle.addEventListener('change', (e) => {
       state.hasShadow = e.target.checked;
       if (state.hasShadow) {
@@ -924,56 +1068,104 @@
     
     darkWindowToggle.addEventListener('change', (e) => {
       state.isDarkWindow = e.target.checked;
+      updateWindowTheme();
+    });
+    
+    // ========== THEME TOGGLE ==========
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      themeIcon.textContent = isLight ? 'light_mode' : 'dark_mode';
+      updateWindowTheme();
+    });
+    
+    function updateWindowTheme() {
       if (state.isDarkWindow) {
-        codeWindow.style.background = 'rgba(17, 24, 39, 0.9)';
-        codeWindow.style.border = '1px solid rgba(255,255,255,0.1)';
-        codeContent.style.color = '#d1d5db';
-      } else {
-        codeWindow.style.background = 'rgba(255, 255, 255, 0.9)';
-        codeWindow.style.border = '1px solid rgba(0,0,0,0.1)';
-        codeContent.style.color = '#1f2937';
-      }
-    });
-    
-    // Background options
-    bgOptions.forEach(option => {
-      option.addEventListener('click', () => {
-        bgOptions.forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
-        
-        const bgClass = option.dataset.bg;
-        if (bgClass) {
-          previewBg.className = 'preview-bg ' + bgClass;
+        if (document.body.classList.contains('light-mode')) {
+          codeWindow.style.background = 'rgba(255, 255, 255, 0.95)';
+          codeWindow.style.border = '1px solid rgba(0,0,0,0.1)';
+          codeContent.style.color = '#1f2937';
+        } else {
+          codeWindow.style.background = 'rgba(17, 24, 39, 0.9)';
+          codeWindow.style.border = '1px solid rgba(255,255,255,0.1)';
+          codeContent.style.color = '#d1d5db';
         }
-      });
+      } else {
+        if (document.body.classList.contains('light-mode')) {
+          codeWindow.style.background = '#ffffff';
+          codeWindow.style.border = '1px solid #e5e7eb';
+          codeContent.style.color = '#1f2937';
+        } else {
+          codeWindow.style.background = '#1f2937';
+          codeWindow.style.border = '1px solid #374151';
+          codeContent.style.color = '#d1d5db';
+        }
+      }
+    }
+    
+    // ========== LANGUAGE SWITCH ==========
+    langEN.addEventListener('click', () => {
+      setLanguage('en');
     });
     
-    // Custom color picker
-    customColorPicker.addEventListener('input', (e) => {
-      const color = e.target.value;
-      bgOptions.forEach(opt => opt.classList.remove('active'));
-      previewBg.className = 'preview-bg';
-      previewBg.style.background = color;
+    langID.addEventListener('click', () => {
+      setLanguage('id');
     });
     
-    // Copy code
+    function setLanguage(lang) {
+      state.currentLang = lang;
+      
+      // Update active state
+      if (lang === 'en') {
+        langEN.classList.add('active');
+        langEN.classList.remove('inactive');
+        langID.classList.remove('active');
+        langID.classList.add('inactive');
+      } else {
+        langID.classList.add('active');
+        langID.classList.remove('inactive');
+        langEN.classList.remove('active');
+        langEN.classList.add('inactive');
+      }
+      
+      // Update UI text
+      document.getElementById('previewTitle').textContent = translations[lang].preview;
+      document.getElementById('editorText').textContent = translations[lang].editor;
+      document.getElementById('stylingTitle').textContent = translations[lang].styling;
+      document.getElementById('backgroundLabel').textContent = translations[lang].background;
+      document.getElementById('paddingLabel').textContent = translations[lang].padding;
+      document.getElementById('radiusLabel').textContent = translations[lang].radius;
+      document.getElementById('shadowLabel').textContent = translations[lang].shadow;
+      document.getElementById('darkWindowLabel').textContent = translations[lang].darkWindow;
+      document.getElementById('copyImageText').textContent = translations[lang].copyImage;
+      document.getElementById('exportText').textContent = translations[lang].export;
+      document.getElementById('privacyLink').textContent = translations[lang].privacy;
+      document.getElementById('termsLink').textContent = translations[lang].terms;
+      document.getElementById('copyright').textContent = translations[lang].copyright;
+      
+      showToast(`Language switched to ${lang === 'en' ? 'English' : 'Indonesia'}`);
+    }
+    
+    // ========== COPY CODE ==========
     copyCodeBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(state.code).then(() => {
-        showToast('Code copied!');
+        showToast(state.currentLang === 'en' ? 'Code copied!' : 'Kode disalin!');
       });
     });
     
-    // Export PNG
+    // ========== EXPORT PNG ==========
     exportBtn.addEventListener('click', async () => {
       exportBtn.disabled = true;
       const originalText = exportBtn.innerHTML;
-      exportBtn.innerHTML = '<span class="material-icons" style="font-size: 16px;">hourglass_empty</span> Exporting...';
+      exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (state.currentLang === 'en' ? 'Exporting...' : 'Mengekspor...');
       
       try {
         const canvas = await html2canvas(document.getElementById('captureTarget'), {
           scale: 2,
           backgroundColor: null,
-          logging: false
+          logging: false,
+          allowTaint: false,
+          useCORS: true
         });
         
         const link = document.createElement('a');
@@ -981,9 +1173,10 @@
         link.href = canvas.toDataURL('image/png');
         link.click();
         
-        showToast('PNG exported!');
+        showToast(state.currentLang === 'en' ? 'PNG exported!' : 'PNG diekspor!');
       } catch (err) {
-        showToast('Export failed', 'error');
+        console.error(err);
+        showToast(state.currentLang === 'en' ? 'Export failed' : 'Gagal mengekspor', 'error');
       } finally {
         setTimeout(() => {
           exportBtn.disabled = false;
@@ -992,11 +1185,11 @@
       }
     });
     
-    // Copy Image
+    // ========== COPY IMAGE ==========
     copyImageBtn.addEventListener('click', async () => {
       copyImageBtn.disabled = true;
       const originalText = copyImageBtn.innerHTML;
-      copyImageBtn.innerHTML = '<span class="material-icons" style="font-size: 16px;">hourglass_empty</span> Copying...';
+      copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (state.currentLang === 'en' ? 'Copying...' : 'Menyalin...');
       
       try {
         const canvas = await html2canvas(document.getElementById('captureTarget'), {
@@ -1005,12 +1198,13 @@
           logging: false
         });
         
-        const blob = await new Promise(resolve => canvas.toBlob(resolve));
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
         
-        showToast('Image copied!');
+        showToast(state.currentLang === 'en' ? 'Image copied!' : 'Gambar disalin!');
       } catch (err) {
-        showToast('Copy failed', 'error');
+        console.error(err);
+        showToast(state.currentLang === 'en' ? 'Copy failed' : 'Gagal menyalin', 'error');
       } finally {
         setTimeout(() => {
           copyImageBtn.disabled = false;
@@ -1019,13 +1213,7 @@
       }
     });
     
-    // Theme toggle
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      // Simple theme toggle for demo
-      showToast('Theme toggle (demo)', 'info');
-    });
-    
-    // Helper functions
+    // ========== HELPER FUNCTIONS ==========
     function updatePreview() {
       if (window.hljs) {
         try {
@@ -1035,6 +1223,7 @@
           codeContent.innerHTML = escapeHtml(state.code);
         }
       }
+      codeContent.className = `language-${state.language}`;
     }
     
     function escapeHtml(text) {
@@ -1050,7 +1239,13 @@
     }
     
     function updateFilename() {
-      const extensions = { javascript: 'js', html: 'html', css: 'css', python: 'py', json: 'json' };
+      const extensions = { 
+        javascript: 'js', 
+        html: 'html', 
+        css: 'css', 
+        python: 'py', 
+        json: 'json' 
+      };
       filenameDisplay.textContent = `snippet.${extensions[state.language] || 'txt'}`;
     }
     
