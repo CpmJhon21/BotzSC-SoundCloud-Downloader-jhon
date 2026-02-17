@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>CodeSnap · Code Screenshot Generator</title>
   
   <!-- Fonts -->
@@ -11,18 +11,18 @@
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
-  <!-- Font Awesome -->
+  <!-- Font Awesome for spinner -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Highlight.js -->
+  <!-- Highlight.js for syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   
-  <!-- html2canvas -->
+  <!-- html2canvas for screenshot -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <style>
-    /* Reset */
+    /* ===== RESET & BASE ===== */
     * {
       margin: 0;
       padding: 0;
@@ -36,7 +36,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
     }
     
     /* Light mode */
@@ -82,7 +82,25 @@
       background: #d1d5db;
     }
     
-    /* Header */
+    body.light-mode .header {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .bottom-bar {
+      background: rgba(255, 255, 255, 0.9);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .theme-toggle:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    body.light-mode .footer-links a:hover {
+      color: #135bec;
+    }
+    
+    /* ===== HEADER ===== */
     .header {
       display: flex;
       justify-content: space-between;
@@ -93,11 +111,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
       position: relative;
       z-index: 20;
-    }
-    
-    body.light-mode .header {
-      background: rgba(255, 255, 255, 0.8);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
     
     .logo {
@@ -142,6 +155,7 @@
     
     .language-switch .active {
       color: #135bec;
+      cursor: default;
     }
     
     .language-switch .inactive {
@@ -170,11 +184,7 @@
       background: rgba(255,255,255,0.1);
     }
     
-    body.light-mode .theme-toggle:hover {
-      background: rgba(0,0,0,0.05);
-    }
-    
-    /* Main Content */
+    /* ===== MAIN CONTENT ===== */
     .main-content {
       flex: 1;
       overflow-y: auto;
@@ -190,7 +200,7 @@
       gap: 24px;
     }
     
-    /* Section Title */
+    /* ===== SECTION TITLE ===== */
     .section-title {
       font-size: 12px;
       font-weight: 600;
@@ -201,7 +211,7 @@
       padding-left: 4px;
     }
     
-    /* Preview Card */
+    /* ===== PREVIEW CARD ===== */
     .preview-card {
       background: transparent;
       border-radius: 12px;
@@ -229,7 +239,6 @@
     .preview-bg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
       transition: all 0.5s;
     }
     
@@ -241,6 +250,32 @@
       mix-blend-mode: overlay;
     }
     
+    /* Background classes */
+    .bg-default {
+      background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
+    }
+    
+    .bg-emerald {
+      background: linear-gradient(to top right, #10b981, #06b6d4);
+    }
+    
+    .bg-slate {
+      background: linear-gradient(to right, #0f172a, #334155);
+    }
+    
+    .bg-orange {
+      background: linear-gradient(to bottom left, #f97316, #f43f5e);
+    }
+    
+    .bg-purple {
+      background: linear-gradient(to top left, #111827, #581c87, #7c3aed);
+    }
+    
+    .bg-dark {
+      background: #1c1917;
+    }
+    
+    /* ===== CODE WINDOW ===== */
     .window {
       width: 100%;
       background: rgba(17, 24, 39, 0.9);
@@ -303,7 +338,7 @@
       font-family: 'JetBrains Mono', monospace !important;
     }
     
-    /* Glass Panel */
+    /* ===== GLASS PANEL ===== */
     .glass-panel {
       background: rgba(28, 35, 51, 0.7);
       backdrop-filter: blur(12px);
@@ -312,7 +347,7 @@
       border: 1px solid rgba(255,255,255,0.05);
     }
     
-    /* Editor */
+    /* ===== EDITOR ===== */
     .editor-header {
       display: flex;
       justify-content: space-between;
@@ -400,7 +435,7 @@
       color: #6b7280;
     }
     
-    /* Styling Panel */
+    /* ===== STYLING PANEL ===== */
     .styling-panel {
       background: rgba(28, 35, 51, 0.7);
       backdrop-filter: blur(12px);
@@ -429,11 +464,27 @@
       display: block;
     }
     
+    /* ===== BACKGROUND SELECTOR ===== */
     .background-selector {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #4b5563 transparent;
+    }
+    
+    .background-selector::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    .background-selector::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .background-selector::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 4px;
     }
     
     .bg-option {
@@ -456,31 +507,6 @@
       outline-offset: 2px;
     }
     
-    .bg-default {
-      background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
-    }
-    
-    .bg-emerald {
-      background: linear-gradient(to top right, #10b981, #06b6d4);
-    }
-    
-    .bg-slate {
-      background: linear-gradient(to right, #0f172a, #334155);
-    }
-    
-    .bg-orange {
-      background: linear-gradient(to bottom left, #f97316, #f43f5e);
-    }
-    
-    .bg-purple {
-      background: linear-gradient(to top left, #111827, #581c87, #7c3aed);
-    }
-    
-    .bg-dark {
-      background: #1c1917;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    
     .custom-color {
       width: 40px;
       height: 40px;
@@ -495,6 +521,11 @@
       flex-shrink: 0;
     }
     
+    .custom-color:hover {
+      border-color: #135bec;
+      color: #135bec;
+    }
+    
     .custom-color input {
       position: absolute;
       inset: 0;
@@ -504,7 +535,7 @@
       height: 100%;
     }
     
-    /* Slider */
+    /* ===== SLIDER ===== */
     .slider-container {
       display: flex;
       justify-content: space-between;
@@ -534,9 +565,10 @@
       cursor: pointer;
       border: 2px solid white;
       margin-top: -6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     
-    /* Toggles */
+    /* ===== TOGGLES ===== */
     .toggles-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -608,7 +640,7 @@
       transform: translateX(16px);
     }
     
-    /* Bottom Bar */
+    /* ===== BOTTOM BAR ===== */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -619,11 +651,6 @@
       backdrop-filter: blur(12px);
       border-top: 1px solid rgba(255,255,255,0.1);
       z-index: 50;
-    }
-    
-    body.light-mode .bottom-bar {
-      background: rgba(255, 255, 255, 0.9);
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
     
     .bottom-bar-content {
@@ -652,12 +679,17 @@
       transform: scale(0.95);
     }
     
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
     .btn-secondary {
       background: rgba(255,255,255,0.1);
       color: white;
     }
     
-    .btn-secondary:hover {
+    .btn-secondary:hover:not(:disabled) {
       background: rgba(255,255,255,0.2);
     }
     
@@ -667,11 +699,11 @@
       box-shadow: 0 4px 12px rgba(19, 91, 236, 0.3);
     }
     
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       background: #0f4bc4;
     }
     
-    /* Footer */
+    /* ===== FOOTER ===== */
     .footer {
       text-align: center;
       padding: 24px 0;
@@ -700,7 +732,7 @@
       opacity: 0.7;
     }
     
-    /* Toast */
+    /* ===== TOAST ===== */
     .toast-container {
       position: fixed;
       bottom: 100px;
@@ -722,6 +754,7 @@
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
       animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.2s forwards;
+      max-width: 300px;
     }
     
     @keyframes slideUp {
@@ -733,9 +766,14 @@
       to { opacity: 0; }
     }
     
-    /* Hide scrollbar */
+    /* ===== UTILITY ===== */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
+    }
+    
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
@@ -756,7 +794,7 @@
         <span class="inactive" data-lang="id">ID</span>
       </div>
       
-      <button class="theme-toggle" id="themeToggle">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <span class="material-icons" id="themeIcon">dark_mode</span>
       </button>
     </div>
@@ -799,7 +837,7 @@
       <!-- Editor Section -->
       <div class="glass-panel">
         <div class="editor-header">
-          <div class="editor-label" id="editorLabel">
+          <div class="editor-label">
             <span class="material-icons">edit</span>
             <span id="editorText">Editor</span>
           </div>
@@ -813,6 +851,8 @@
               <option value="css">CSS</option>
               <option value="python">Python</option>
               <option value="json">JSON</option>
+              <option value="typescript">TypeScript</option>
+              <option value="jsx">JSX</option>
             </select>
           </div>
         </div>
@@ -832,7 +872,7 @@
         <!-- Background Selector -->
         <div class="control-group">
           <div class="control-label" id="backgroundLabel">Background</div>
-          <div class="background-selector no-scrollbar" id="bgControls">
+          <div class="background-selector" id="bgControls">
             <div class="bg-option bg-default active" data-bg="bg-default" title="Sunset"></div>
             <div class="bg-option bg-emerald" data-bg="bg-emerald" title="Ocean"></div>
             <div class="bg-option bg-slate" data-bg="bg-slate" title="Dark"></div>
@@ -841,7 +881,7 @@
             <div class="bg-option bg-dark" data-bg="bg-dark" title="Charcoal"></div>
             
             <div class="custom-color">
-              <input type="color" id="customColorPicker" value="#3b82f6">
+              <input type="color" id="customColorPicker" value="#3b82f6" title="Custom color">
               <span class="material-icons">add</span>
             </div>
           </div>
@@ -853,7 +893,7 @@
             <span class="control-label" id="paddingLabel">Padding</span>
             <span id="paddingValue" class="slider-value">32px</span>
           </div>
-          <input type="range" id="paddingSlider" min="16" max="128" value="32">
+          <input type="range" id="paddingSlider" min="16" max="128" value="32" step="1">
         </div>
         
         <!-- Corner Radius Slider -->
@@ -862,7 +902,7 @@
             <span class="control-label" id="radiusLabel">Corner Radius</span>
             <span id="radiusValue" class="slider-value">12px</span>
           </div>
-          <input type="range" id="radiusSlider" min="0" max="32" value="12">
+          <input type="range" id="radiusSlider" min="0" max="32" value="12" step="1">
         </div>
         
         <!-- Toggles -->
@@ -915,352 +955,424 @@
   <div id="toastContainer" class="toast-container"></div>
   
   <script>
-    // Initialize
-    const state = {
-      code: `const generate = () => {\n  const design = "Awesome";\n  return render(design);\n}`,
-      language: 'javascript',
-      padding: 32,
-      radius: 12,
-      hasShadow: true,
-      isDarkWindow: true,
-      currentLang: 'en'
-    };
-    
-    // DOM Elements
-    const editor = document.getElementById('editor');
-    const codeContent = document.getElementById('codeContent');
-    const filenameDisplay = document.getElementById('filenameDisplay');
-    const languageSelect = document.getElementById('languageSelect');
-    const editorStats = document.getElementById('editorStats');
-    const paddingSlider = document.getElementById('paddingSlider');
-    const paddingValue = document.getElementById('paddingValue');
-    const radiusSlider = document.getElementById('radiusSlider');
-    const radiusValue = document.getElementById('radiusValue');
-    const previewPadding = document.getElementById('previewPadding');
-    const codeWindow = document.getElementById('codeWindow');
-    const previewBg = document.getElementById('previewBg');
-    const shadowToggle = document.getElementById('shadowToggle');
-    const darkWindowToggle = document.getElementById('darkWindowToggle');
-    const copyCodeBtn = document.getElementById('copyCodeBtn');
-    const copyImageBtn = document.getElementById('copyImageBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const toastContainer = document.getElementById('toastContainer');
-    const customColorPicker = document.getElementById('customColorPicker');
-    const bgOptions = document.querySelectorAll('.bg-option');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const langEN = document.querySelector('[data-lang="en"]');
-    const langID = document.querySelector('[data-lang="id"]');
-    
-    // Translation object
-    const translations = {
-      en: {
-        preview: 'Preview',
-        editor: 'Editor',
-        styling: 'Styling',
-        background: 'Background',
-        padding: 'Padding',
-        radius: 'Corner Radius',
-        shadow: 'Shadow',
-        darkWindow: 'Dark Window',
-        copyImage: 'Copy Image',
-        export: 'Export PNG',
-        privacy: 'Privacy Policy',
-        terms: 'Terms & Conditions',
-        copyright: '© 2026 CodeSnap. All rights reserved.'
-      },
-      id: {
-        preview: 'Pratinjau',
-        editor: 'Editor',
-        styling: 'Gaya',
-        background: 'Latar Belakang',
-        padding: 'Jarak',
-        radius: 'Sudut',
-        shadow: 'Bayangan',
-        darkWindow: 'Jendela Gelap',
-        copyImage: 'Salin Gambar',
-        export: 'Ekspor PNG',
-        privacy: 'Kebijakan Privasi',
-        terms: 'Syarat & Ketentuan',
-        copyright: '© 2026 CodeSnap. Hak cipta dilindungi.'
-      }
-    };
-    
-    // Set initial values
-    editor.value = state.code;
-    updatePreview();
-    updateStats();
-    updateFilename();
-    
-    // Set initial window styles
-    codeWindow.style.borderRadius = state.radius + 'px';
-    if (state.hasShadow) {
-      codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
-    }
-    
-    // ========== BACKGROUND SELECTOR ==========
-    bgOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        // Remove active class from all
-        bgOptions.forEach(opt => opt.classList.remove('active'));
-        
-        // Add active class to clicked
-        this.classList.add('active');
-        
-        // Get background class
-        const bgClass = this.dataset.bg;
-        
-        // Reset custom color
-        previewBg.style.background = '';
-        
-        // Apply gradient class
-        previewBg.className = 'preview-bg ' + bgClass;
-      });
-    });
-    
-    // Custom color picker
-    customColorPicker.addEventListener('input', (e) => {
-      const color = e.target.value;
-      
-      // Remove active from all bg options
-      bgOptions.forEach(opt => opt.classList.remove('active'));
-      
-      // Apply custom color
-      previewBg.className = 'preview-bg';
-      previewBg.style.background = color;
-    });
-    
-    // ========== EDITOR ==========
-    editor.addEventListener('input', (e) => {
-      state.code = e.target.value;
-      updatePreview();
-      updateStats();
-    });
-    
-    languageSelect.addEventListener('change', (e) => {
-      state.language = e.target.value;
-      updateFilename();
-      updatePreview();
-    });
-    
-    // ========== SLIDERS ==========
-    paddingSlider.addEventListener('input', (e) => {
-      state.padding = parseInt(e.target.value);
-      paddingValue.textContent = state.padding + 'px';
-      previewPadding.style.padding = state.padding + 'px';
-    });
-    
-    radiusSlider.addEventListener('input', (e) => {
-      state.radius = parseInt(e.target.value);
-      radiusValue.textContent = state.radius + 'px';
-      codeWindow.style.borderRadius = state.radius + 'px';
-    });
-    
-    // ========== TOGGLES ==========
-    shadowToggle.addEventListener('change', (e) => {
-      state.hasShadow = e.target.checked;
-      if (state.hasShadow) {
-        codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
-      } else {
-        codeWindow.style.boxShadow = 'none';
-      }
-    });
-    
-    darkWindowToggle.addEventListener('change', (e) => {
-      state.isDarkWindow = e.target.checked;
-      updateWindowTheme();
-    });
-    
-    // ========== THEME TOGGLE ==========
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      themeIcon.textContent = isLight ? 'light_mode' : 'dark_mode';
-      updateWindowTheme();
-    });
-    
-    function updateWindowTheme() {
-      if (state.isDarkWindow) {
-        if (document.body.classList.contains('light-mode')) {
-          codeWindow.style.background = 'rgba(255, 255, 255, 0.95)';
-          codeWindow.style.border = '1px solid rgba(0,0,0,0.1)';
-          codeContent.style.color = '#1f2937';
-        } else {
-          codeWindow.style.background = 'rgba(17, 24, 39, 0.9)';
-          codeWindow.style.border = '1px solid rgba(255,255,255,0.1)';
-          codeContent.style.color = '#d1d5db';
-        }
-      } else {
-        if (document.body.classList.contains('light-mode')) {
-          codeWindow.style.background = '#ffffff';
-          codeWindow.style.border = '1px solid #e5e7eb';
-          codeContent.style.color = '#1f2937';
-        } else {
-          codeWindow.style.background = '#1f2937';
-          codeWindow.style.border = '1px solid #374151';
-          codeContent.style.color = '#d1d5db';
-        }
-      }
-    }
-    
-    // ========== LANGUAGE SWITCH ==========
-    langEN.addEventListener('click', () => {
-      setLanguage('en');
-    });
-    
-    langID.addEventListener('click', () => {
-      setLanguage('id');
-    });
-    
-    function setLanguage(lang) {
-      state.currentLang = lang;
-      
-      // Update active state
-      if (lang === 'en') {
-        langEN.classList.add('active');
-        langEN.classList.remove('inactive');
-        langID.classList.remove('active');
-        langID.classList.add('inactive');
-      } else {
-        langID.classList.add('active');
-        langID.classList.remove('inactive');
-        langEN.classList.remove('active');
-        langEN.classList.add('inactive');
-      }
-      
-      // Update UI text
-      document.getElementById('previewTitle').textContent = translations[lang].preview;
-      document.getElementById('editorText').textContent = translations[lang].editor;
-      document.getElementById('stylingTitle').textContent = translations[lang].styling;
-      document.getElementById('backgroundLabel').textContent = translations[lang].background;
-      document.getElementById('paddingLabel').textContent = translations[lang].padding;
-      document.getElementById('radiusLabel').textContent = translations[lang].radius;
-      document.getElementById('shadowLabel').textContent = translations[lang].shadow;
-      document.getElementById('darkWindowLabel').textContent = translations[lang].darkWindow;
-      document.getElementById('copyImageText').textContent = translations[lang].copyImage;
-      document.getElementById('exportText').textContent = translations[lang].export;
-      document.getElementById('privacyLink').textContent = translations[lang].privacy;
-      document.getElementById('termsLink').textContent = translations[lang].terms;
-      document.getElementById('copyright').textContent = translations[lang].copyright;
-      
-      showToast(`Language switched to ${lang === 'en' ? 'English' : 'Indonesia'}`);
-    }
-    
-    // ========== COPY CODE ==========
-    copyCodeBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(state.code).then(() => {
-        showToast(state.currentLang === 'en' ? 'Code copied!' : 'Kode disalin!');
-      });
-    });
-    
-    // ========== EXPORT PNG ==========
-    exportBtn.addEventListener('click', async () => {
-      exportBtn.disabled = true;
-      const originalText = exportBtn.innerHTML;
-      exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (state.currentLang === 'en' ? 'Exporting...' : 'Mengekspor...');
-      
-      try {
-        const canvas = await html2canvas(document.getElementById('captureTarget'), {
-          scale: 2,
-          backgroundColor: null,
-          logging: false,
-          allowTaint: false,
-          useCORS: true
-        });
-        
-        const link = document.createElement('a');
-        link.download = `codesnap-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        showToast(state.currentLang === 'en' ? 'PNG exported!' : 'PNG diekspor!');
-      } catch (err) {
-        console.error(err);
-        showToast(state.currentLang === 'en' ? 'Export failed' : 'Gagal mengekspor', 'error');
-      } finally {
-        setTimeout(() => {
-          exportBtn.disabled = false;
-          exportBtn.innerHTML = originalText;
-        }, 500);
-      }
-    });
-    
-    // ========== COPY IMAGE ==========
-    copyImageBtn.addEventListener('click', async () => {
-      copyImageBtn.disabled = true;
-      const originalText = copyImageBtn.innerHTML;
-      copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (state.currentLang === 'en' ? 'Copying...' : 'Menyalin...');
-      
-      try {
-        const canvas = await html2canvas(document.getElementById('captureTarget'), {
-          scale: 2,
-          backgroundColor: null,
-          logging: false
-        });
-        
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
-        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        
-        showToast(state.currentLang === 'en' ? 'Image copied!' : 'Gambar disalin!');
-      } catch (err) {
-        console.error(err);
-        showToast(state.currentLang === 'en' ? 'Copy failed' : 'Gagal menyalin', 'error');
-      } finally {
-        setTimeout(() => {
-          copyImageBtn.disabled = false;
-          copyImageBtn.innerHTML = originalText;
-        }, 500);
-      }
-    });
-    
-    // ========== HELPER FUNCTIONS ==========
-    function updatePreview() {
-      if (window.hljs) {
-        try {
-          const highlighted = hljs.highlight(state.code, { language: state.language }).value;
-          codeContent.innerHTML = highlighted;
-        } catch (e) {
-          codeContent.innerHTML = escapeHtml(state.code);
-        }
-      }
-      codeContent.className = `language-${state.language}`;
-    }
-    
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-    
-    function updateStats() {
-      const lines = state.code.split('\n').length;
-      const chars = state.code.length;
-      editorStats.textContent = `${lines} lines, ${chars} chars`;
-    }
-    
-    function updateFilename() {
-      const extensions = { 
-        javascript: 'js', 
-        html: 'html', 
-        css: 'css', 
-        python: 'py', 
-        json: 'json' 
+    (function() {
+      // ========== STATE MANAGEMENT ==========
+      const state = {
+        code: `const generate = () => {\n  const design = "Awesome";\n  return render(design);\n}`,
+        language: 'javascript',
+        padding: 32,
+        radius: 12,
+        hasShadow: true,
+        isDarkWindow: true,
+        currentLang: 'en'
       };
-      filenameDisplay.textContent = `snippet.${extensions[state.language] || 'txt'}`;
-    }
-    
-    function showToast(message, type = 'success') {
-      const toast = document.createElement('div');
-      toast.className = 'toast';
       
-      const icon = type === 'success' ? 'check_circle' : 'error';
-      const color = type === 'success' ? '#22c55e' : '#ef4444';
+      // ========== DOM ELEMENTS ==========
+      const elements = {
+        editor: document.getElementById('editor'),
+        codeContent: document.getElementById('codeContent'),
+        filenameDisplay: document.getElementById('filenameDisplay'),
+        languageSelect: document.getElementById('languageSelect'),
+        editorStats: document.getElementById('editorStats'),
+        paddingSlider: document.getElementById('paddingSlider'),
+        paddingValue: document.getElementById('paddingValue'),
+        radiusSlider: document.getElementById('radiusSlider'),
+        radiusValue: document.getElementById('radiusValue'),
+        previewPadding: document.getElementById('previewPadding'),
+        codeWindow: document.getElementById('codeWindow'),
+        previewBg: document.getElementById('previewBg'),
+        shadowToggle: document.getElementById('shadowToggle'),
+        darkWindowToggle: document.getElementById('darkWindowToggle'),
+        copyCodeBtn: document.getElementById('copyCodeBtn'),
+        copyImageBtn: document.getElementById('copyImageBtn'),
+        exportBtn: document.getElementById('exportBtn'),
+        toastContainer: document.getElementById('toastContainer'),
+        customColorPicker: document.getElementById('customColorPicker'),
+        bgOptions: document.querySelectorAll('.bg-option'),
+        themeToggle: document.getElementById('themeToggle'),
+        themeIcon: document.getElementById('themeIcon'),
+        langEN: document.querySelector('[data-lang="en"]'),
+        langID: document.querySelector('[data-lang="id"]')
+      };
       
-      toast.innerHTML = `<span class="material-icons" style="color: ${color};">${icon}</span> ${message}`;
-      toastContainer.appendChild(toast);
+      // ========== TRANSLATIONS ==========
+      const translations = {
+        en: {
+          preview: 'Preview',
+          editor: 'Editor',
+          styling: 'Styling',
+          background: 'Background',
+          padding: 'Padding',
+          radius: 'Corner Radius',
+          shadow: 'Shadow',
+          darkWindow: 'Dark Window',
+          copyImage: 'Copy Image',
+          export: 'Export PNG',
+          privacy: 'Privacy Policy',
+          terms: 'Terms & Conditions',
+          copyright: '© 2026 CodeSnap. All rights reserved.',
+          codeCopied: 'Code copied!',
+          imageCopied: 'Image copied!',
+          exportSuccess: 'PNG exported!',
+          exportFailed: 'Export failed',
+          copyFailed: 'Copy failed',
+          languageSwitched: 'Language switched to English',
+          exporting: 'Exporting...',
+          copying: 'Copying...'
+        },
+        id: {
+          preview: 'Pratinjau',
+          editor: 'Editor',
+          styling: 'Gaya',
+          background: 'Latar Belakang',
+          padding: 'Jarak',
+          radius: 'Sudut',
+          shadow: 'Bayangan',
+          darkWindow: 'Jendela Gelap',
+          copyImage: 'Salin Gambar',
+          export: 'Ekspor PNG',
+          privacy: 'Kebijakan Privasi',
+          terms: 'Syarat & Ketentuan',
+          copyright: '© 2026 CodeSnap. Hak cipta dilindungi.',
+          codeCopied: 'Kode disalin!',
+          imageCopied: 'Gambar disalin!',
+          exportSuccess: 'PNG diekspor!',
+          exportFailed: 'Gagal mengekspor',
+          copyFailed: 'Gagal menyalin',
+          languageSwitched: 'Bahasa diubah ke Indonesia',
+          exporting: 'Mengekspor...',
+          copying: 'Menyalin...'
+        }
+      };
       
-      setTimeout(() => toast.remove(), 3000);
-    }
+      // ========== INITIALIZATION ==========
+      function init() {
+        // Set initial values
+        elements.editor.value = state.code;
+        updatePreview();
+        updateStats();
+        updateFilename();
+        updateWindowTheme();
+        
+        // Set initial styles
+        elements.previewPadding.style.padding = state.padding + 'px';
+        elements.codeWindow.style.borderRadius = state.radius + 'px';
+        elements.paddingValue.textContent = state.padding + 'px';
+        elements.radiusValue.textContent = state.radius + 'px';
+        
+        if (state.hasShadow) {
+          elements.codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+        }
+        
+        // Set first background active
+        if (elements.bgOptions.length > 0) {
+          elements.bgOptions[0].classList.add('active');
+        }
+        
+        // Load theme from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-mode');
+          elements.themeIcon.textContent = 'light_mode';
+        }
+        
+        // Setup event listeners
+        setupEventListeners();
+      }
+      
+      // ========== EVENT LISTENERS ==========
+      function setupEventListeners() {
+        // Editor
+        elements.editor.addEventListener('input', (e) => {
+          state.code = e.target.value;
+          updatePreview();
+          updateStats();
+        });
+        
+        // Language select
+        elements.languageSelect.addEventListener('change', (e) => {
+          state.language = e.target.value;
+          updateFilename();
+          updatePreview();
+        });
+        
+        // Padding slider
+        elements.paddingSlider.addEventListener('input', (e) => {
+          state.padding = parseInt(e.target.value);
+          elements.paddingValue.textContent = state.padding + 'px';
+          elements.previewPadding.style.padding = state.padding + 'px';
+        });
+        
+        // Radius slider
+        elements.radiusSlider.addEventListener('input', (e) => {
+          state.radius = parseInt(e.target.value);
+          elements.radiusValue.textContent = state.radius + 'px';
+          elements.codeWindow.style.borderRadius = state.radius + 'px';
+        });
+        
+        // Shadow toggle
+        elements.shadowToggle.addEventListener('change', (e) => {
+          state.hasShadow = e.target.checked;
+          if (state.hasShadow) {
+            elements.codeWindow.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+          } else {
+            elements.codeWindow.style.boxShadow = 'none';
+          }
+        });
+        
+        // Dark window toggle
+        elements.darkWindowToggle.addEventListener('change', (e) => {
+          state.isDarkWindow = e.target.checked;
+          updateWindowTheme();
+        });
+        
+        // Background options
+        elements.bgOptions.forEach(option => {
+          option.addEventListener('click', function() {
+            // Remove active from all
+            elements.bgOptions.forEach(opt => opt.classList.remove('active'));
+            
+            // Add active to clicked
+            this.classList.add('active');
+            
+            // Get background class
+            const bgClass = this.dataset.bg;
+            
+            // Reset custom color
+            elements.previewBg.style.background = '';
+            
+            // Apply gradient class
+            elements.previewBg.className = 'preview-bg ' + bgClass;
+          });
+        });
+        
+        // Custom color picker
+        elements.customColorPicker.addEventListener('input', (e) => {
+          const color = e.target.value;
+          
+          // Remove active from all bg options
+          elements.bgOptions.forEach(opt => opt.classList.remove('active'));
+          
+          // Apply custom color
+          elements.previewBg.className = 'preview-bg';
+          elements.previewBg.style.background = color;
+        });
+        
+        // Theme toggle
+        elements.themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          elements.themeIcon.textContent = isLight ? 'light_mode' : 'dark_mode';
+          localStorage.setItem('theme', isLight ? 'light' : 'dark');
+          updateWindowTheme();
+        });
+        
+        // Language switch
+        elements.langEN.addEventListener('click', () => setLanguage('en'));
+        elements.langID.addEventListener('click', () => setLanguage('id'));
+        
+        // Copy code
+        elements.copyCodeBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(state.code).then(() => {
+            showToast(translations[state.currentLang].codeCopied);
+          }).catch(() => {
+            showToast(translations[state.currentLang].copyFailed, 'error');
+          });
+        });
+        
+        // Export PNG
+        elements.exportBtn.addEventListener('click', exportPNG);
+        
+        // Copy Image
+        elements.copyImageBtn.addEventListener('click', copyImage);
+      }
+      
+      // ========== LANGUAGE ==========
+      function setLanguage(lang) {
+        state.currentLang = lang;
+        
+        // Update active state
+        if (lang === 'en') {
+          elements.langEN.classList.add('active');
+          elements.langEN.classList.remove('inactive');
+          elements.langID.classList.remove('active');
+          elements.langID.classList.add('inactive');
+        } else {
+          elements.langID.classList.add('active');
+          elements.langID.classList.remove('inactive');
+          elements.langEN.classList.remove('active');
+          elements.langEN.classList.add('inactive');
+        }
+        
+        // Update UI text
+        document.getElementById('previewTitle').textContent = translations[lang].preview;
+        document.getElementById('editorText').textContent = translations[lang].editor;
+        document.getElementById('stylingTitle').textContent = translations[lang].styling;
+        document.getElementById('backgroundLabel').textContent = translations[lang].background;
+        document.getElementById('paddingLabel').textContent = translations[lang].padding;
+        document.getElementById('radiusLabel').textContent = translations[lang].radius;
+        document.getElementById('shadowLabel').textContent = translations[lang].shadow;
+        document.getElementById('darkWindowLabel').textContent = translations[lang].darkWindow;
+        document.getElementById('copyImageText').textContent = translations[lang].copyImage;
+        document.getElementById('exportText').textContent = translations[lang].export;
+        document.getElementById('privacyLink').textContent = translations[lang].privacy;
+        document.getElementById('termsLink').textContent = translations[lang].terms;
+        document.getElementById('copyright').textContent = translations[lang].copyright;
+        
+        showToast(translations[lang].languageSwitched);
+      }
+      
+      // ========== EXPORT PNG ==========
+      async function exportPNG() {
+        if (elements.exportBtn.disabled) return;
+        
+        elements.exportBtn.disabled = true;
+        const originalHTML = elements.exportBtn.innerHTML;
+        elements.exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + translations[state.currentLang].exporting;
+        
+        try {
+          const canvas = await html2canvas(document.getElementById('captureTarget'), {
+            scale: 2,
+            backgroundColor: null,
+            logging: false,
+            allowTaint: false,
+            useCORS: true
+          });
+          
+          const link = document.createElement('a');
+          link.download = `codesnap-${Date.now()}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          showToast(translations[state.currentLang].exportSuccess);
+        } catch (err) {
+          console.error('Export error:', err);
+          showToast(translations[state.currentLang].exportFailed, 'error');
+        } finally {
+          setTimeout(() => {
+            elements.exportBtn.disabled = false;
+            elements.exportBtn.innerHTML = originalHTML;
+          }, 500);
+        }
+      }
+      
+      // ========== COPY IMAGE ==========
+      async function copyImage() {
+        if (elements.copyImageBtn.disabled) return;
+        
+        elements.copyImageBtn.disabled = true;
+        const originalHTML = elements.copyImageBtn.innerHTML;
+        elements.copyImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + translations[state.currentLang].copying;
+        
+        try {
+          const canvas = await html2canvas(document.getElementById('captureTarget'), {
+            scale: 2,
+            backgroundColor: null,
+            logging: false
+          });
+          
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          
+          showToast(translations[state.currentLang].imageCopied);
+        } catch (err) {
+          console.error('Copy error:', err);
+          showToast(translations[state.currentLang].copyFailed, 'error');
+        } finally {
+          setTimeout(() => {
+            elements.copyImageBtn.disabled = false;
+            elements.copyImageBtn.innerHTML = originalHTML;
+          }, 500);
+        }
+      }
+      
+      // ========== HELPER FUNCTIONS ==========
+      function updatePreview() {
+        if (window.hljs) {
+          try {
+            const highlighted = hljs.highlight(state.code, { 
+              language: state.language,
+              ignoreIllegals: true 
+            }).value;
+            elements.codeContent.innerHTML = highlighted;
+          } catch (e) {
+            elements.codeContent.innerHTML = escapeHtml(state.code);
+          }
+        } else {
+          elements.codeContent.innerHTML = escapeHtml(state.code);
+        }
+        elements.codeContent.className = `language-${state.language}`;
+      }
+      
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+      
+      function updateStats() {
+        const lines = state.code.split('\n').length;
+        const chars = state.code.length;
+        elements.editorStats.textContent = `${lines} lines, ${chars} chars`;
+      }
+      
+      function updateFilename() {
+        const extensions = { 
+          javascript: 'js', 
+          html: 'html', 
+          css: 'css', 
+          python: 'py', 
+          json: 'json',
+          typescript: 'ts',
+          jsx: 'jsx'
+        };
+        elements.filenameDisplay.textContent = `snippet.${extensions[state.language] || 'txt'}`;
+      }
+      
+      function updateWindowTheme() {
+        if (state.isDarkWindow) {
+          if (document.body.classList.contains('light-mode')) {
+            elements.codeWindow.style.background = 'rgba(255, 255, 255, 0.95)';
+            elements.codeWindow.style.border = '1px solid rgba(0,0,0,0.1)';
+            elements.codeContent.style.color = '#1f2937';
+          } else {
+            elements.codeWindow.style.background = 'rgba(17, 24, 39, 0.9)';
+            elements.codeWindow.style.border = '1px solid rgba(255,255,255,0.1)';
+            elements.codeContent.style.color = '#d1d5db';
+          }
+        } else {
+          if (document.body.classList.contains('light-mode')) {
+            elements.codeWindow.style.background = '#ffffff';
+            elements.codeWindow.style.border = '1px solid #e5e7eb';
+            elements.codeContent.style.color = '#1f2937';
+          } else {
+            elements.codeWindow.style.background = '#1f2937';
+            elements.codeWindow.style.border = '1px solid #374151';
+            elements.codeContent.style.color = '#d1d5db';
+          }
+        }
+      }
+      
+      function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        
+        const icon = type === 'success' ? 'check_circle' : 'error';
+        const color = type === 'success' ? '#22c55e' : '#ef4444';
+        
+        toast.innerHTML = `<span class="material-icons" style="color: ${color}; font-size: 18px;">${icon}</span> ${message}`;
+        elements.toastContainer.appendChild(toast);
+        
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.remove();
+          }
+        }, 3000);
+      }
+      
+      // Start the app
+      init();
+    })();
   </script>
 </body>
 </html>
